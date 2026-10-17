@@ -1,0 +1,103 @@
+/* PawMatch Quiz Styles */
+.pawmatch-hero {
+  background: linear-gradient(180deg, #FAF7F2 0%, #F5EFEB 100%);
+  padding: 3.5rem 0 2.5rem 0;
+  text-align: center;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.pawmatch-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  padding: 2.5rem;
+  max-width: 680px;
+  margin: -2rem auto 3rem auto;
+  position: relative;
+  z-index: 5;
+}
+
+.quiz-option-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+  margin-top: 0.75rem;
+}
+
+.quiz-option-card {
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  text-align: left;
+  cursor: pointer;
+  background-color: var(--bg-alt);
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.quiz-option-card:hover {
+  border-color: var(--color-primary-border);
+}
+
+.quiz-option-card.selected {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-subtle);
+}
+
+.match-result-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+.match-header-banner {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: #FFFFFF;
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.match-score-badge {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 800;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+}
+
+.match-reasons-list {
+  list-style: none;
+  padding: 0.85rem 1rem;
+  background-color: var(--bg-alt);
+  border-radius: var(--radius-md);
+  margin: 0.85rem 0;
+  font-size: 0.85rem;
+}
+
+.match-reasons-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-primary);
+  margin-bottom: 0.35rem;
+}
+
+.match-reasons-list li:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 640px) {
+  .quiz-option-grid {
+    grid-template-columns: 1fr;
+  }
+}

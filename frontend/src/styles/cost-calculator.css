@@ -1,0 +1,563 @@
+/* ==========================================================================
+   PAWCONNECT - PET COST & BUDGET CALCULATOR STYLES
+   ========================================================================== */
+
+.pcc-page {
+  min-height: 100vh;
+  background-color: var(--ap-bg, #FBF9F5);
+  padding-bottom: 4rem;
+}
+
+.pcc-container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem;
+}
+
+/* Header Banner */
+.pcc-hero-header {
+  text-align: center;
+  margin-bottom: 2.25rem;
+}
+
+.pcc-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: #E8F5E9;
+  color: #174C38;
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  margin-bottom: 0.75rem;
+}
+
+.pcc-title {
+  font-family: var(--font-heading, 'Nunito Sans', sans-serif);
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #162620;
+  margin: 0 0 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+}
+
+.pcc-subtitle {
+  color: #5A7167;
+  font-size: 0.98rem;
+  max-width: 640px;
+  margin: 0 auto;
+  line-height: 1.55;
+}
+
+/* Main Grid Layout */
+.pcc-grid {
+  display: grid;
+  grid-template-columns: 1.45fr 1fr;
+  gap: 1.75rem;
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .pcc-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Section Cards */
+.pcc-card {
+  background: #FFFFFF;
+  border: 1px solid #E5DFD6;
+  border-radius: 18px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 16px rgba(23, 76, 56, 0.04);
+  transition: all 0.2s ease;
+}
+
+.pcc-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid #F0ECE4;
+}
+
+.pcc-card-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #E8F5EC;
+  color: #174C38;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pcc-card-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #162620;
+  margin: 0;
+}
+
+/* Pet Selection Pills */
+.pcc-pet-selector-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.pcc-pet-btn {
+  background: #F8F5EF;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 0.85rem 0.65rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.pcc-pet-btn:hover {
+  background: #EFE9DE;
+}
+
+.pcc-pet-btn.active {
+  background: #E8F5EC;
+  border-color: #2D6A4F;
+  box-shadow: 0 4px 12px rgba(45, 106, 79, 0.12);
+}
+
+.pcc-pet-emoji {
+  font-size: 1.8rem;
+}
+
+.pcc-pet-name {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #162620;
+}
+
+.pcc-pet-sub {
+  font-size: 0.72rem;
+  color: #688075;
+}
+
+/* Form Controls */
+.pcc-control-group {
+  margin-bottom: 1.25rem;
+}
+
+.pcc-control-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.pcc-label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #162620;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.pcc-val-badge {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #2D6A4F;
+}
+
+/* Multi-Choice Option Cards */
+.pcc-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.65rem;
+}
+
+.pcc-option-btn {
+  background: #FAFAFA;
+  border: 1.5px solid #E5DFD6;
+  border-radius: 10px;
+  padding: 0.65rem 0.75rem;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.18s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.pcc-option-btn:hover {
+  border-color: #A3C9B8;
+  background: #F8FAF9;
+}
+
+.pcc-option-btn.active {
+  background: #E8F5EC;
+  border-color: #2D6A4F;
+  box-shadow: 0 2px 8px rgba(45, 106, 79, 0.1);
+}
+
+.pcc-option-title {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #162620;
+}
+
+.pcc-option-price {
+  font-size: 0.76rem;
+  color: #2D6A4F;
+  font-weight: 700;
+}
+
+/* Custom Range Slider */
+.pcc-slider-wrap {
+  position: relative;
+  margin-top: 0.5rem;
+}
+
+.pcc-range {
+  width: 100%;
+  height: 8px;
+  border-radius: 6px;
+  background: #E5DFD6;
+  outline: none;
+  -webkit-appearance: none;
+  accent-color: #2D6A4F;
+  cursor: pointer;
+}
+
+.pcc-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #174C38;
+  border: 3px solid #FFFFFF;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.pcc-range::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+.pcc-slider-ticks {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.35rem;
+  font-size: 0.74rem;
+  color: #7A9187;
+}
+
+/* Checkbox Toggle List */
+.pcc-check-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0.85rem;
+  background: #FDFBF8;
+  border: 1px solid #EBE6DE;
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.pcc-check-item:hover {
+  background: #F4EFEB;
+}
+
+.pcc-check-item.checked {
+  background: #F0F9F3;
+  border-color: #A7D7BC;
+}
+
+.pcc-check-left {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.pcc-checkbox {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1.5px solid #2D6A4F;
+  accent-color: #174C38;
+  cursor: pointer;
+}
+
+.pcc-check-label {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #162620;
+}
+
+.pcc-check-price {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #2D6A4F;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   RIGHT STICKY BUDGET SUMMARY CARD
+   ───────────────────────────────────────────────────────────────────────────── */
+.pcc-summary-box {
+  position: sticky;
+  top: 90px;
+}
+
+.pcc-hero-budget-card {
+  background: linear-gradient(145deg, #174C38, #0E3628);
+  border-radius: 20px;
+  padding: 1.75rem;
+  color: #FFFFFF;
+  box-shadow: 0 12px 32px rgba(14, 54, 40, 0.22);
+  margin-bottom: 1.25rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.pcc-hero-budget-card::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(82, 183, 136, 0.25) 0%, rgba(0,0,0,0) 70%);
+}
+
+.pcc-total-label {
+  font-size: 0.86rem;
+  color: #A3C9B8;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.pcc-total-num {
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: #FFFFFF;
+  margin-bottom: 0.4rem;
+  line-height: 1.1;
+  font-family: var(--font-heading, sans-serif);
+}
+
+.pcc-total-sub {
+  font-size: 0.82rem;
+  color: #D8F3DC;
+  margin-bottom: 1.25rem;
+}
+
+/* Two mini-stats in the hero card */
+.pcc-hero-stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.pcc-hero-stat-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.pcc-hero-stat-label {
+  font-size: 0.74rem;
+  color: #A3C9B8;
+  margin-bottom: 0.2rem;
+}
+
+.pcc-hero-stat-val {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+/* Progress / Category Breakdown */
+.pcc-breakdown-card {
+  background: #FFFFFF;
+  border: 1px solid #E5DFD6;
+  border-radius: 18px;
+  padding: 1.4rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 4px 16px rgba(23, 76, 56, 0.04);
+}
+
+.pcc-breakdown-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #162620;
+  margin: 0 0 1rem;
+}
+
+.pcc-stacked-bar {
+  display: flex;
+  height: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  background: #ECE5DE;
+}
+
+.pcc-stacked-seg {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.pcc-stacked-seg.food { background: #2D6A4F; }
+.pcc-stacked-seg.vet { background: #52B788; }
+.pcc-stacked-seg.grooming { background: #74C69D; }
+.pcc-stacked-seg.supplies { background: #DDA15E; }
+.pcc-stacked-seg.buffer { background: #BC6C25; }
+
+.pcc-legend-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.pcc-legend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.82rem;
+}
+
+.pcc-legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 0.45rem;
+}
+
+.pcc-legend-name {
+  color: #4A6359;
+}
+
+.pcc-legend-val {
+  font-weight: 700;
+  color: #162620;
+}
+
+/* Savings & Advice Callout */
+.pcc-advice-card {
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-radius: 14px;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.pcc-advice-title {
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: #92400E;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 0.35rem;
+}
+
+.pcc-advice-desc {
+  font-size: 0.8rem;
+  color: #78350F;
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* Actions in summary box */
+.pcc-summary-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.pcc-btn-print {
+  width: 100%;
+  background: #FFFFFF;
+  border: 1.5px solid #2D6A4F;
+  color: #174C38;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 0.75rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pcc-btn-print:hover {
+  background: #E8F5EC;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   PRINT STYLES (@media print)
+   ───────────────────────────────────────────────────────────────────────────── */
+@media print {
+  /* Hide navbar, sidebar, buttons, controls */
+  .portal-sidebar,
+  .portal-mobile-topbar,
+  .pcc-btn-print,
+  .pcc-summary-actions,
+  .pcc-pet-selector-grid,
+  .pcc-options-grid,
+  .pcc-slider-wrap,
+  header,
+  footer {
+    display: none !important;
+  }
+
+  body, .pcc-page {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    padding: 0 !important;
+  }
+
+  .pcc-container {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .pcc-grid {
+    display: block !important;
+  }
+
+  .pcc-hero-budget-card {
+    background: #174C38 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color: #FFFFFF !important;
+    page-break-inside: avoid;
+  }
+
+  .pcc-card, .pcc-breakdown-card {
+    border: 1px solid #CCC !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+  }
+}

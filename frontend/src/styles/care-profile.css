@@ -1,0 +1,405 @@
+/* ==========================================================================
+   PawConnect — Digital Care Profile & Pet Health Record Book
+   ========================================================================== */
+
+.care-profile-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8E4;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(14, 54, 40, 0.05);
+  margin-top: 0.5rem;
+}
+
+.care-profile-header {
+  background: linear-gradient(135deg, #0E3628 0%, #16533E 100%);
+  padding: 1.25rem 1.5rem;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.care-profile-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.care-profile-seal-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6EE7B7;
+  flex-shrink: 0;
+}
+
+.care-profile-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.care-profile-subtitle {
+  font-size: 0.76rem;
+  color: #A7F3D0;
+  margin-top: 0.15rem;
+}
+
+.care-profile-chip-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #FEF3C7;
+  letter-spacing: 0.02em;
+}
+
+/* 6-Grid Clinical Cards */
+.care-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  padding: 1.5rem;
+  background: #FAFBFB;
+}
+
+.care-grid-item {
+  background: #FFFFFF;
+  border: 1px solid #E5EBE7;
+  border-radius: 12px;
+  padding: 1rem 1.15rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.care-grid-item:hover {
+  border-color: #CBD5E1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.care-item-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.care-item-icon.vaccine { background: #DCFCE7; color: #15803D; }
+.care-item-icon.deworm { background: #E0F2FE; color: #0369A1; }
+.care-item-icon.sterile { background: #F3E8FF; color: #7E22CE; }
+.care-item-icon.vitals { background: #ECFDF5; color: #047857; }
+.care-item-icon.checkup { background: #FEF3C7; color: #B45309; }
+.care-item-icon.booster { background: #FEE2E2; color: #B91C1C; }
+
+.care-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.care-item-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #72887F;
+  margin-bottom: 0.2rem;
+}
+
+.care-item-value {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #122820;
+  line-height: 1.3;
+}
+
+.care-item-meta {
+  font-size: 0.75rem;
+  color: #526B61;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.care-pills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.4rem;
+}
+
+.care-sub-pill {
+  font-size: 0.68rem;
+  font-weight: 600;
+  background: #F1F5F9;
+  color: #334155;
+  padding: 0.12rem 0.45rem;
+  border-radius: 4px;
+}
+
+/* Special Requirements & Notes Box */
+.care-profile-notes-box {
+  margin: 0 1.5rem 1.5rem 1.5rem;
+  padding: 1.15rem 1.25rem;
+  background: #FFFDF5;
+  border: 1px solid #FDE68A;
+  border-radius: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.care-notes-icon {
+  color: #D97706;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.care-notes-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #92400E;
+  margin-bottom: 0.25rem;
+}
+
+.care-notes-text {
+  font-size: 0.85rem;
+  color: #78350F;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Footer Stamp */
+.care-profile-footer {
+  padding: 0.85rem 1.5rem;
+  background: #FFFFFF;
+  border-top: 1px solid #E5EBE7;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: #72887F;
+}
+
+.care-footer-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #047857;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .care-profile-grid {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+  .care-profile-notes-box {
+    margin: 0 1rem 1rem 1rem;
+  }
+}
+
+/* ==========================================================================
+   Care Passport Modal Dialog Box
+   ========================================================================== */
+.care-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  background: rgba(8, 22, 16, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  animation: careModalFadeIn 0.22s ease-out forwards;
+}
+
+.care-modal-container {
+  background: #FFFFFF;
+  width: 100%;
+  max-width: 780px;
+  max-height: 90vh;
+  border-radius: 24px;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: careModalSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.care-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1.5rem;
+  background: #FFFFFF;
+  border-bottom: 1px solid #E5EBE7;
+}
+
+.care-modal-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.care-modal-pet-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 2px solid #10B981;
+}
+
+.care-modal-header-title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0E3628;
+  letter-spacing: -0.01em;
+}
+
+.care-modal-header-sub {
+  font-size: 0.8rem;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.15rem;
+}
+
+.care-modal-close-btn {
+  background: #F1F5F3;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #475569;
+  transition: all 0.15s ease;
+}
+
+.care-modal-close-btn:hover {
+  background: #E2E8E4;
+  color: #0E3628;
+  transform: rotate(90deg);
+}
+
+.care-modal-scroll-body {
+  overflow-y: auto;
+  padding: 1.25rem 1.5rem;
+  flex: 1;
+}
+
+.care-modal-scroll-body::-webkit-scrollbar {
+  width: 6px;
+}
+.care-modal-scroll-body::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+
+.care-modal-footer {
+  padding: 1rem 1.5rem;
+  background: #F8FAF9;
+  border-top: 1px solid #E5EBE7;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.care-modal-footer-notice {
+  font-size: 0.8rem;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.care-modal-footer-btns {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.care-modal-btn-close {
+  padding: 0.6rem 1.1rem;
+  border-radius: 10px;
+  border: 1px solid #CBD5E1;
+  background: #FFFFFF;
+  color: #334155;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.care-modal-btn-close:hover {
+  background: #F1F5F9;
+}
+
+.care-modal-btn-apply {
+  padding: 0.6rem 1.25rem;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #0E3628 0%, #16533E 100%);
+  color: #FFFFFF;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  box-shadow: 0 4px 12px rgba(14, 54, 40, 0.25);
+  transition: all 0.15s ease;
+}
+
+.care-modal-btn-apply:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(14, 54, 40, 0.35);
+}
+
+@keyframes careModalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes careModalSlideUp {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+

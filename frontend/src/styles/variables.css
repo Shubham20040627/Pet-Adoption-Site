@@ -1,0 +1,85 @@
+/* PawConnect Design System - Color Palette & Tokens */
+:root {
+  /* Brand Palette - Forest Green & Warm Cream */
+  --color-primary: #1B4332;
+  --color-primary-hover: #143527;
+  --color-primary-light: #2D6A4F;
+  --color-primary-subtle: #E8F5EC;
+  --color-primary-border: #C2E2CE;
+
+  --color-secondary: #40916C;
+  --color-accent: #DDA15E;
+  --color-accent-light: #FAF0CA;
+
+  /* Surfaces & Backgrounds */
+  --bg-page: #FAF7F2;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #FCFAF6;
+  --bg-alt: #F3EFEA;
+  --bg-dark: #0D1F17;
+
+  /* Typography Colors */
+  --text-primary: #162620;
+  --text-secondary: #4A6359;
+  --text-muted: #7E978D;
+  --text-inverse: #FFFFFF;
+  --text-inverse-muted: #C3D6CD;
+
+  /* Status Colors */
+  --status-available-bg: #E8F5E9;
+  --status-available-text: #1B5E20;
+  --status-available-border: #A5D6A7;
+
+  --status-pending-bg: #FFF8E1;
+  --status-pending-text: #B76E00;
+  --status-pending-border: #FFE082;
+
+  --status-adopted-bg: #EDE7F6;
+  --status-adopted-text: #4527A0;
+  --status-adopted-border: #D1C4E9;
+
+  --status-review-bg: #E0F2FE;
+  --status-review-text: #0369A1;
+  --status-review-border: #BAE6FD;
+
+  --status-approved-bg: #DCFCE7;
+  --status-approved-text: #15803D;
+  --status-approved-border: #86EFAC;
+
+  --status-rejected-bg: #FEE2E2;
+  --status-rejected-text: #B91C1C;
+  --status-rejected-border: #FCA5A5;
+
+  /* Borders & Dividers */
+  --border-light: #E7E2DA;
+  --border-subtle: #F0ECE4;
+  --border-focus: #2D6A4F;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(27, 67, 50, 0.05);
+  --shadow-sm: 0 2px 6px rgba(27, 67, 50, 0.06);
+  --shadow-md: 0 6px 18px rgba(27, 67, 50, 0.08);
+  --shadow-lg: 0 12px 32px rgba(27, 67, 50, 0.12);
+  --shadow-xl: 0 20px 45px rgba(27, 67, 50, 0.15);
+
+  /* Radii */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-slow: 0.4s ease;
+
+  /* Typography */
+  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Layout */
+  --container-max-width: 1200px;
+  --header-height: 74px;
+}

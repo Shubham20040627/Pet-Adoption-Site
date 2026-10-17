@@ -1,0 +1,611 @@
+/* Dashboard Styles (Adopter & Shelter) */
+.dashboard-header {
+  background: linear-gradient(180deg, #FAF7F2 0%, #F5EFEB 100%);
+  padding: 3rem 0 2rem 0;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 2.5rem;
+}
+
+.dashboard-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.dashboard-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+.stat-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: var(--shadow-xs);
+}
+
+.stat-icon-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.stat-val {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  line-height: 1.1;
+}
+
+.stat-lbl {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+/* Tabs */
+.dashboard-tabs {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 2rem;
+}
+
+.dashboard-tab-btn {
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 0.75rem 1.25rem;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dashboard-tab-btn:hover {
+  color: var(--color-primary);
+}
+
+.dashboard-tab-btn.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+/* Data Table */
+.data-table-container {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-xs);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.data-table th {
+  background-color: var(--bg-alt);
+  color: var(--color-primary);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.data-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  vertical-align: middle;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tr:hover td {
+  background-color: var(--bg-card-hover);
+}
+
+@media (max-width: 992px) {
+  .dashboard-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .data-table-container {
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Meet & Greet Scheduler Styles */
+.visit-pet-preview {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: var(--bg-page);
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  margin-bottom: 1.25rem;
+}
+
+.visit-slot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.65rem;
+  margin-top: 0.35rem;
+}
+
+.visit-slot-btn {
+  background-color: #FFFFFF;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.65rem 0.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: inherit;
+}
+
+.visit-slot-btn:hover {
+  border-color: var(--color-primary-light);
+  background-color: var(--color-primary-subtle);
+}
+
+.visit-slot-btn.selected {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-subtle);
+  color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(27, 67, 50, 0.15);
+}
+
+.visit-slot-name {
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
+.visit-slot-time {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+.visit-slot-btn.selected .visit-slot-time {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.visits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.25rem;
+}
+
+.visit-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-xs);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.visit-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.visit-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.visit-card-pet {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.visit-card-pet-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-primary-light);
+}
+
+.visit-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 600px) {
+  .visit-slot-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   Adopter Portal Specific Styles (Matches Modern Ethical Pet Adoption Design)
+   ========================================================================== */
+
+.adopter-portal-wrapper {
+  background-color: #F8FAF7;
+  padding: 1.5rem 2rem 3rem 2rem;
+  min-height: 100vh;
+}
+
+/* Hero Banner */
+.adopter-hero-banner {
+  background: linear-gradient(135deg, #E6F3EB 0%, #D8EDE1 55%, #EAF5EE 100%);
+  border: 1px solid #CFE2D6;
+  border-radius: 20px;
+  padding: 2rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 20px rgba(27, 67, 50, 0.04);
+}
+
+.adopter-hero-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.45) 0%, transparent 40%),
+    radial-gradient(circle at 15% 85%, rgba(64, 145, 108, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.adopter-hero-content {
+  flex: 1;
+  max-width: 620px;
+  position: relative;
+  z-index: 2;
+}
+
+.adopter-hero-badge {
+  display: inline-block;
+  background-color: #D6ECE0;
+  color: #183B2B;
+  border-radius: 9999px;
+  padding: 0.3rem 0.85rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.85rem;
+}
+
+.adopter-hero-title {
+  font-family: var(--font-heading);
+  font-size: 2.35rem;
+  font-weight: 800;
+  color: #123824;
+  line-height: 1.2;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.adopter-hero-subtitle {
+  font-size: 1rem;
+  color: #4A6359;
+  line-height: 1.55;
+  margin-bottom: 1.5rem;
+}
+
+.adopter-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.adopter-btn-white {
+  background-color: #FFFFFF;
+  color: #123824;
+  border: 1.5px solid #CCDED2;
+  border-radius: 9999px;
+  padding: 0.6rem 1.25rem;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.92rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  transition: all var(--transition-fast);
+}
+
+.adopter-btn-white:hover {
+  background-color: #F8FAF8;
+  border-color: #123824;
+  transform: translateY(-1px);
+}
+
+.adopter-btn-dark {
+  background-color: #183B2B;
+  color: #FFFFFF;
+  border: 1.5px solid #183B2B;
+  border-radius: 9999px;
+  padding: 0.6rem 1.35rem;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.92rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(24, 59, 43, 0.2);
+  transition: all var(--transition-fast);
+}
+
+.adopter-btn-dark:hover {
+  background-color: #122F22;
+  border-color: #122F22;
+  transform: translateY(-1px);
+}
+
+.adopter-hero-graphic {
+  width: 320px;
+  height: 215px;
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.adopter-hero-pets-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(24, 59, 43, 0.12);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+/* Stat Cards Grid */
+.adopter-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.adopter-stat-card {
+  background-color: #FFFFFF;
+  border: 1px solid #E5EBE5;
+  border-radius: 16px;
+  padding: 1.15rem 1.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.adopter-stat-card:hover {
+  transform: translateY(-2px);
+  border-color: #C6DBCB;
+  box-shadow: 0 6px 16px rgba(27, 67, 50, 0.06);
+}
+
+.adopter-stat-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.adopter-stat-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.adopter-stat-icon-box.bg-green {
+  background-color: #E8F5E9;
+  color: #2E7D32;
+}
+
+.adopter-stat-icon-box.bg-amber {
+  background-color: #FEF3C7;
+  color: #D97706;
+}
+
+.adopter-stat-icon-box.bg-emerald {
+  background-color: #DCFCE7;
+  color: #16A34A;
+}
+
+.adopter-stat-icon-box.bg-red {
+  background-color: #FEE2E2;
+  color: #EF4444;
+}
+
+.adopter-stat-num {
+  font-family: var(--font-heading);
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #123824;
+  line-height: 1.1;
+}
+
+.adopter-stat-label {
+  font-size: 0.82rem;
+  color: #64748B;
+  font-weight: 600;
+  margin-top: 0.2rem;
+}
+
+.adopter-stat-chevron {
+  color: #94A3B8;
+  transition: transform var(--transition-fast);
+}
+
+.adopter-stat-card:hover .adopter-stat-chevron {
+  transform: translateX(3px);
+  color: #183B2B;
+}
+
+/* Horizontal Tabs */
+.adopter-tab-bar {
+  display: flex;
+  gap: 2rem;
+  border-bottom: 1.5px solid #E2EAE3;
+  margin-bottom: 2rem;
+  overflow-x: auto;
+}
+
+.adopter-tab-item {
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 0.75rem 0.25rem 0.95rem 0.25rem;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: #64748B;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.adopter-tab-item:hover {
+  color: #183B2B;
+}
+
+.adopter-tab-item.active {
+  color: #183B2B;
+  font-weight: 800;
+  border-bottom-color: #183B2B;
+}
+
+/* Section Header */
+.adopter-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.adopter-section-title {
+  font-family: var(--font-heading);
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #123824;
+  margin: 0;
+}
+
+.adopter-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background-color: #FFFFFF;
+  color: #183B2B;
+  border: 1.5px solid #CDE0D4;
+  border-radius: 9999px;
+  padding: 0.45rem 1.15rem;
+  font-family: var(--font-heading);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.adopter-link-btn:hover {
+  background-color: #F8FAF8;
+  border-color: #183B2B;
+}
+
+@media (max-width: 1100px) {
+  .adopter-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 850px) {
+  .adopter-hero-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.75rem;
+  }
+  .adopter-hero-graphic {
+    width: 100%;
+    height: 180px;
+    justify-content: center;
+  }
+  .adopter-portal-wrapper {
+    padding: 1rem 1rem 2rem 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .adopter-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

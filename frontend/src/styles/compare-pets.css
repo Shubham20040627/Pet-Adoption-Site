@@ -1,0 +1,878 @@
+/* ==========================================================================
+   PawConnect — Compare Pets Stylesheet
+   Matches the professional green-and-white theme and layout from UI reference.
+   ========================================================================== */
+
+.cp-container {
+  padding: 1.75rem 2.25rem 3.5rem 2.25rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+}
+
+/* ── Top Header & Breadcrumbs ── */
+.cp-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #4A6359;
+  text-decoration: none;
+  margin-bottom: 0.85rem;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.cp-back-link:hover {
+  color: #174C38;
+  transform: translateX(-2px);
+}
+
+.cp-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.cp-title-wrap {
+  flex: 1;
+  min-width: 280px;
+}
+
+.cp-title {
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: #162620;
+  line-height: 1.15;
+  margin: 0 0 0.35rem 0;
+  letter-spacing: -0.02em;
+}
+
+.cp-subtitle {
+  font-size: 0.95rem;
+  color: #5B7065;
+  margin: 0;
+}
+
+/* ── Selected Pets Top Pill ── */
+.cp-selected-pill {
+  background: #FFFFFF;
+  border: 1px solid #E2DCD3;
+  border-radius: 14px;
+  padding: 0.45rem 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  box-shadow: 0 2px 8px rgba(27, 67, 50, 0.04);
+  flex-wrap: wrap;
+}
+
+.cp-selected-label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #162620;
+  padding-right: 0.25rem;
+}
+
+.cp-chips-list {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.cp-pet-chip {
+  background: #F4EFEB;
+  border-radius: 10px;
+  padding: 0.25rem 0.65rem 0.25rem 0.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  transition: all 0.2s ease;
+}
+
+.cp-pet-chip:hover {
+  background: #ECE5DE;
+}
+
+.cp-chip-thumb {
+  width: 34px;
+  height: 34px;
+  border-radius: 7px;
+  object-fit: cover;
+  display: block;
+}
+
+.cp-chip-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #162620;
+}
+
+.cp-chip-remove {
+  background: none;
+  border: none;
+  color: #7A9187;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: color 0.15s, background-color 0.15s;
+}
+
+.cp-chip-remove:hover {
+  color: #DC2626;
+  background-color: rgba(220, 38, 38, 0.08);
+}
+
+.cp-chip-add-btn {
+  background: #EBF4EE;
+  border: 1px dashed #2D6A4F;
+  color: #174C38;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.45rem 0.75rem;
+  border-radius: 9px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.2s;
+}
+
+.cp-chip-add-btn:hover {
+  background: #DCEFE3;
+  border-color: #174C38;
+}
+
+/* ── Main Comparison Matrix Layout ── */
+.cp-matrix-wrapper {
+  display: grid;
+  grid-template-columns: 190px repeat(3, minmax(280px, 1fr));
+  gap: 1.25rem;
+  align-items: stretch;
+  margin-bottom: 2rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+/* Left Attribute Labels Column */
+.cp-labels-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.cp-labels-header-spacer {
+  height: 330px; /* Aligns with pet photo + name + badges + meta */
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 0.75rem;
+}
+
+.cp-labels-title {
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #7A9187;
+}
+
+.cp-label-row {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #3C5248;
+  border-bottom: 1px solid #EFEAE3;
+}
+
+.cp-label-icon {
+  color: #7A9187;
+  flex-shrink: 0;
+}
+
+.cp-labels-footer-spacer {
+  height: 104px; /* Space for the bottom 2 action buttons */
+}
+
+/* Pet Card Column */
+.cp-card-col {
+  background: #FFFFFF;
+  border: 1px solid #E5DFD6;
+  border-radius: 18px;
+  padding: 1.25rem 1.25rem 1.4rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 16px rgba(27, 67, 50, 0.04);
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.cp-card-col:hover {
+  box-shadow: 0 8px 24px rgba(27, 67, 50, 0.07);
+}
+
+/* Top Pet Media & Info */
+.cp-pet-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  background-color: #F0ECE4;
+}
+
+.cp-pet-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.cp-card-col:hover .cp-pet-img {
+  transform: scale(1.02);
+}
+
+.cp-pet-fav-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s, background-color 0.15s;
+  z-index: 2;
+}
+
+.cp-pet-fav-btn:hover {
+  transform: scale(1.1);
+  background-color: #FAF7F2;
+}
+
+.cp-pet-remove-top {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  color: #FFFFFF;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  z-index: 2;
+}
+
+.cp-pet-remove-top:hover {
+  background: #DC2626;
+}
+
+/* Name and Badges */
+.cp-pet-header-info {
+  height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border-bottom: 1px solid #EFEAE3;
+  padding-bottom: 0.65rem;
+}
+
+.cp-name-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.cp-pet-name {
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #162620;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.cp-badge-species {
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  text-transform: capitalize;
+}
+
+.cp-badge-species.dog {
+  background-color: #E0F2FE;
+  color: #0284C7;
+}
+
+.cp-badge-species.cat {
+  background-color: #F3E8FF;
+  color: #9333EA;
+}
+
+.cp-badge-species.rabbit {
+  background-color: #FFEDD5;
+  color: #EA580C;
+}
+
+.cp-badge-species.bird {
+  background-color: #FEF3C7;
+  color: #D97706;
+}
+
+.cp-badge-avail {
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  border-radius: 9999px;
+  background-color: #DCFCE7;
+  color: #15803D;
+}
+
+.cp-pet-meta-line {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.83rem;
+  color: #5A7167;
+  flex-wrap: wrap;
+  line-height: 1.35;
+}
+
+.cp-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* Rows in Pet Card */
+.cp-value-row {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  font-size: 0.88rem;
+  color: #273A32;
+  font-weight: 500;
+  border-bottom: 1px solid #EFEAE3;
+}
+
+.cp-value-pill-yes {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #15803D;
+  font-weight: 600;
+}
+
+.cp-value-pill-depends {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #D97706;
+  font-weight: 600;
+}
+
+.cp-value-pill-no {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #DC2626;
+  font-weight: 600;
+}
+
+/* Energy Bars Indicator */
+.cp-energy-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.cp-energy-bars {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.cp-energy-bar {
+  width: 4px;
+  height: 14px;
+  border-radius: 3px;
+  background-color: #E2DDD5;
+}
+
+.cp-energy-bar.high-filled {
+  background-color: #EF4444;
+}
+
+.cp-energy-bar.med-filled {
+  background-color: #F59E0B;
+}
+
+.cp-energy-bar.low-filled {
+  background-color: #10B981;
+}
+
+.cp-energy-text {
+  font-weight: 600;
+  font-size: 0.86rem;
+  color: #162620;
+}
+
+/* Bottom Action Buttons */
+.cp-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+}
+
+.cp-btn-primary {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #174C38;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 9px;
+  padding: 0.72rem 1rem;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(23, 76, 56, 0.15);
+}
+
+.cp-btn-primary:hover {
+  background-color: #0E3628;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(23, 76, 56, 0.25);
+  color: #FFFFFF;
+}
+
+.cp-btn-secondary {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #FFFFFF;
+  color: #174C38;
+  border: 1.5px solid #174C38;
+  border-radius: 9px;
+  padding: 0.68rem 1rem;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.cp-btn-secondary:hover {
+  background-color: #F0F7F4;
+  transform: translateY(-1px);
+}
+
+/* Empty Slot Card */
+.cp-empty-slot-card {
+  background: #FCFAF7;
+  border: 2px dashed #D5CDC2;
+  border-radius: 18px;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 480px;
+  transition: all 0.2s;
+}
+
+.cp-empty-slot-card:hover {
+  border-color: #174C38;
+  background: #F7FAF8;
+}
+
+.cp-empty-slot-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background-color: #E8F3EE;
+  color: #174C38;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.cp-empty-slot-title {
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #162620;
+  margin: 0 0 0.4rem 0;
+}
+
+.cp-empty-slot-desc {
+  font-size: 0.86rem;
+  color: #6C8176;
+  max-width: 200px;
+  margin: 0 0 1.25rem 0;
+}
+
+/* ── Match Recommendation Container ── */
+.cp-recommendation-box {
+  background-color: #E7F2EC;
+  border: 1px solid #C4DFD2;
+  border-radius: 16px;
+  padding: 1.25rem 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  box-shadow: 0 2px 10px rgba(27, 67, 50, 0.05);
+  flex-wrap: wrap;
+}
+
+.cp-rec-left {
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+  flex: 1;
+  min-width: 280px;
+}
+
+.cp-rec-icon-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #559B78;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 3px 8px rgba(85, 155, 120, 0.35);
+}
+
+.cp-rec-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.cp-rec-title {
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #133E2E;
+  margin: 0;
+}
+
+.cp-rec-text {
+  font-size: 0.92rem;
+  color: #2D4C3E;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.cp-rec-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #174C38;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 10px;
+  padding: 0.72rem 1.25rem;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(23, 76, 56, 0.2);
+}
+
+.cp-rec-btn:hover {
+  background-color: #0E3628;
+  transform: translateY(-1px);
+  color: #FFFFFF;
+}
+
+/* ── Modal: Pet Picker ── */
+.cp-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(13, 31, 23, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  padding: 1.25rem;
+  animation: cpFadeIn 0.2s ease;
+}
+
+.cp-modal-panel {
+  background: #FFFFFF;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 680px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  animation: cpSlideUp 0.25s ease;
+}
+
+.cp-modal-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #EFEAE3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cp-modal-title {
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #162620;
+  margin: 0;
+}
+
+.cp-modal-close-btn {
+  background: none;
+  border: none;
+  color: #7A9187;
+  cursor: pointer;
+  padding: 0.35rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.cp-modal-close-btn:hover {
+  color: #162620;
+  background-color: #F2EEE9;
+}
+
+.cp-modal-body {
+  padding: 1.25rem 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.cp-modal-search {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: #FAF7F2;
+  border: 1px solid #E2DCD3;
+  border-radius: 10px;
+  padding: 0.6rem 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.cp-modal-search input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: #162620;
+  width: 100%;
+}
+
+.cp-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.cp-picker-card {
+  border: 1px solid #E5DFD6;
+  border-radius: 12px;
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #FFFFFF;
+}
+
+.cp-picker-card:hover {
+  border-color: #174C38;
+  background-color: #F7FAF8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(27, 67, 50, 0.08);
+}
+
+.cp-picker-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.cp-picker-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.cp-picker-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #162620;
+  margin-bottom: 0.2rem;
+}
+
+.cp-picker-meta {
+  font-size: 0.78rem;
+  color: #5A7167;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cp-picker-select-btn {
+  background-color: #E8F3EE;
+  color: #174C38;
+  border: none;
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.cp-picker-card:hover .cp-picker-select-btn {
+  background-color: #174C38;
+  color: #FFFFFF;
+}
+
+/* ── Empty State When 0 Pets Selected ── */
+.cp-empty-state-view {
+  background: #FFFFFF;
+  border: 1px solid #E5DFD6;
+  border-radius: 20px;
+  padding: 4rem 2rem;
+  text-align: center;
+  max-width: 620px;
+  margin: 2rem auto;
+  box-shadow: 0 6px 20px rgba(27, 67, 50, 0.04);
+}
+
+.cp-empty-icon-wrap {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #E8F3EE;
+  color: #174C38;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem auto;
+}
+
+.cp-empty-title {
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #162620;
+  margin: 0 0 0.5rem 0;
+}
+
+.cp-empty-desc {
+  font-size: 0.95rem;
+  color: #5A7167;
+  max-width: 440px;
+  margin: 0 auto 1.75rem auto;
+  line-height: 1.5;
+}
+
+.cp-empty-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Animations */
+@keyframes cpFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes cpSlideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive Adjustments ── */
+@media (max-width: 1200px) {
+  .cp-matrix-wrapper {
+    grid-template-columns: 180px repeat(3, 270px);
+  }
+}
+
+@media (max-width: 992px) {
+  .cp-container {
+    padding: 1.25rem 1.25rem 2.5rem 1.25rem;
+  }
+  .cp-matrix-wrapper {
+    grid-template-columns: 160px repeat(3, 260px);
+  }
+  .cp-recommendation-box {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .cp-rec-btn {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .cp-title {
+    font-size: 1.6rem;
+  }
+  .cp-matrix-wrapper {
+    grid-template-columns: 140px repeat(3, 240px);
+  }
+}

@@ -1,0 +1,784 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   PAWCONNECT — ROYAL LUXURY ADOPTION CERTIFICATE
+   Museum-Grade Design, Gold Foil Accents, Ornate Filigree, 100% Viewport Fit
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Great+Vibes&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --cert-forest: #0F3223;
+  --cert-forest-dark: #081C14;
+  --cert-gold-1: #9A7B1C;
+  --cert-gold-2: #D4AF37;
+  --cert-gold-3: #FDF3C7;
+  --cert-gold-gradient: linear-gradient(135deg, #A88420 0%, #E9D18A 35%, #C29B27 70%, #8A6810 100%);
+  --cert-gold-border: linear-gradient(135deg, #B8860B 0%, #F5E296 50%, #B8860B 100%);
+  --cert-paper: #FDFCF9;
+  --cert-ink: #1B2621;
+  --cert-ink-muted: #53645D;
+}
+
+/* Modal Overlay */
+.cert-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 28, 20, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  overflow-y: auto;
+  animation: certFadeIn 0.2s ease-out;
+}
+
+@keyframes certFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.cert-modal-container {
+  width: 100%;
+  max-width: 920px;
+  max-height: 96vh;
+  display: flex;
+  flex-direction: column;
+  background: #11281E;
+  border-radius: 14px;
+  box-shadow: 0 25px 70px -10px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(212, 175, 55, 0.35);
+  overflow: hidden;
+  animation: certScaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes certScaleUp {
+  from { opacity: 0; transform: scale(0.96) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Modal Toolbar */
+.cert-modal-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1.25rem;
+  background: #0A2016;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+  flex-shrink: 0;
+}
+
+.cert-toolbar-title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #F7E9B8;
+  letter-spacing: 0.8px;
+}
+
+.cert-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.cert-btn-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 0.4rem 0.95rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  text-decoration: none;
+}
+
+.cert-btn-action.gold {
+  background: var(--cert-gold-gradient);
+  color: #0A2016;
+  box-shadow: 0 3px 12px rgba(212, 175, 55, 0.4);
+}
+
+.cert-btn-action.gold:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+  box-shadow: 0 5px 16px rgba(212, 175, 55, 0.55);
+}
+
+.cert-btn-action.outline {
+  background: rgba(255, 255, 255, 0.08);
+  color: #F4E8C1;
+  border: 1px solid rgba(212, 175, 55, 0.45);
+}
+
+.cert-btn-action.outline:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: #D4AF37;
+}
+
+.cert-btn-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cert-btn-close:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: rotate(90deg);
+}
+
+/* Modal Body - Fixed: Use flex-start and auto margins to prevent any top cut-off */
+.cert-modal-body {
+  padding: 0.9rem 1.1rem;
+  overflow-y: auto;
+  background: #0B2217;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* CRITICAL: Never use align-items:center in scrollable container */
+  box-sizing: border-box;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   THE CERTIFICATE DOCUMENT (Engineered to fit comfortably without scrolling)
+   ═══════════════════════════════════════════════════════════════════════ */
+.cert-frame-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 860px;
+  background: #D4AF37;
+  padding: 5px;
+  border-radius: 7px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45), 0 0 20px rgba(212, 175, 55, 0.2);
+  margin: auto; /* Centers when space is available without clipping */
+}
+
+.cert-document {
+  position: relative;
+  width: 100%;
+  background: var(--cert-paper);
+  background-image: radial-gradient(#E8DEC8 0.75px, transparent 0.75px), radial-gradient(#E8DEC8 0.75px, var(--cert-paper) 0.75px);
+  background-size: 26px 26px;
+  background-position: 0 0, 13px 13px;
+  border: 2.5px solid #143D2B;
+  border-radius: 4px;
+  padding: 1.1rem 1.6rem 0.95rem 1.6rem;
+  color: var(--cert-ink);
+  box-sizing: border-box;
+  overflow: hidden;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Elegant Inner Double Gold Lines */
+.cert-inner-border {
+  position: absolute;
+  inset: 6px;
+  border: 1px solid #C29B27;
+  pointer-events: none;
+}
+
+.cert-inner-border::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px dashed rgba(20, 61, 43, 0.25);
+}
+
+/* Corner Ornaments */
+.cert-corner {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  pointer-events: none;
+  z-index: 2;
+  color: #C29B27;
+}
+
+.cert-corner.top-left { top: 8px; left: 8px; }
+.cert-corner.top-right { top: 8px; right: 8px; transform: scaleX(-1); }
+.cert-corner.bottom-left { bottom: 8px; left: 8px; transform: scaleY(-1); }
+.cert-corner.bottom-right { bottom: 8px; right: 8px; transform: scale(-1); }
+
+/* Certificate Header */
+.cert-head {
+  text-align: center;
+  position: relative;
+  margin-bottom: 0.35rem;
+}
+
+.cert-crest-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  margin-bottom: 0.15rem;
+}
+
+.cert-crest-line {
+  height: 1px;
+  width: 60px;
+  background: linear-gradient(90deg, transparent, #C29B27, transparent);
+}
+
+.cert-crest-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #0F3223;
+  color: #E6CA65;
+  box-shadow: 0 3px 8px rgba(15, 50, 35, 0.25);
+  border: 1.5px solid #C29B27;
+}
+
+.cert-network-name {
+  font-family: 'Cinzel', serif;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  color: var(--cert-forest);
+  text-transform: uppercase;
+  margin-bottom: 0.15rem;
+}
+
+.cert-title-main {
+  font-family: 'Cinzel', serif;
+  font-size: 1.55rem;
+  font-weight: 900;
+  letter-spacing: 1.4px;
+  color: #0E3628;
+  margin: 0;
+  text-transform: uppercase;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  line-height: 1.15;
+}
+
+.cert-deed-subtitle {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.76rem;
+  font-style: italic;
+  color: var(--cert-ink-muted);
+  letter-spacing: 0.3px;
+  margin-top: 0.1rem;
+}
+
+/* Proclamation Section */
+.cert-proclamation {
+  text-align: center;
+  margin: 0.35rem auto 0.55rem auto;
+  max-width: 680px;
+}
+
+.cert-p-intro {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+  color: #72827A;
+  margin-bottom: 0.15rem;
+}
+
+.cert-adopter-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #0A3322;
+  letter-spacing: 0.4px;
+  display: inline-block;
+  position: relative;
+  padding: 0 1rem 0.15rem 1rem;
+  line-height: 1.2;
+}
+
+.cert-name-underline {
+  height: 1.5px;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, #C29B27, #0F3223, #C29B27, transparent);
+  margin-top: 1px;
+}
+
+.cert-proclamation-text {
+  font-size: 0.8rem;
+  line-height: 1.42;
+  color: #384A42;
+  margin-top: 0.35rem;
+}
+
+.cert-pet-emp {
+  font-weight: 800;
+  color: #0B3322;
+  font-size: 0.95rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   MAIN 2-COLUMN CERTIFICATE CONTENT
+   ═══════════════════════════════════════════════════════════════════════ */
+.cert-body-grid {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 1.1rem;
+  background: #FAF7F0;
+  border: 1px solid #E2D7C3;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.55rem;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.02);
+}
+
+/* Left: Pet Profile */
+.cert-pet-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-right: 0.9rem;
+  border-right: 1px dashed #D6CBBA;
+}
+
+.cert-pet-avatar-frame {
+  position: relative;
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background: var(--cert-gold-gradient);
+  padding: 3px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin-bottom: 0.35rem;
+}
+
+.cert-pet-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  border: 2px solid #ffffff;
+}
+
+.cert-pet-name-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0E3628;
+  margin-bottom: 0.05rem;
+  line-height: 1.2;
+}
+
+.cert-pet-meta-desc {
+  font-size: 0.72rem;
+  color: #55675F;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.cert-health-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  width: 100%;
+  margin-bottom: 0.35rem;
+}
+
+.cert-health-chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.28rem;
+  background: #EAF3EC;
+  border: 1px solid #BCDBC7;
+  color: #124B32;
+  font-size: 0.64rem;
+  font-weight: 700;
+  padding: 0.16rem 0.45rem;
+  border-radius: 999px;
+}
+
+.cert-chip-id-badge {
+  background: #ffffff;
+  border: 1px solid #D5C7B2;
+  border-radius: 5px;
+  padding: 0.22rem 0.45rem;
+  font-size: 0.66rem;
+  color: #5C6E66;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.cert-chip-id-badge strong {
+  color: #0F3223;
+  font-family: 'Consolas', monospace;
+  font-size: 0.72rem;
+}
+
+/* Right: Registry Verification & Details */
+.cert-registry-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cert-meta-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+}
+
+.cert-meta-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.22rem 0;
+  border-bottom: 1px dashed #E2D7C3;
+  font-size: 0.76rem;
+}
+
+.cert-meta-lbl {
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #6E7F77;
+  letter-spacing: 0.4px;
+}
+
+.cert-meta-val {
+  font-weight: 700;
+  color: #0E3628;
+  text-align: right;
+}
+
+.cert-meta-val.code {
+  font-family: 'Consolas', monospace;
+  color: #A37000;
+  font-size: 0.78rem;
+  letter-spacing: 0.3px;
+}
+
+.cert-meta-val.verified {
+  color: #166534;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* QR Code & Tamper Proof Strip */
+.cert-qr-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.35rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid #DFD5C2;
+}
+
+.cert-qr-box {
+  width: 58px;
+  height: 58px;
+  background: #ffffff;
+  border: 1.5px solid #C29B27;
+  border-radius: 5px;
+  padding: 2.5px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.cert-qr-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.cert-qr-info {
+  font-size: 0.68rem;
+  color: #55675F;
+  line-height: 1.35;
+}
+
+.cert-qr-info strong {
+  display: block;
+  font-size: 0.72rem;
+  color: #0E3628;
+  margin-bottom: 0.1rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   AUTHENTICATION FOOTER (SIGNATURES + GOLD EMBOSSED SEAL)
+   ═══════════════════════════════════════════════════════════════════════ */
+.cert-auth-footer {
+  display: grid;
+  grid-template-columns: 1fr 120px 1fr;
+  align-items: flex-end;
+  padding-top: 0.45rem;
+  border-top: 1.5px solid #E2D7C3;
+  margin-top: 0.35rem;
+}
+
+/* Left Signature */
+.cert-sign-block {
+  text-align: left;
+}
+
+.cert-cursive-sig {
+  font-family: 'Great Vibes', cursive;
+  font-size: 1.45rem;
+  color: #0B3322;
+  line-height: 1;
+  margin-bottom: 0.15rem;
+  padding-left: 0.4rem;
+}
+
+.cert-sign-rule {
+  width: 80%;
+  height: 1.2px;
+  background: #C29B27;
+  margin-bottom: 0.25rem;
+}
+
+.cert-sign-title {
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: #0E3628;
+  line-height: 1.2;
+}
+
+.cert-sign-sub {
+  font-size: 0.64rem;
+  color: #72827A;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* Right Signature */
+.cert-sign-block.right {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.cert-sign-block.right .cert-cursive-sig {
+  padding-right: 0.4rem;
+}
+
+/* Center 3D Gold Ribbon Seal */
+.cert-seal-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin-top: -6px;
+}
+
+.cert-wax-seal {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--cert-gold-gradient);
+  border: 2.5px solid #8A6810;
+  box-shadow: 0 3px 10px rgba(138, 104, 16, 0.35), inset 0 2px 5px rgba(255, 255, 255, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #0A2016;
+  position: relative;
+  z-index: 2;
+  padding: 3px;
+  box-sizing: border-box;
+}
+
+.cert-wax-ring {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 1px dashed #0A2016;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.cert-wax-text-1 {
+  font-size: 0.42rem;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.cert-wax-star {
+  font-size: 0.65rem;
+  line-height: 1;
+  margin: 1px 0;
+}
+
+.cert-wax-text-2 {
+  font-size: 0.4rem;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.cert-ribbon-tails {
+  position: absolute;
+  top: 40px;
+  width: 42px;
+  height: 22px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 1;
+}
+
+.cert-ribbon-tail {
+  width: 18px;
+  height: 22px;
+  background: linear-gradient(180deg, #B8860B 0%, #8A6810 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 75%, 0 100%);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.22);
+}
+
+.cert-ribbon-tail.left {
+  transform: rotate(-12deg);
+}
+
+.cert-ribbon-tail.right {
+  transform: rotate(12deg);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   BUTTON TRIGGER IN PORTALS
+   ═══════════════════════════════════════════════════════════════════════ */
+.ap-btn-cert {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: linear-gradient(135deg, #0F3223 0%, #081C14 100%);
+  color: #F8E7AC;
+  border: 1px solid #D4AF37;
+  border-radius: 8px;
+  padding: 0.44rem 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.ap-btn-cert:hover {
+  background: linear-gradient(135deg, #184D37 0%, #0F3223 100%);
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.4);
+  transform: translateY(-1px);
+}
+
+.ap-btn-cert svg {
+  color: #E6CA65;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PRINT MEDIA QUERY (Flawless Single Page Landscape / Portrait)
+   ═══════════════════════════════════════════════════════════════════════ */
+@media print {
+  @page {
+    size: landscape;
+    margin: 8mm;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  .cert-modal-backdrop {
+    position: static !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    inset: auto !important;
+  }
+
+  .cert-modal-container {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    max-width: 100% !important;
+    background: transparent !important;
+  }
+
+  .cert-modal-toolbar {
+    display: none !important;
+  }
+
+  .cert-modal-body {
+    padding: 0 !important;
+    background: transparent !important;
+    display: block !important;
+  }
+
+  .cert-frame-wrapper {
+    box-shadow: none !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+
+  .cert-document,
+  .cert-document * {
+    visibility: visible !important;
+  }
+
+  .cert-document {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-shadow: none !important;
+    border: 3px solid #143D2B !important;
+    page-break-inside: avoid !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .cert-body-grid {
+    grid-template-columns: 1fr;
+  }
+  .cert-pet-panel {
+    padding-right: 0;
+    border-right: none;
+    border-bottom: 1px dashed #D6CBBA;
+    padding-bottom: 0.8rem;
+  }
+  .cert-auth-footer {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+    text-align: center;
+  }
+  .cert-sign-block.right {
+    align-items: center;
+    text-align: center;
+  }
+  .cert-seal-center {
+    order: -1;
+    margin-top: 0;
+    margin-bottom: 0.4rem;
+  }
+}

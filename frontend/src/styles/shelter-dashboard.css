@@ -1,0 +1,1942 @@
+/* ==========================================================================
+   PawConnect — Shelter Staff Dashboard Styling
+   Aesthetic: SaaS-Grade Animal Shelter Operations Platform
+   Reference: Forest Green (#0E3628), Soft Mint (#E8F3EE), White (#FFFFFF)
+   Typography: Inter & Nunito Sans
+   ========================================================================== */
+
+:root {
+  --shelter-primary: #0E3628;
+  --shelter-primary-hover: #09261C;
+  --shelter-primary-active: #061C14;
+  --shelter-primary-light: #164E3A;
+  --shelter-primary-subtle: #E8F3EE;
+  --shelter-primary-border: #C8DFD4;
+
+  --shelter-bg: #F8FAF9;
+  --shelter-card-bg: #FFFFFF;
+  --shelter-card-border: #E5EBE7;
+  --shelter-card-border-hover: #D0DBD4;
+
+  --shelter-text-dark: #122820;
+  --shelter-text-body: #3E544B;
+  --shelter-text-muted: #72887F;
+  --shelter-text-light: #8E9E97;
+
+  --shelter-accent-amber: #D97706;
+  --shelter-accent-amber-subtle: #FEF3C7;
+  --shelter-accent-green: #15803D;
+  --shelter-accent-green-subtle: #DCFCE7;
+  --shelter-accent-purple: #7C3AED;
+  --shelter-accent-purple-subtle: #F3E8FF;
+  --shelter-accent-blue: #0284C7;
+  --shelter-accent-blue-subtle: #E0F2FE;
+  --shelter-accent-red: #B91C1C;
+  --shelter-accent-red-subtle: #FEE2E2;
+
+  --shelter-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shelter-shadow-sm: 0 2px 5px rgba(14, 54, 40, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shelter-shadow-md: 0 4px 14px rgba(14, 54, 40, 0.06), 0 2px 6px rgba(0, 0, 0, 0.03);
+  --shelter-shadow-lg: 0 10px 28px rgba(14, 54, 40, 0.08), 0 4px 10px rgba(0, 0, 0, 0.04);
+  --shelter-shadow-modal: 0 20px 45px rgba(14, 54, 40, 0.16), 0 6px 16px rgba(0, 0, 0, 0.08);
+
+  --shelter-radius-sm: 8px;
+  --shelter-radius-md: 12px;
+  --shelter-radius-lg: 16px;
+  --shelter-radius-pill: 9999px;
+
+  --shelter-font: 'Inter', 'Nunito Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ==========================================================================
+   Dashboard Root & Layout
+   ========================================================================== */
+.shelter-dashboard-wrapper {
+  font-family: var(--shelter-font);
+  background-color: var(--shelter-bg);
+  min-height: 100vh;
+  color: var(--shelter-text-dark);
+  padding-bottom: 5rem;
+}
+
+.shelter-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* ==========================================================================
+   Sticky Top Bar (Search anything... + Profile)
+   ========================================================================== */
+.shelter-top-bar {
+  background: #FFFFFF;
+  border-bottom: 1px solid var(--shelter-card-border);
+  padding: 0.85rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.shelter-top-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.shelter-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background-color: #F4F6F5;
+  border: 1px solid #E2E8E4;
+  border-radius: var(--shelter-radius-pill);
+  padding: 0.5rem 1.15rem;
+  width: 320px;
+  transition: all 0.2s ease;
+}
+
+.shelter-search-wrap:focus-within {
+  background-color: #FFFFFF;
+  border-color: var(--shelter-primary-border);
+  box-shadow: 0 0 0 3px rgba(14, 54, 40, 0.08);
+  width: 360px;
+}
+
+.shelter-search-wrap input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: var(--shelter-font);
+  font-size: 0.88rem;
+  color: var(--shelter-text-dark);
+  width: 100%;
+}
+
+.shelter-search-wrap input::placeholder {
+  color: #8C9E96;
+}
+
+.shelter-top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.shelter-user-pill-top {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  padding: 0.25rem 0.65rem 0.25rem 0.35rem;
+  border-radius: var(--shelter-radius-pill);
+  transition: background-color 0.18s ease;
+}
+
+.shelter-user-pill-top:hover {
+  background-color: #F4F7F5;
+}
+
+.shelter-user-avatar-top {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--shelter-primary);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.shelter-user-meta-top {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.shelter-user-name-top {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--shelter-text-dark);
+}
+
+.shelter-user-role-top {
+  font-size: 0.74rem;
+  color: var(--shelter-text-muted);
+}
+
+/* ==========================================================================
+   Buttons & Common UI
+   ========================================================================== */
+.shelter-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--shelter-primary);
+  color: #FFFFFF !important;
+  font-family: var(--shelter-font);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.6rem 1.25rem;
+  border-radius: var(--shelter-radius-md);
+  border: 1px solid var(--shelter-primary);
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(14, 54, 40, 0.18);
+  transition: all 0.18s ease-in-out;
+}
+
+.shelter-btn-primary:hover {
+  background-color: var(--shelter-primary-hover);
+  border-color: var(--shelter-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(14, 54, 40, 0.24);
+}
+
+.shelter-btn-primary:active {
+  transform: translateY(0);
+}
+
+.shelter-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  background-color: #FFFFFF;
+  color: var(--shelter-text-body) !important;
+  font-family: var(--shelter-font);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.55rem 1.15rem;
+  border-radius: var(--shelter-radius-md);
+  border: 1px solid var(--shelter-card-border);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.18s ease-in-out;
+}
+
+.shelter-btn-secondary:hover {
+  background-color: #F8FAF9;
+  border-color: var(--shelter-primary-border);
+  color: var(--shelter-primary) !important;
+}
+
+.shelter-btn-danger-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  background-color: #FFFFFF;
+  color: #DC2626 !important;
+  font-family: var(--shelter-font);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.55rem 1.15rem;
+  border-radius: var(--shelter-radius-md);
+  border: 1px solid #FECACA;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.18s ease-in-out;
+}
+
+.shelter-btn-danger-outline:hover {
+  background-color: #FEE2E2;
+  border-color: #F87171;
+}
+
+.shelter-badge-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: var(--shelter-primary-subtle);
+  color: var(--shelter-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--shelter-radius-pill);
+  width: fit-content;
+  border: 1px solid var(--shelter-primary-border);
+}
+
+.shelter-alert {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.25rem;
+  border-radius: var(--shelter-radius-md);
+  font-size: 0.88rem;
+  font-weight: 500;
+  margin-bottom: 1.25rem;
+}
+
+.shelter-alert-success {
+  background-color: #DCFCE7;
+  color: #15803D;
+  border: 1px solid #BBF7D0;
+}
+
+.shelter-alert-error {
+  background-color: #FEE2E2;
+  color: #B91C1C;
+  border: 1px solid #FECACA;
+}
+
+/* ==========================================================================
+   Hero Banner (Screen 1 - Overview)
+   ========================================================================== */
+.shelter-hero-banner {
+  background: linear-gradient(135deg, #EBF5F0 0%, #E2EFE9 100%);
+  border-radius: 16px;
+  border: 1px solid #D5E5DC;
+  padding: 2.25rem 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.75rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(14, 54, 40, 0.04);
+}
+
+.shelter-hero-content {
+  max-width: 520px;
+  z-index: 2;
+}
+
+.shelter-hero-greeting {
+  font-size: 1.15rem;
+  color: #1E4636;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.shelter-hero-title {
+  font-family: 'Nunito Sans', var(--shelter-font);
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #0E3628;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0 0 0.5rem 0;
+}
+
+.shelter-hero-subtitle {
+  font-size: 0.95rem;
+  color: #446455;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.4;
+}
+
+.shelter-hero-dog-wrap {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 2;
+}
+
+.shelter-hero-dog-img {
+  width: 290px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(14, 54, 40, 0.12);
+  border: 3px solid #FFFFFF;
+}
+
+.shelter-hero-quote-sticker {
+  position: absolute;
+  top: -16px;
+  right: -20px;
+  background: #FFFFFF;
+  padding: 0.55rem 1.1rem;
+  border-radius: var(--shelter-radius-pill);
+  box-shadow: 0 6px 18px rgba(14, 54, 40, 0.1);
+  border: 1px solid #D5E5DC;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #0E3628;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   5 Stat Cards in One Row (Screen 1)
+   ========================================================================== */
+.shelter-stats-grid-5 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.15rem;
+  margin-bottom: 2rem;
+}
+
+.shelter-stat-card-clean {
+  background: #FFFFFF;
+  border: 1px solid var(--shelter-card-border);
+  border-radius: 14px;
+  padding: 1.25rem 1.2rem;
+  box-shadow: var(--shelter-shadow-xs);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.shelter-stat-card-clean:hover {
+  transform: translateY(-2px);
+  border-color: var(--shelter-primary-border);
+  box-shadow: var(--shelter-shadow-md);
+}
+
+.shelter-stat-icon-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.2rem;
+}
+
+.shelter-stat-number {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--shelter-text-dark);
+  line-height: 1;
+}
+
+.shelter-stat-title-label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--shelter-text-muted);
+}
+
+/* ==========================================================================
+   Two-Column Activity Feed (Screen 1)
+   ========================================================================== */
+.shelter-activity-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.75rem;
+  margin-bottom: 2.5rem;
+}
+
+.shelter-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.15rem;
+}
+
+.shelter-section-title {
+  font-family: 'Nunito Sans', var(--shelter-font);
+  font-size: 1.22rem;
+  font-weight: 800;
+  color: #0E3628;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.shelter-link-view-all {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #15803D;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: color 0.15s ease;
+}
+
+.shelter-link-view-all:hover {
+  color: #0E3628;
+  text-decoration: underline;
+}
+
+.shelter-feed-card {
+  background: #FFFFFF;
+  border: 1px solid var(--shelter-card-border);
+  border-radius: 12px;
+  padding: 0.95rem 1.15rem;
+  margin-bottom: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: var(--shelter-shadow-xs);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.shelter-feed-card:hover {
+  border-color: var(--shelter-card-border-hover);
+  box-shadow: var(--shelter-shadow-sm);
+  transform: translateY(-1px);
+}
+
+.shelter-feed-thumb {
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.shelter-feed-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.shelter-feed-title {
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: var(--shelter-text-dark);
+  margin-bottom: 2px;
+}
+
+.shelter-feed-subtitle {
+  font-size: 0.82rem;
+  color: var(--shelter-text-body);
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shelter-feed-meta {
+  font-size: 0.76rem;
+  color: var(--shelter-text-light);
+}
+
+/* ==========================================================================
+   Pet Listings / Pet Management (Screen 2)
+   ========================================================================== */
+.shelter-page-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.shelter-page-heading {
+  font-family: 'Nunito Sans', var(--shelter-font);
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0E3628;
+  margin: 0 0 0.25rem 0;
+  letter-spacing: -0.01em;
+}
+
+.shelter-page-subtext {
+  font-size: 0.88rem;
+  color: var(--shelter-text-muted);
+  margin: 0;
+}
+
+.shelter-filter-bar-card {
+  background: #FFFFFF;
+  border: 1px solid var(--shelter-card-border);
+  border-radius: 12px;
+  padding: 0.75rem 1.15rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shelter-shadow-xs);
+  flex-wrap: wrap;
+}
+
+.shelter-filter-search-input {
+  flex: 1;
+  min-width: 220px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.shelter-filter-search-input input {
+  border: none;
+  outline: none;
+  font-size: 0.88rem;
+  color: var(--shelter-text-dark);
+  width: 100%;
+}
+
+.shelter-filter-dropdowns {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.shelter-filter-select-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.shelter-filter-select-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--shelter-text-muted);
+}
+
+.shelter-filter-select {
+  padding: 0.45rem 0.85rem;
+  border: 1px solid #DCE3DE;
+  border-radius: 8px;
+  background-color: #FFFFFF;
+  font-size: 0.84rem;
+  color: var(--shelter-text-dark);
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  font-family: var(--shelter-font);
+}
+
+.shelter-filter-select:focus {
+  border-color: var(--shelter-primary-border);
+}
+
+/* 3-Column Pet Grid */
+.shelter-pet-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.35rem;
+  margin-bottom: 2rem;
+}
+
+.shelter-pet-card-modern {
+  background: #FFFFFF;
+  border: 1px solid var(--shelter-card-border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--shelter-shadow-xs);
+  transition: all 0.22s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.shelter-pet-card-modern:hover {
+  transform: translateY(-2px);
+  border-color: var(--shelter-card-border-hover);
+  box-shadow: var(--shelter-shadow-md);
+}
+
+.shelter-pet-card-img-wrap {
+  position: relative;
+  height: 190px;
+  width: 100%;
+  background-color: #EBF0ED;
+  overflow: hidden;
+}
+
+.shelter-pet-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.shelter-pet-card-modern:hover .shelter-pet-card-img {
+  transform: scale(1.03);
+}
+
+.shelter-pet-card-status-pill {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--shelter-radius-pill);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.shelter-pet-card-status-available {
+  background-color: #DCFCE7;
+  color: #15803D;
+  border: 1px solid #BBF7D0;
+}
+
+.shelter-pet-card-status-unavailable {
+  background-color: #FEE2E2;
+  color: #B91C1C;
+  border: 1px solid #FECACA;
+}
+
+.shelter-pet-card-body {
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+}
+
+.shelter-pet-card-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.shelter-pet-card-name {
+  font-family: 'Nunito Sans', var(--shelter-font);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--shelter-text-dark);
+}
+
+.shelter-pet-card-menu-btn {
+  background: transparent;
+  border: none;
+  color: var(--shelter-text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+}
+
+.shelter-pet-card-menu-btn:hover {
+  background-color: #F0F4F2;
+  color: var(--shelter-text-dark);
+}
+
+.shelter-pet-card-breed {
+  font-size: 0.84rem;
+  color: #4E6B5D;
+  font-weight: 500;
+}
+
+.shelter-pet-card-specs {
+  font-size: 0.82rem;
+  color: var(--shelter-text-muted);
+}
+
+.shelter-pet-card-location {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: var(--shelter-text-muted);
+  margin-top: 2px;
+}
+
+/* Pagination Bar */
+.shelter-pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--shelter-card-border);
+}
+
+.shelter-pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.shelter-page-btn {
+  min-width: 34px;
+  height: 34px;
+  padding: 0 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--shelter-card-border);
+  background: #FFFFFF;
+  color: var(--shelter-text-body);
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.shelter-page-btn:hover {
+  background-color: #F8FAF9;
+  border-color: var(--shelter-primary-border);
+}
+
+.shelter-page-btn.active {
+  background-color: #0E3628;
+  color: #FFFFFF;
+  border-color: #0E3628;
+}
+
+.shelter-pagination-count {
+  font-size: 0.84rem;
+  color: var(--shelter-text-muted);
+}
+
+/* ==========================================================================
+   Pet Details View (Screen 4)
+   ========================================================================== */
+.shelter-pet-detail-card {
+  background: #FFFFFF;
+  border: 1px solid var(--shelter-card-border);
+  border-radius: 16px;
+  padding: 2rem 2.25rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2.5rem;
+  box-shadow: var(--shelter-shadow-sm);
+}
+
+.shelter-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--shelter-text-body);
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  transition: color 0.15s ease;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+}
+
+.shelter-back-link:hover {
+  color: #0E3628;
+}
+
+.shelter-pet-detail-layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 2.5rem;
+}
+
+.shelter-pet-detail-media {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.shelter-pet-detail-hero-img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid var(--shelter-card-border);
+}
+
+.shelter-pet-detail-gallery {
+  display: flex;
+  gap: 0.65rem;
+}
+
+.shelter-pet-detail-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.shelter-pet-detail-thumb.active {
+  border-color: #0E3628;
+}
+
+.shelter-pet-detail-thumb-more {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  background-color: #0E3628;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+.shelter-pet-detail-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.shelter-pet-detail-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.shelter-pet-detail-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.shelter-pet-detail-title {
+  font-family: 'Nunito Sans', var(--shelter-font);
+  font-size: 2rem;
+  font-weight: 800;
+  color: #0E3628;
+  margin: 0;
+}
+
+.shelter-pet-detail-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.shelter-pet-detail-subtitle {
+  font-size: 0.95rem;
+  color: var(--shelter-text-body);
+  margin-top: -0.5rem;
+}
+
+.shelter-pet-detail-location {
+  font-size: 0.88rem;
+  color: var(--shelter-text-muted);
+}
+
+/* Tabs: Overview, Health & Medical, Adoption History */
+.shelter-pill-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--shelter-card-border);
+  padding-bottom: 0.75rem;
+}
+
+.shelter-pill-tab-btn {
+  padding: 0.45rem 1.15rem;
+  border-radius: var(--shelter-radius-pill);
+  font-size: 0.86rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--shelter-text-body);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.shelter-pill-tab-btn:hover {
+  background-color: #F0F4F2;
+}
+
+.shelter-pill-tab-btn.active {
+  background-color: #0E3628;
+  color: #FFFFFF;
+}
+
+.shelter-pet-detail-desc {
+  font-size: 0.92rem;
+  color: var(--shelter-text-body);
+  line-height: 1.6;
+}
+
+/* 2-Column Info Grid with Icon Badges */
+.shelter-info-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.15rem;
+}
+
+.shelter-info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.75rem 1rem;
+  background-color: #F8FAF9;
+  border-radius: 10px;
+  border: 1px solid #EAF0EC;
+}
+
+.shelter-info-icon-box {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background-color: #FFFFFF;
+  border: 1px solid #D5E5DC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0E3628;
+  flex-shrink: 0;
+}
+
+.shelter-info-label {
+  font-size: 0.76rem;
+  color: var(--shelter-text-muted);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.shelter-info-value {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--shelter-text-dark);
+}
+
+/* ==========================================================================
+   Adoption Applications (Screen 5)
+   ========================================================================= */
+.shelter-filter-pills-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.shelter-status-pill-btn {
+  padding: 0.45rem 1.15rem;
+  border-radius: var(--shelter-radius-pill);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid #DCE5E0;
+  background-color: #FFFFFF;
+  color: var(--shelter-text-body);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.shelter-status-pill-btn:hover {
+  border-color: #0E3628;
+  color: #0E3628;
+}
+
+.shelter-status-pill-btn.active {
+  background-color: #0E3628;
+  color: #FFFFFF;
+  border-color: #0E3628;
+}
+
+/* Application Card Modern */
+.shelter-app-card-modern {
+  background: #FFFFFF;
+  border: 1px solid var(--shelter-card-border);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--shelter-shadow-xs);
+  transition: all 0.2s ease;
+}
+
+.shelter-app-card-modern:hover {
+  border-color: var(--shelter-card-border-hover);
+  box-shadow: var(--shelter-shadow-sm);
+}
+
+.shelter-app-card-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #F0F4F2;
+}
+
+.shelter-app-card-id-group {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.86rem;
+}
+
+.shelter-app-id-bold {
+  font-weight: 800;
+  color: #0E3628;
+}
+
+.shelter-app-applied-date {
+  color: var(--shelter-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.shelter-app-card-body-3col {
+  display: grid;
+  grid-template-columns: 220px 1fr auto;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.shelter-app-pet-col {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.shelter-app-pet-thumb {
+  width: 58px;
+  height: 58px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.shelter-app-pet-name {
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--shelter-text-dark);
+}
+
+.shelter-app-pet-breed {
+  font-size: 0.82rem;
+  color: var(--shelter-text-muted);
+}
+
+.shelter-app-applicant-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.shelter-app-applicant-item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.84rem;
+  color: var(--shelter-text-body);
+}
+
+.shelter-app-applicant-name {
+  font-weight: 700;
+  color: var(--shelter-text-dark);
+  font-size: 0.92rem;
+}
+
+.shelter-app-actions-col {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+/* ==========================================================================
+   Application Review Details View (Screen 6)
+   ========================================================================== */
+.shelter-app-detail-card {
+  background: #FFFFFF;
+  border: 1px solid var(--shelter-card-border);
+  border-radius: 16px;
+  padding: 2rem 2.25rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2.5rem;
+  box-shadow: var(--shelter-shadow-sm);
+}
+
+.shelter-app-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.shelter-app-detail-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.shelter-app-detail-submitted-meta {
+  font-size: 0.85rem;
+  color: var(--shelter-text-muted);
+  margin-bottom: 1.75rem;
+}
+
+.shelter-app-two-summary-boxes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.shelter-app-summary-box {
+  background-color: #F8FAF9;
+  border: 1px solid #E5EBE7;
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.shelter-app-summary-box-title {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #0E3628;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+.shelter-app-qa-card {
+  background-color: #F8FAF9;
+  border: 1px solid #EAF0EC;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.shelter-app-question {
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: #0E3628;
+  margin-bottom: 0.35rem;
+}
+
+.shelter-app-answer {
+  font-size: 0.88rem;
+  color: var(--shelter-text-body);
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* ==========================================================================
+   Meet & Greet Visits (Screen 7)
+   ========================================================================== */
+.shelter-visit-card-modern {
+  background: #FFFFFF;
+  border: 1px solid var(--shelter-card-border);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+  display: grid;
+  grid-template-columns: 240px 1fr auto;
+  align-items: center;
+  gap: 1.5rem;
+  box-shadow: var(--shelter-shadow-xs);
+  transition: all 0.2s ease;
+}
+
+.shelter-visit-card-modern:hover {
+  border-color: var(--shelter-card-border-hover);
+  box-shadow: var(--shelter-shadow-sm);
+}
+
+.shelter-visit-pet-info {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.shelter-visit-pet-thumb {
+  width: 58px;
+  height: 58px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.shelter-visit-details-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.shelter-visit-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.84rem;
+  color: var(--shelter-text-body);
+}
+
+.shelter-visit-actions-col {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+/* ==========================================================================
+   Notifications (Screen 8)
+   ========================================================================== */
+.shelter-notification-item {
+  background: #FFFFFF;
+  border: 1px solid var(--shelter-card-border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: var(--shelter-shadow-xs);
+  transition: all 0.18s ease;
+  cursor: pointer;
+}
+
+.shelter-notification-item:hover {
+  border-color: var(--shelter-card-border-hover);
+  box-shadow: var(--shelter-shadow-sm);
+  transform: translateY(-1px);
+}
+
+.shelter-notif-icon-box {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.shelter-notif-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.shelter-notif-title {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--shelter-text-dark);
+  margin-bottom: 2px;
+}
+
+.shelter-notif-text {
+  font-size: 0.84rem;
+  color: var(--shelter-text-body);
+  margin: 0;
+}
+
+.shelter-notif-right {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.78rem;
+  color: var(--shelter-text-light);
+}
+
+.shelter-unread-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #E11D48;
+}
+
+/* ==========================================================================
+   Shelter Profile (Screen 9)
+   ========================================================================== */
+.shelter-profile-card {
+  background: #FFFFFF;
+  border: 1px solid var(--shelter-card-border);
+  border-radius: 16px;
+  padding: 2.25rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2.5rem;
+  box-shadow: var(--shelter-shadow-sm);
+}
+
+.shelter-profile-grid-2 {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 2.5rem;
+}
+
+.shelter-profile-logo-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.shelter-profile-logo-box {
+  width: 170px;
+  height: 170px;
+  border-radius: 16px;
+  background-color: #F8FAF9;
+  border: 1px solid #D5E5DC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0E3628;
+}
+
+.shelter-profile-form-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.shelter-profile-form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+/* ==========================================================================
+   Add New Pet Form (Screen 3)
+   ========================================================================== */
+.shelter-add-pet-card {
+  background: #FFFFFF;
+  border: 1px solid var(--shelter-card-border);
+  border-radius: 16px;
+  padding: 2.25rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2.5rem;
+  box-shadow: var(--shelter-shadow-sm);
+}
+
+.shelter-add-pet-grid-2 {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2.5rem;
+}
+
+.shelter-photo-upload-box {
+  border: 2px dashed #C8DFD4;
+  border-radius: 14px;
+  padding: 2rem 1.5rem;
+  background-color: #F8FAF9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.shelter-photo-upload-box:hover {
+  background-color: #EFF6F2;
+  border-color: #0E3628;
+}
+
+.shelter-photo-preview-box {
+  margin-top: 1rem;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--shelter-card-border);
+}
+
+.shelter-photo-preview-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Form inputs & groups */
+.shelter-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.shelter-form-label {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--shelter-text-dark);
+}
+
+.shelter-form-label .required {
+  color: #DC2626;
+}
+
+.shelter-form-input,
+.shelter-form-select,
+.shelter-form-textarea {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid #D5E0DA;
+  border-radius: 8px;
+  background-color: #FFFFFF;
+  font-family: var(--shelter-font);
+  font-size: 0.88rem;
+  color: var(--shelter-text-dark);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  outline: none;
+}
+
+.shelter-form-input:focus,
+.shelter-form-select:focus,
+.shelter-form-textarea:focus {
+  border-color: #0E3628;
+  box-shadow: 0 0 0 3px rgba(14, 54, 40, 0.08);
+}
+
+.shelter-form-textarea {
+  resize: vertical;
+}
+
+.shelter-form-section-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0E3628;
+  margin: 1.25rem 0 0.75rem 0;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid #F0F4F2;
+}
+
+.shelter-form-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.85rem;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #F0F4F2;
+}
+
+/* Status Badges */
+.shelter-badge-soft {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--shelter-radius-pill);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.shelter-badge-soft-green {
+  background-color: #DCFCE7;
+  color: #15803D;
+  border: 1px solid #BBF7D0;
+}
+
+.shelter-badge-soft-amber {
+  background-color: #FEF3C7;
+  color: #B45309;
+  border: 1px solid #FDE68A;
+}
+
+.shelter-badge-soft-red {
+  background-color: #FEE2E2;
+  color: #B91C1C;
+  border: 1px solid #FECACA;
+}
+
+/* Modals */
+.shelter-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(14, 54, 40, 0.45);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1.5rem;
+}
+
+.shelter-modal-card {
+  background-color: #FFFFFF;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 620px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shelter-shadow-modal);
+  overflow: hidden;
+  animation: shelterModalFade 0.2s ease-out;
+}
+
+@keyframes shelterModalFade {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.shelter-modal-header {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--shelter-card-border);
+}
+
+.shelter-modal-title {
+  font-family: 'Nunito Sans', var(--shelter-font);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0E3628;
+  margin: 0;
+}
+
+.shelter-modal-close {
+  background: transparent;
+  border: none;
+  color: var(--shelter-text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shelter-modal-close:hover {
+  background-color: #F0F4F2;
+  color: #0E3628;
+}
+
+.shelter-modal-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.shelter-modal-footer {
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  border-top: 1px solid var(--shelter-card-border);
+  background-color: #F8FAF9;
+}
+
+/* Empty State */
+.shelter-empty-state {
+  text-align: center;
+  padding: 3.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.shelter-empty-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background-color: #E8F3EE;
+  color: #0E3628;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.shelter-empty-title {
+  font-family: 'Nunito Sans', var(--shelter-font);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0E3628;
+  margin: 0 0 0.35rem 0;
+}
+
+.shelter-empty-text {
+  font-size: 0.86rem;
+  color: var(--shelter-text-muted);
+  max-width: 420px;
+  margin: 0 0 1.25rem 0;
+  line-height: 1.45;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .shelter-stats-grid-5 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .shelter-pet-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .shelter-activity-row-2 {
+    grid-template-columns: 1fr;
+  }
+  .shelter-pet-detail-layout {
+    grid-template-columns: 1fr;
+  }
+  .shelter-add-pet-grid-2 {
+    grid-template-columns: 1fr;
+  }
+  .shelter-profile-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .shelter-container {
+    padding: 0 1rem;
+  }
+  .shelter-hero-banner {
+    flex-direction: column;
+    padding: 1.5rem;
+    text-align: center;
+  }
+  .shelter-hero-dog-wrap {
+    margin-top: 1.5rem;
+  }
+  .shelter-stats-grid-5 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .shelter-pet-grid-3 {
+    grid-template-columns: 1fr;
+  }
+  .shelter-app-card-body-3col {
+    grid-template-columns: 1fr;
+  }
+  .shelter-visit-card-modern {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   Shelter Accreditation & Approval Status Banners
+   ========================================================================== */
+.shelter-approval-status-banner {
+  border-radius: var(--shelter-radius-md);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.75rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.shelter-approval-status-banner.pending {
+  background: linear-gradient(135deg, #FFFDF5 0%, #FEF3C7 100%);
+  border: 1.5px solid #F59E0B;
+  color: #78350F;
+}
+
+.shelter-approval-status-banner.approved {
+  background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+  border: 1.5px solid #10B981;
+  color: #064E3B;
+}
+
+.shelter-approval-status-banner.rejected {
+  background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
+  border: 1.5px solid #EF4444;
+  color: #7F1D1D;
+}
+
+.shelter-approval-icon-box {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.shelter-approval-pulse-ring {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shelter-approval-status-banner.pending .shelter-approval-pulse-ring {
+  background: #FDE68A;
+  color: #D97706;
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.2);
+  animation: pulseAmber 2.4s infinite ease-in-out;
+}
+
+.shelter-approval-status-banner.approved .shelter-approval-pulse-ring {
+  background: #A7F3D0;
+  color: #059669;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+}
+
+.shelter-approval-status-banner.rejected .shelter-approval-pulse-ring {
+  background: #FECACA;
+  color: #DC2626;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2);
+}
+
+@keyframes pulseAmber {
+  0% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(245, 158, 11, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+  }
+}
+
+.shelter-approval-text-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.shelter-approval-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.shelter-approval-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.shelter-approval-title {
+  margin: 0;
+  font-size: 1.08rem;
+  font-weight: 800;
+  color: inherit;
+  font-family: var(--shelter-font);
+}
+
+.shelter-approval-status-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--shelter-radius-pill);
+}
+
+.shelter-approval-status-banner.pending .shelter-approval-status-tag {
+  background: #FDE68A;
+  color: #92400E;
+  border: 1px solid #F59E0B;
+}
+
+.shelter-approval-status-banner.approved .shelter-approval-status-tag {
+  background: #059669;
+  color: #FFFFFF;
+}
+
+.shelter-approval-status-banner.rejected .shelter-approval-status-tag {
+  background: #DC2626;
+  color: #FFFFFF;
+}
+
+.shelter-approval-meta-tag {
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.2rem 0.65rem;
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: var(--shelter-radius-sm);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.shelter-approval-message-body p {
+  margin: 0 0 0.4rem 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.shelter-approval-submessage {
+  font-size: 0.86rem !important;
+  opacity: 0.92;
+  margin-top: 0.25rem !important;
+}
+
+.shelter-approval-steps-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.35rem;
+  flex-wrap: wrap;
+  padding-top: 0.5rem;
+  border-top: 1px dashed rgba(245, 158, 11, 0.35);
+}
+
+.shelter-approval-status-banner.approved .shelter-approval-steps-indicator {
+  border-top-color: rgba(16, 185, 129, 0.35);
+}
+
+.shelter-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #92400E;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--shelter-radius-pill);
+}
+
+.shelter-step.completed {
+  color: #065F46;
+  background: #D1FAE5;
+}
+
+.shelter-step.active {
+  color: #92400E;
+  background: #FEF3C7;
+  border: 1px solid #F59E0B;
+}
+
+.shelter-step.upcoming {
+  color: #94A3B8;
+  background: #F1F5F9;
+}
+
+.shelter-step-connector {
+  width: 14px;
+  height: 2px;
+  background-color: #CBD5E1;
+}
+
+.shelter-step-connector.active {
+  background-color: #F59E0B;
+}
+
+/* Header status badges */
+.shelter-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--shelter-radius-pill);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.shelter-header-badge.badge-pending {
+  background: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #F59E0B;
+}
+
+.shelter-header-badge.badge-approved {
+  background: #DCFCE7;
+  color: #065F46;
+  border: 1px solid #10B981;
+}
+

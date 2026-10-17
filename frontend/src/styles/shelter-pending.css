@@ -1,0 +1,446 @@
+/* ==========================================================================
+   PawConnect — Shelter Application Pending Approval View
+   Aesthetic: SaaS-Grade Animal Welfare Verification Screen
+   ========================================================================== */
+
+.shelter-pending-screen {
+  min-height: 100vh;
+  background: radial-gradient(circle at 10% 20%, rgba(14, 54, 40, 0.04) 0%, rgba(248, 250, 249, 1) 90%);
+  display: flex;
+  flex-direction: column;
+  color: #122820;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.shelter-pending-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.15rem 2.5rem;
+  background: #FFFFFF;
+  border-bottom: 1px solid #E5EBE7;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.shelter-pending-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: #0E3628;
+}
+
+.shelter-pending-paw-box {
+  width: 38px;
+  height: 38px;
+  background: #0E3628;
+  color: #FFFFFF;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shelter-pending-brand-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.shelter-pending-brand-title span {
+  color: #059669;
+}
+
+.shelter-pending-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.shelter-pending-logout-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.1rem;
+  border: 1px solid #D0DBD4;
+  border-radius: 9999px;
+  background: #FFFFFF;
+  color: #3E544B;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.shelter-pending-logout-btn:hover {
+  background: #F4F7F5;
+  color: #122820;
+  border-color: #B4C4BC;
+}
+
+/* Main Container */
+.shelter-pending-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem 5rem 1.5rem;
+  position: relative;
+}
+
+.shelter-pending-card {
+  max-width: 860px;
+  width: 100%;
+  background: #FFFFFF;
+  border: 1px solid #E2E8E4;
+  border-radius: 24px;
+  box-shadow: 0 16px 40px rgba(14, 54, 40, 0.06), 0 2px 6px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+  position: relative;
+}
+
+.shelter-pending-header-banner {
+  background: linear-gradient(135deg, #0E3628 0%, #16533E 100%);
+  padding: 3rem 2.5rem 2.5rem 2.5rem;
+  color: #FFFFFF;
+  text-align: center;
+  position: relative;
+}
+
+.shelter-pending-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(254, 243, 199, 0.2);
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  color: #FEF3C7;
+  padding: 0.35rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-bottom: 1.25rem;
+}
+
+.status-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #F59E0B;
+  box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+  animation: pulseAmberDot 1.8s infinite;
+}
+
+@keyframes pulseAmberDot {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgba(245, 158, 11, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+  }
+}
+
+.shelter-pending-icon-wrap {
+  width: 76px;
+  height: 76px;
+  margin: 0 auto 1.25rem auto;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FCD34D;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.shelter-pending-headline {
+  font-size: 1.85rem;
+  font-weight: 800;
+  line-height: 1.25;
+  margin: 0 0 0.75rem 0;
+  letter-spacing: -0.02em;
+}
+
+.shelter-pending-subtext {
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: #D1FAE5;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+/* Card Body */
+.shelter-pending-body {
+  padding: 2.5rem;
+}
+
+/* Summary Grid */
+.shelter-pending-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 2.25rem;
+}
+
+.shelter-pending-info-box {
+  background: #F8FAF9;
+  border: 1px solid #E5EBE7;
+  border-radius: 14px;
+  padding: 1.15rem 1.25rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.shelter-pending-info-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #E8F3EE;
+  color: #0E3628;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.shelter-pending-info-label {
+  font-size: 0.75rem;
+  color: #72887F;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.25rem;
+}
+
+.shelter-pending-info-value {
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: #122820;
+  word-break: break-word;
+}
+
+/* Timeline */
+.shelter-pending-timeline-title {
+  font-size: 0.92rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #72887F;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.shelter-pending-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+  position: relative;
+  padding-left: 0.5rem;
+}
+
+.shelter-timeline-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  position: relative;
+}
+
+.shelter-timeline-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 17px;
+  top: 36px;
+  bottom: -20px;
+  width: 2px;
+  background: #E2E8E4;
+}
+
+.shelter-timeline-item.completed:not(:last-child)::after {
+  background: #10B981;
+}
+
+.shelter-timeline-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.shelter-timeline-badge.completed {
+  background: #DCFCE7;
+  color: #059669;
+  border: 2px solid #10B981;
+}
+
+.shelter-timeline-badge.current {
+  background: #FEF3C7;
+  color: #D97706;
+  border: 2px solid #F59E0B;
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.2);
+}
+
+.shelter-timeline-badge.upcoming {
+  background: #F1F5F9;
+  color: #94A3B8;
+  border: 2px solid #CBD5E1;
+}
+
+.shelter-timeline-content {
+  flex: 1;
+  padding-top: 0.25rem;
+}
+
+.shelter-timeline-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.shelter-timeline-name {
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: #122820;
+}
+
+.shelter-timeline-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+}
+
+.shelter-timeline-tag.done {
+  background: #D1FAE5;
+  color: #065F46;
+}
+
+.shelter-timeline-tag.in-progress {
+  background: #FEF3C7;
+  color: #92400E;
+}
+
+.shelter-timeline-desc {
+  font-size: 0.86rem;
+  color: #526B61;
+  line-height: 1.45;
+}
+
+/* Notice box */
+.shelter-pending-notice {
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-radius: 14px;
+  padding: 1.15rem 1.35rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 2.25rem;
+}
+
+.shelter-pending-notice-text {
+  font-size: 0.88rem;
+  color: #92400E;
+  line-height: 1.5;
+}
+
+/* Footer Actions */
+.shelter-pending-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-top: 1.5rem;
+  border-top: 1px solid #E5EBE7;
+}
+
+.shelter-pending-btn-refresh {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #0E3628;
+  color: #FFFFFF;
+  padding: 0.75rem 1.6rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(14, 54, 40, 0.18);
+  transition: all 0.2s ease;
+}
+
+.shelter-pending-btn-refresh:hover {
+  background: #16533E;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(14, 54, 40, 0.24);
+}
+
+.shelter-pending-btn-refresh:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.shelter-pending-btn-support {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #FFFFFF;
+  color: #3E544B;
+  padding: 0.75rem 1.35rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 1px solid #D0DBD4;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.shelter-pending-btn-support:hover {
+  background: #F4F7F5;
+  border-color: #B4C4BC;
+  color: #122820;
+}
+
+@media (max-width: 768px) {
+  .shelter-pending-topbar {
+    padding: 1rem 1.25rem;
+  }
+  .shelter-pending-header-banner {
+    padding: 2.25rem 1.5rem 1.75rem 1.5rem;
+  }
+  .shelter-pending-body {
+    padding: 1.5rem;
+  }
+  .shelter-pending-info-grid {
+    grid-template-columns: 1fr;
+  }
+  .shelter-pending-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .shelter-pending-btn-refresh,
+  .shelter-pending-btn-support {
+    justify-content: center;
+  }
+}

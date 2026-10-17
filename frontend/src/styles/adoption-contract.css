@@ -1,0 +1,649 @@
+/* ==========================================================================
+   Official Adoption Agreement & Digital E-Signature Styles
+   ========================================================================== */
+
+.contract-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 24, 18, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1.25rem 1rem;
+  animation: contractFadeIn 0.25s ease-out;
+}
+
+@keyframes contractFadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.contract-modal-container {
+  background: #0A1C14;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 860px;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  overflow: hidden;
+}
+
+/* Modal Toolbar */
+.contract-modal-toolbar {
+  background: linear-gradient(135deg, #103324 0%, #081B12 100%);
+  padding: 1.1rem 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+  flex-shrink: 0;
+}
+
+.contract-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.contract-toolbar-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  color: #D4AF37;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contract-toolbar-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #F7E9B8;
+  letter-spacing: 0.5px;
+}
+
+.contract-toolbar-subtitle {
+  font-size: 0.78rem;
+  color: #8BA99B;
+}
+
+.contract-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.contract-btn-tool {
+  padding: 0.45rem 1rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.contract-btn-tool.gold {
+  background: linear-gradient(135deg, #D4AF37 0%, #AA820A 100%);
+  color: #0A1C14;
+}
+
+.contract-btn-tool.gold:hover {
+  background: linear-gradient(135deg, #E5C358 0%, #BF9518 100%);
+  transform: translateY(-1px);
+}
+
+.contract-btn-tool.outline {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #F7E9B8;
+}
+
+.contract-btn-tool.outline:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.contract-btn-close {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #E2E8F0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.contract-btn-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
+}
+
+/* Modal Body / Scrollable Canvas */
+.contract-modal-body {
+  padding: 2rem 2.5rem;
+  overflow-y: auto;
+  background: #0D2218;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Legal Document Parchment */
+.contract-paper {
+  background: #FAF7F0;
+  color: #1A2621;
+  width: 100%;
+  max-width: 760px;
+  padding: 3rem 3.5rem;
+  border-radius: 6px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+  border: 1px solid #D5CEBF;
+  position: relative;
+  font-family: 'Merriweather', 'Georgia', serif;
+  line-height: 1.6;
+}
+
+/* Decorative Outer Frame */
+.contract-paper::before {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border: 2px solid #C8BFAB;
+  pointer-events: none;
+}
+
+.contract-paper::after {
+  content: '';
+  position: absolute;
+  inset: 16px;
+  border: 1px dashed rgba(200, 191, 171, 0.6);
+  pointer-events: none;
+}
+
+/* Contract Header */
+.contract-head {
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.contract-crest-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.contract-crest-line {
+  height: 1px;
+  width: 60px;
+  background: #D4AF37;
+}
+
+.contract-crest-icon {
+  color: #174C38;
+}
+
+.contract-org-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.74rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #7A9187;
+  margin-bottom: 0.25rem;
+}
+
+.contract-title-main {
+  font-family: 'Cinzel', serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #0E3628;
+  letter-spacing: 1px;
+  margin: 0.35rem 0;
+}
+
+.contract-subtitle-deed {
+  font-size: 0.88rem;
+  font-style: italic;
+  color: #4A6359;
+}
+
+.contract-meta-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #F1EDE2;
+  border: 1px solid #DFD7C7;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  margin: 1.5rem 0 2rem 0;
+  font-size: 0.82rem;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.contract-meta-id strong {
+  font-family: monospace;
+  color: #0E3628;
+  font-size: 0.88rem;
+}
+
+.contract-meta-status {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 700;
+}
+
+.contract-meta-status.signed {
+  color: #047857;
+}
+
+.contract-meta-status.pending {
+  color: #B45309;
+}
+
+/* Parties Information Grid */
+.contract-parties-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.contract-party-card {
+  background: #FFFFFF;
+  border: 1px solid #E5E0D8;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+}
+
+.contract-party-role {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #174C38;
+  margin-bottom: 0.35rem;
+}
+
+.contract-party-name {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #162620;
+  margin-bottom: 0.35rem;
+}
+
+.contract-party-meta {
+  font-size: 0.82rem;
+  color: #64748B;
+  line-height: 1.45;
+}
+
+/* Subject Animal Biometrics Strip */
+.contract-pet-strip {
+  background: #EAF4EE;
+  border: 1.5px solid #A7F3D0;
+  border-radius: 8px;
+  padding: 0.9rem 1.25rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.contract-pet-thumb-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.contract-pet-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #174C38;
+}
+
+.contract-pet-name {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #064E3B;
+}
+
+.contract-pet-desc {
+  font-size: 0.82rem;
+  color: #047857;
+}
+
+.contract-pet-chip-tag {
+  background: #FFFFFF;
+  border: 1px solid #A7F3D0;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  color: #064E3B;
+  font-family: monospace;
+}
+
+/* Covenants Section */
+.contract-covenants-section {
+  margin-bottom: 2.5rem;
+}
+
+.contract-covenants-heading {
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0E3628;
+  border-bottom: 1.5px solid #DFD7C7;
+  padding-bottom: 0.4rem;
+  margin-bottom: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.contract-covenant-row {
+  margin-bottom: 1.1rem;
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+}
+
+.contract-cov-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #174C38;
+  color: #FFFFFF;
+  font-family: system-ui, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.contract-cov-body {
+  flex: 1;
+}
+
+.contract-cov-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #162620;
+  margin-bottom: 0.2rem;
+}
+
+.contract-cov-text {
+  font-size: 0.86rem;
+  color: #4A6359;
+  line-height: 1.5;
+}
+
+/* Signature Block Section */
+.contract-signatures-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1.5px solid #DFD7C7;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.contract-sign-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.contract-sign-label {
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #174C38;
+  margin-bottom: 0.5rem;
+}
+
+.contract-sign-box {
+  background: #FFFFFF;
+  border: 1.5px dashed #A7B6B0;
+  border-radius: 8px;
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.contract-sign-img {
+  max-height: 85px;
+  max-width: 90%;
+  object-fit: contain;
+}
+
+.contract-shelter-cursive-sig {
+  font-family: 'Great Vibes', 'Brush Script MT', cursive;
+  font-size: 2.3rem;
+  color: #0E3628;
+  transform: rotate(-3deg);
+}
+
+.contract-sign-rule {
+  height: 1px;
+  background: #A7B6B0;
+  margin: 0.6rem 0 0.35rem 0;
+}
+
+.contract-signer-name {
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: #162620;
+}
+
+.contract-signer-sub {
+  font-size: 0.76rem;
+  color: #7A9187;
+}
+
+/* Interactive E-Signature Pad (Signing Mode) */
+.contract-signing-drawer {
+  background: #FAF7F2;
+  border: 2px solid #174C38;
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.contract-signing-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #174C38;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.contract-signing-desc {
+  font-size: 0.84rem;
+  color: #64748B;
+  margin-bottom: 1rem;
+}
+
+.contract-canvas-container {
+  background: #FFFFFF;
+  border: 2px solid #E5E0D8;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.04);
+}
+
+.contract-signature-canvas {
+  width: 100%;
+  height: 150px;
+  display: block;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.contract-canvas-hint {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  font-size: 0.72rem;
+  color: #94A3B8;
+  pointer-events: none;
+}
+
+.contract-canvas-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.65rem;
+}
+
+.contract-btn-clear {
+  background: #F1F5F9;
+  border: 1px solid #CBD5E1;
+  color: #475569;
+  padding: 0.35rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.contract-btn-clear:hover {
+  background: #E2E8F0;
+}
+
+.contract-ack-checkbox {
+  margin: 1.25rem 0 1rem 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.84rem;
+  color: #1E293B;
+  cursor: pointer;
+  line-height: 1.45;
+}
+
+.contract-ack-checkbox input[type="checkbox"] {
+  accent-color: #174C38;
+  margin-top: 3px;
+  cursor: pointer;
+}
+
+.contract-btn-execute {
+  width: 100%;
+  padding: 0.85rem;
+  background: linear-gradient(135deg, #174C38 0%, #0E3628 100%);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 15px rgba(23, 76, 56, 0.25);
+  transition: all 0.2s;
+}
+
+.contract-btn-execute:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(23, 76, 56, 0.35);
+}
+
+.contract-btn-execute:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Legal Seal Stamp */
+.contract-wax-seal {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #D4AF37 0%, #AA820A 100%);
+  border: 2px solid #8A6804;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0A1C14;
+  font-weight: 900;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.1;
+  letter-spacing: 0.5px;
+}
+
+/* Print Styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .contract-modal-backdrop {
+    position: static;
+    background: transparent;
+    padding: 0;
+  }
+  .contract-modal-container {
+    box-shadow: none;
+    border: none;
+    background: transparent;
+    max-height: none;
+    max-width: 100%;
+  }
+  .contract-modal-toolbar,
+  .contract-signing-drawer {
+    display: none !important;
+  }
+  #printable-adoption-contract,
+  #printable-adoption-contract * {
+    visibility: visible;
+  }
+  #printable-adoption-contract {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 2cm 2.5cm;
+    box-shadow: none;
+    border: none;
+  }
+}

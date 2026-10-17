@@ -1,0 +1,179 @@
+/* Application Tracker Styles */
+.tracker-container {
+  background-color: #FFFFFF;
+  border: 1px solid #E2EAE3;
+  border-radius: 20px;
+  padding: 1.75rem 2rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+  margin-bottom: 1.5rem;
+}
+
+.tracker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.adopter-withdraw-btn {
+  background-color: #FFFFFF;
+  color: #EF4444;
+  border: 1.5px solid #F87171;
+  border-radius: 9999px;
+  padding: 0.35rem 1.15rem;
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.adopter-withdraw-btn:hover {
+  background-color: #FEF2F2;
+  border-color: #DC2626;
+  color: #DC2626;
+}
+
+.tracker-stepper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  position: relative;
+  margin: 2rem 2rem 1.5rem 2rem;
+}
+
+.tracker-stepper::before {
+  content: '';
+  position: absolute;
+  top: 19px;
+  left: 30px;
+  right: 30px;
+  height: 2px;
+  background-color: #E2E8F0;
+  z-index: 1;
+}
+
+.tracker-progress-line {
+  position: absolute;
+  top: 19px;
+  left: 30px;
+  height: 2px;
+  background-color: #183B2B;
+  z-index: 2;
+  transition: width 0.4s ease;
+}
+
+.tracker-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 3;
+  width: 140px;
+  text-align: center;
+}
+
+.tracker-step-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  border: 2px solid #CBD5E1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94A3B8;
+  font-weight: 700;
+  margin-bottom: 0.65rem;
+  transition: all 0.3s ease;
+}
+
+.tracker-step.completed .tracker-step-circle {
+  background-color: #183B2B;
+  border-color: #183B2B;
+  color: #FFFFFF;
+}
+
+.tracker-step.active .tracker-step-circle {
+  background-color: #FFFFFF;
+  border: 2.5px solid #183B2B;
+  color: #183B2B;
+}
+
+.tracker-step.rejected .tracker-step-circle {
+  background-color: #EF4444;
+  border-color: #EF4444;
+  color: #FFFFFF;
+}
+
+.tracker-step-label {
+  font-family: var(--font-heading);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #64748B;
+  line-height: 1.25;
+}
+
+.tracker-step.completed .tracker-step-label,
+.tracker-step.active .tracker-step-label {
+  color: #183B2B;
+  font-weight: 700;
+}
+
+.tracker-step.rejected .tracker-step-label {
+  color: #DC2626;
+  font-weight: 700;
+}
+
+.tracker-history-box {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: var(--bg-alt);
+  border-radius: var(--radius-md);
+  font-size: 0.88rem;
+}
+
+.tracker-history-title {
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.tracker-history-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-bottom: 0.35rem;
+  color: var(--text-secondary);
+}
+
+.tracker-history-bullet {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-secondary);
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .tracker-stepper {
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+  }
+  .tracker-step {
+    width: 75px;
+  }
+  .tracker-step-circle {
+    width: 34px;
+    height: 34px;
+  }
+  .tracker-stepper::before,
+  .tracker-progress-line {
+    top: 16px;
+  }
+}
