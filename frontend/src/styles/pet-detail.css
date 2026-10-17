@@ -586,3 +586,11 @@
   color: #111827;
   margin-bottom: 1.25rem;
 }
+
+.pdp-message-shelter-btn:hover {
+  background: #EAF5ED !important;
+  border-color: #10B981 !important;
+  color: #14382A !important;
+  transform: translateY(-1px);
+}
+

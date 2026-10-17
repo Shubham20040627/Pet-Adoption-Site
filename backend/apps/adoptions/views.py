@@ -1148,3 +1148,293 @@ def sign_adoption_contract(request, app_id):
     }, status=status.HTTP_200_OK)
 
 
+# ==============================================================================
+# REAL-TIME CONTEXTUAL LIVE MESSAGING & CHAT SYSTEM
+# ==============================================================================
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticatedMongoUser])
+def list_conversations(request):
+    """
+    Lists contextual conversation threads for the authenticated user (Adopter or Shelter),
+    grouped by pet and application. Includes pet info, other party info, last message snippet,
+    and unread counter.
+    """
+    db = get_db()
+    user_id = str(request.user.id)
+    is_adopter = (getattr(request.user, 'role', '') == 'adopter')
+
+    conversations = []
+    seen_keys = set()
+
+    # 1. Look for existing message threads
+    msgs_cursor = db.messages.find({
+        '$or': [
+            {'adopter_id': user_id},
+            {'shelter_id': user_id},
+            {'sender_id': user_id},
+            {'recipient_id': user_id}
+        ]
+    }).sort('created_at', -1)
+    
+    msgs_list = list(msgs_cursor)
+
+    for msg in msgs_list:
+        pet_id = str(msg.get('pet_id', ''))
+        adopter_id = str(msg.get('adopter_id', ''))
+        shelter_id = str(msg.get('shelter_id', ''))
+        thread_key = f"{pet_id}_{adopter_id}_{shelter_id}"
+
+        if thread_key in seen_keys:
+            continue
+        seen_keys.add(thread_key)
+
+        other_user_id = shelter_id if is_adopter else adopter_id
+
+        # Fetch Pet info
+        pet_doc = None
+        try:
+            pet_doc = db.pets.find_one({'_id': ObjectId(pet_id)})
+        except Exception:
+            pass
+
+        # Fetch other user info
+        other_user_doc = None
+        try:
+            other_user_doc = db.users.find_one({'_id': ObjectId(other_user_id)})
+        except Exception:
+            pass
+
+        # Fetch application if any
+        app_doc = None
+        try:
+            app_id = msg.get('application_id')
+            if app_id:
+                app_doc = db.applications.find_one({'_id': ObjectId(app_id)})
+            if not app_doc:
+                app_doc = db.applications.find_one({'pet_id': pet_id, 'adopter_id': adopter_id})
+        except Exception:
+            pass
+
+        # Count unread messages for this thread where current user is recipient
+        unread_count = db.messages.count_documents({
+            'pet_id': pet_id,
+            'recipient_id': user_id,
+            'read': False
+        })
+
+        conversations.append({
+            'thread_id': thread_key,
+            'pet_id': pet_id,
+            'adopter_id': adopter_id,
+            'shelter_id': shelter_id,
+            'pet': serialize_doc(pet_doc) if pet_doc else {'id': pet_id, 'name': 'Pet'},
+            'other_party': {
+                'id': other_user_id,
+                'name': (other_user_doc.get('shelter_name') or other_user_doc.get('name')) if other_user_doc else ('Shelter' if is_adopter else 'Adopter'),
+                'email': other_user_doc.get('email') if other_user_doc else '',
+                'role': other_user_doc.get('role') if other_user_doc else ('shelter' if is_adopter else 'adopter'),
+            },
+            'application': serialize_doc(app_doc) if app_doc else None,
+            'last_message': {
+                'text': msg.get('message', ''),
+                'created_at': msg.get('created_at').isoformat() if hasattr(msg.get('created_at'), 'isoformat') else str(msg.get('created_at', '')),
+                'sender_id': msg.get('sender_id'),
+                'sender_name': msg.get('sender_name'),
+                'sender_role': msg.get('sender_role'),
+            },
+            'unread_count': unread_count,
+        })
+
+    # 2. Also ensure applications of the user have an initialized conversation thread ready to chat!
+    app_query = {'adopter_id': user_id} if is_adopter else {'shelter_id': user_id}
+    apps_cursor = db.applications.find(app_query).sort('created_at', -1)
+    for app in apps_cursor:
+        pet_id = str(app.get('pet_id', ''))
+        adopter_id = str(app.get('adopter_id', ''))
+        shelter_id = str(app.get('shelter_id', ''))
+        thread_key = f"{pet_id}_{adopter_id}_{shelter_id}"
+
+        if thread_key in seen_keys:
+            continue
+        seen_keys.add(thread_key)
+
+        other_user_id = shelter_id if is_adopter else adopter_id
+
+        pet_doc = None
+        try:
+            pet_doc = db.pets.find_one({'_id': ObjectId(pet_id)})
+        except Exception:
+            pass
+
+        other_user_doc = None
+        try:
+            other_user_doc = db.users.find_one({'_id': ObjectId(other_user_id)})
+        except Exception:
+            pass
+
+        pet_name = pet_doc.get('name', 'Pet') if pet_doc else 'Pet'
+        app_status = (app.get('status') or 'submitted').replace('_', ' ').capitalize()
+
+        conversations.append({
+            'thread_id': thread_key,
+            'pet_id': pet_id,
+            'adopter_id': adopter_id,
+            'shelter_id': shelter_id,
+            'pet': serialize_doc(pet_doc) if pet_doc else {'id': pet_id, 'name': 'Pet'},
+            'other_party': {
+                'id': other_user_id,
+                'name': (other_user_doc.get('shelter_name') or other_user_doc.get('name')) if other_user_doc else ('Hope & Paws Sanctuary' if is_adopter else 'Adopter'),
+                'email': other_user_doc.get('email') if other_user_doc else '',
+                'role': other_user_doc.get('role') if other_user_doc else ('shelter' if is_adopter else 'adopter'),
+            },
+            'application': serialize_doc(app),
+            'last_message': {
+                'text': f"Adoption application on file for {pet_name} • Status: {app_status}",
+                'created_at': app.get('created_at').isoformat() if hasattr(app.get('created_at'), 'isoformat') else str(app.get('created_at', '')),
+                'sender_id': 'system',
+                'sender_name': 'PawConnect System',
+                'sender_role': 'system',
+            },
+            'unread_count': 0,
+        })
+
+    return Response({'conversations': conversations}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticatedMongoUser])
+def get_thread_messages(request):
+    """
+    Returns messages for a specific conversation thread.
+    Automatically marks incoming messages as read.
+    """
+    db = get_db()
+    user_id = str(request.user.id)
+    pet_id = request.query_params.get('pet_id')
+    other_user_id = request.query_params.get('other_user_id')
+
+    if not pet_id:
+        return Response({'error': 'pet_id is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+    query = {
+        'pet_id': pet_id,
+        '$or': [
+            {'adopter_id': user_id},
+            {'shelter_id': user_id},
+            {'sender_id': user_id},
+            {'recipient_id': user_id}
+        ]
+    }
+    if other_user_id:
+        query['$and'] = [
+            {
+                '$or': [
+                    {'adopter_id': other_user_id},
+                    {'shelter_id': other_user_id},
+                    {'sender_id': other_user_id},
+                    {'recipient_id': other_user_id}
+                ]
+            }
+        ]
+
+    msgs_cursor = db.messages.find(query).sort('created_at', 1)
+    msgs = serialize_docs(msgs_cursor)
+
+    # Mark incoming messages as read
+    db.messages.update_many(
+        {
+            'pet_id': pet_id,
+            'recipient_id': user_id,
+            'read': False
+        },
+        {'$set': {'read': True}}
+    )
+
+    pet_doc = None
+    try:
+        pet_doc = db.pets.find_one({'_id': ObjectId(pet_id)})
+    except Exception:
+        pass
+
+    return Response({
+        'messages': msgs,
+        'pet': serialize_doc(pet_doc) if pet_doc else None
+    }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticatedMongoUser])
+def send_thread_message(request):
+    """
+    Sends a new message in a thread.
+    Generates in-app notifications and timestamps.
+    """
+    db = get_db()
+    user_id = str(request.user.id)
+    data = request.data
+
+    pet_id = data.get('pet_id')
+    recipient_id = data.get('recipient_id')
+    application_id = data.get('application_id')
+    text = (data.get('message') or '').strip()
+
+    if not pet_id or not text:
+        return Response({'error': 'pet_id and message are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    now = datetime.now(timezone.utc)
+
+    pet_doc = None
+    try:
+        pet_doc = db.pets.find_one({'_id': ObjectId(pet_id)})
+    except Exception:
+        pass
+
+    is_adopter = (getattr(request.user, 'role', '') == 'adopter')
+    if is_adopter:
+        adopter_id = user_id
+        shelter_id = recipient_id or (str(pet_doc.get('shelter_id')) if pet_doc else None)
+    else:
+        shelter_id = user_id
+        adopter_id = recipient_id
+
+    final_recipient = shelter_id if is_adopter else adopter_id
+
+    sender_display_name = getattr(request.user, 'name', '') or getattr(request.user, 'shelter_name', '') or 'User'
+
+    doc = {
+        'pet_id': str(pet_id),
+        'application_id': str(application_id) if application_id else None,
+        'adopter_id': str(adopter_id) if adopter_id else user_id,
+        'shelter_id': str(shelter_id) if shelter_id else user_id,
+        'sender_id': user_id,
+        'recipient_id': str(final_recipient) if final_recipient else '',
+        'sender_name': sender_display_name,
+        'sender_role': getattr(request.user, 'role', 'adopter'),
+        'message': text,
+        'read': False,
+        'created_at': now,
+    }
+
+    res = db.messages.insert_one(doc)
+    doc['_id'] = res.inserted_id
+
+    # Create in-app notification for recipient
+    if final_recipient and final_recipient != user_id:
+        pet_name = pet_doc.get('name', 'Pet') if pet_doc else 'Pet'
+        db.notifications.insert_one({
+            'user_id': str(final_recipient),
+            'title': f"💬 New message from {sender_display_name}",
+            'message': f"Regarding {pet_name}: \"{text[:75]}{'...' if len(text) > 75 else ''}\"",
+            'type': 'chat_message',
+            'related_id': str(pet_id),
+            'read': False,
+            'created_at': now,
+        })
+
+    return Response({
+        'message': 'Message sent successfully!',
+        'data': serialize_doc(doc)
+    }, status=status.HTTP_201_CREATED)
+
+

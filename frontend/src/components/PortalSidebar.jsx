@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { 
   PawPrint, LayoutDashboard, FileText, Heart, Sparkles, CheckSquare, 
   PlusCircle, Building, Calendar, LogOut, Compass, Home, X, Menu, 
-  User, ChevronRight, ShieldCheck, ExternalLink, Bell, Layers, BookOpen, Coins, Clock
+  User, ChevronRight, ShieldCheck, ExternalLink, Bell, Layers, BookOpen, Coins, Clock, MessageSquare
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import NotificationDropdown from './NotificationDropdown';
@@ -292,6 +292,16 @@ const PortalSidebar = () => {
               </li>
               <li>
                 <Link
+                  to="/messages"
+                  className={`portal-nav-item ${location.pathname === '/messages' ? 'active' : ''}`}
+                  onClick={closeMobile}
+                >
+                  <MessageSquare size={18} strokeWidth={1.8} className="nav-icon" />
+                  <span className="nav-label">Messages</span>
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/shelter-dashboard?tab=notifications"
                   className={`portal-nav-item ${
                     (location.pathname === '/shelter-dashboard' || location.pathname === '/shelter_dashboard') &&
@@ -450,6 +460,16 @@ const PortalSidebar = () => {
                   >
                     <Calendar size={18} strokeWidth={1.8} className="nav-icon" />
                     <span className="nav-label">Meet & Greets</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/messages"
+                    className={`portal-nav-item ${location.pathname === '/messages' ? 'active' : ''}`}
+                    onClick={closeMobile}
+                  >
+                    <MessageSquare size={18} strokeWidth={1.8} className="nav-icon" />
+                    <span className="nav-label">Messages</span>
                   </Link>
                 </li>
                 <li>

@@ -13,6 +13,9 @@ from .views import (
     verify_adoption_certificate,
     get_adoption_contract,
     sign_adoption_contract,
+    list_conversations,
+    get_thread_messages,
+    send_thread_message,
 )
 
 urlpatterns = [
@@ -31,5 +34,10 @@ urlpatterns = [
     path('visits/my/', my_visits, name='visits-my'),
     path('visits/shelter/', shelter_visits, name='visits-shelter'),
     path('visits/<str:visit_id>/status/', update_visit_status, name='visits-update-status'),
+
+    # Real-Time Contextual Live Messaging & Chat
+    path('messages/conversations/', list_conversations, name='chat-conversations'),
+    path('messages/thread/', get_thread_messages, name='chat-thread'),
+    path('messages/send/', send_thread_message, name='chat-send'),
 ]
 

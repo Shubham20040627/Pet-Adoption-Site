@@ -4,7 +4,7 @@ import {
   Heart, MapPin, Calendar, Clock, PawPrint,
   Phone, Mail, Building, Check, AlertCircle, Layers, Coins,
   ShieldCheck, Sparkles, ChevronLeft, ChevronRight, Info,
-  FileText, CheckCircle2, User
+  FileText, CheckCircle2, User, MessageSquare
 } from 'lucide-react';
 import { petsApi } from '../api/petsApi';
 import { useAuth } from '../context/AuthContext';
@@ -337,6 +337,32 @@ const PetDetailPage = () => {
               />
               {isFav ? 'Saved to Favorites' : 'Add to Favorites'}
             </button>
+
+            {/* Direct Contextual Live Chat with Shelter */}
+            <Link
+              to={`/messages?pet_id=${pet.id || pet._id}`}
+              className="pdp-message-shelter-btn"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.55rem',
+                padding: '0.75rem 1rem',
+                borderRadius: '12px',
+                border: '1.5px solid #14382A',
+                background: '#FFFFFF',
+                color: '#14382A',
+                fontWeight: 700,
+                fontSize: '0.88rem',
+                textDecoration: 'none',
+                boxShadow: '0 1px 3px rgba(0, 0, 0, 0.04)',
+                transition: 'all 0.15s ease'
+              }}
+              title="Chat directly with shelter regarding adoption questions"
+            >
+              <MessageSquare size={17} color="#14382A" />
+              <span>Message Shelter About {pet.name}</span>
+            </Link>
 
             {/* Quick Tools Box */}
             <div className="pdp-quick-tools-card">

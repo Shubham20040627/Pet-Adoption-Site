@@ -92,4 +92,27 @@ export const adoptionsApi = {
     const res = await api.post(`/adoptions/${appId}/contract/sign/`, contractData);
     return res.data;
   },
+
+  // Real-Time Contextual Live Chat
+  getConversations: async () => {
+    const res = await api.get('/adoptions/messages/conversations/');
+    return res.data;
+  },
+
+  getThreadMessages: async (petId, otherUserId = '') => {
+    const res = await api.get('/adoptions/messages/thread/', {
+      params: { pet_id: petId, other_user_id: otherUserId }
+    });
+    return res.data;
+  },
+
+  sendMessage: async ({ pet_id, recipient_id, application_id, message }) => {
+    const res = await api.post('/adoptions/messages/send/', {
+      pet_id,
+      recipient_id,
+      application_id,
+      message,
+    });
+    return res.data;
+  },
 };

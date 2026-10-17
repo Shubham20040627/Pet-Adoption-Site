@@ -25,6 +25,7 @@ import ComparePetsPage from './pages/ComparePetsPage';
 import PetCostCalculatorPage from './pages/PetCostCalculatorPage';
 import VerifyCertificatePage from './pages/VerifyCertificatePage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
+import MessagesPage from './pages/MessagesPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 import './styles/global.css';
@@ -48,6 +49,7 @@ const AppContent = () => {
     location.pathname === '/compare-pets' ||
     location.pathname === '/compare' ||
     location.pathname === '/cost-calculator' ||
+    location.pathname === '/messages' ||
     (isAdopter && (
       location.pathname.startsWith('/pets') ||
       location.pathname === '/pawmatch' ||
@@ -60,6 +62,7 @@ const AppContent = () => {
     location.pathname.startsWith('/shelter-dashboard') ||
     location.pathname.startsWith('/shelter_dashboard') ||
     location.pathname === '/pets/new' ||
+    location.pathname === '/messages' ||
     /^\/pets\/[^/]+\/edit/.test(location.pathname)
   );
 
@@ -115,6 +118,14 @@ const AppContent = () => {
               element={
                 <ProtectedRoute requiredRole="adopter">
                   <MyApplicationsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/messages"
+              element={
+                <ProtectedRoute>
+                  <MessagesPage />
                 </ProtectedRoute>
               }
             />
