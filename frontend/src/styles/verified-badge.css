@@ -135,6 +135,22 @@
   max-width: 680px;
 }
 
+.premium-badge-right-group {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.premium-badge-meta-col {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
 .premium-badge-meta-row {
   display: flex;
   align-items: center;
@@ -147,7 +163,26 @@
 .premium-badge-meta-item {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
+}
+
+.meta-text-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.meta-label {
+  font-size: 0.72rem;
+  color: #64748B;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.meta-val {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.3;
 }
 
 .premium-badge-meta-item strong {

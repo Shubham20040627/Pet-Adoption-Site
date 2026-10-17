@@ -174,11 +174,11 @@ const RegisterPage = () => {
     return () => clearTimeout(typeTimer);
   }, [subIdx, isDeleting, wordIdx]);
 
-  // 2. Sliding Images Carousel Effect (Right-to-Left)
+  // 2. Sliding Images Carousel Effect (Right-to-Left, fast and responsive)
   useEffect(() => {
     const slideTimer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % registerSlides.length);
-    }, 4500);
+    }, 2400);
     return () => clearInterval(slideTimer);
   }, []);
 

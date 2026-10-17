@@ -6,27 +6,27 @@ import '../styles/forms.css';
 
 const loginSlides = [
   {
-    image: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=1600&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=1600&auto=format&fit=crop&q=85',
     title: 'Welcome Back to PawConnect',
     subtitle: 'Your journey of love and rescue companionship continues.',
   },
   {
-    image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1600&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1600&auto=format&fit=crop&q=85',
     title: 'Adventures Await Every Paw',
     subtitle: 'Check notifications and messages from verified shelters.',
   },
   {
-    image: 'https://images.unsplash.com/photo-1534361960057-19889db9621e?w=1600&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1534361960057-19889db9621e?w=1600&auto=format&fit=crop&q=85',
     title: 'Ethical & Transparent Adoptions',
     subtitle: 'Connecting passionate families with companions in need.',
   },
   {
-    image: 'https://images.unsplash.com/photo-1517849845537-4d257902454a?w=1600&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1517849845537-4d257902454a?w=1600&auto=format&fit=crop&q=85',
     title: 'Loyal Companions for Life',
     subtitle: 'Track your application status and schedule shelter visits.',
   },
   {
-    image: 'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=1600&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=1600&auto=format&fit=crop&q=85',
     title: 'Small Pets, Endless Affection',
     subtitle: 'Explore rescued rabbits, birds, and small sweet pets.',
   },
@@ -116,11 +116,11 @@ const LoginPage = () => {
     return () => clearTimeout(typeTimer);
   }, [subIdx, isDeleting, wordIdx]);
 
-  // 2. Sliding Images Carousel Effect (Right-to-Left)
+  // 2. Sliding Images Carousel Effect (Right-to-Left, fast and responsive)
   useEffect(() => {
     const slideTimer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % loginSlides.length);
-    }, 4500);
+    }, 2400);
     return () => clearInterval(slideTimer);
   }, []);
 
