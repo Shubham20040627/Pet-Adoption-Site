@@ -1,70 +1,64 @@
 /* ==========================================================================
-   PawConnect — Premium Verified Adopter Badge Card
+   PawConnect — Premium Verified Adopter Badge Card (Matching Reference UI)
    ========================================================================== */
 
 .premium-badge-card {
   position: relative;
-  background: linear-gradient(145deg, #FFFFFF 0%, #F6FAF8 100%);
-  border: 1.5px solid #10B981;
+  background: linear-gradient(135deg, #F4FAF6 0%, #EAF5ED 100%);
+  border: 1.5px solid #C5E3D0;
   border-radius: 20px;
-  padding: 1.6rem 1.8rem;
-  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05);
+  padding: 1.65rem 2rem;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.06), 0 1px 3px rgba(0, 0, 0, 0.03);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
+  gap: 1.75rem;
   overflow: hidden;
   transition: all 0.25s ease;
 }
 
 .premium-badge-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 38px rgba(16, 185, 129, 0.18);
-  border-color: #059669;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.12);
+  border-color: #A3D4B6;
 }
 
-/* Subtle luxury top accent line */
-.premium-badge-card::before {
-  content: '';
+/* Background watermark emblem / paws */
+.premium-badge-watermark-wrap {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 5px;
-  background: linear-gradient(90deg, #10B981 0%, #047857 50%, #F59E0B 100%);
-}
-
-/* Background watermark emblem */
-.premium-badge-watermark {
-  position: absolute;
-  right: -25px;
-  bottom: -30px;
-  width: 170px;
-  height: 170px;
-  color: #10B981;
-  opacity: 0.04;
+  right: 20px;
+  bottom: -20px;
   pointer-events: none;
+  opacity: 0.06;
+}
+
+.premium-badge-watermark {
+  width: 180px;
+  height: 180px;
+  color: #10B981;
 }
 
 .premium-badge-left {
   display: flex;
   align-items: center;
-  gap: 1.35rem;
+  gap: 1.5rem;
   flex: 1;
+  position: relative;
+  z-index: 2;
 }
 
 /* 3D Shield Emblem */
 .premium-shield-wrap {
   position: relative;
-  width: 68px;
-  height: 68px;
+  width: 66px;
+  height: 66px;
   border-radius: 18px;
-  background: linear-gradient(135deg, #0E3628 0%, #16533E 50%, #047857 100%);
+  background: #14382A;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #FFFFFF;
-  box-shadow: 0 8px 20px rgba(14, 54, 40, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+  box-shadow: 0 6px 16px rgba(20, 56, 42, 0.28);
   flex-shrink: 0;
 }
 
@@ -74,8 +68,8 @@
   right: -4px;
   background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
   color: #FFFFFF;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -86,107 +80,136 @@
 .premium-badge-info {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
 }
 
 .premium-badge-tag {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #047857;
+  letter-spacing: 0.08em;
+  color: #166534;
+  margin-bottom: 0.2rem;
 }
 
 .premium-badge-title {
-  font-family: 'Outfit', 'Inter', sans-serif;
-  font-size: 1.25rem;
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-size: 1.38rem;
   font-weight: 800;
-  color: #0E3628;
+  color: #111827;
   letter-spacing: -0.01em;
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.65rem;
   flex-wrap: wrap;
 }
 
 .premium-badge-pill {
   font-size: 0.74rem;
   background: #DCFCE7;
-  color: #15803D;
+  color: #166534;
   border: 1px solid #86EFAC;
-  padding: 0.15rem 0.6rem;
+  padding: 0.18rem 0.65rem;
   border-radius: 999px;
   font-weight: 700;
-}
-
-.premium-badge-desc {
-  font-size: 0.85rem;
-  color: #4B6358;
-  line-height: 1.45;
-  margin: 0.15rem 0 0.5rem 0;
-}
-
-.premium-badge-meta-row {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  flex-wrap: wrap;
-  font-size: 0.8rem;
-  color: #64748B;
-}
-
-.premium-badge-meta-item {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
 }
 
+.premium-pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #16A34A;
+}
+
+.premium-badge-desc {
+  font-size: 0.88rem;
+  color: #4B5563;
+  line-height: 1.5;
+  margin: 0.35rem 0 0.85rem 0;
+  max-width: 680px;
+}
+
+.premium-badge-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  flex-wrap: wrap;
+  font-size: 0.84rem;
+  color: #4B5563;
+}
+
+.premium-badge-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
 .premium-badge-meta-item strong {
-  color: #1E293B;
+  color: #111827;
   font-weight: 700;
 }
 
-/* Right Circular Gold Seal */
+/* Right Circular Emerald Seal Stamp with Laurel Wreath */
+.premium-seal-wreath-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.premium-wreath-svg {
+  opacity: 0.85;
+}
+
 .premium-seal-stamp {
-  width: 90px;
-  height: 90px;
+  position: relative;
+  z-index: 2;
+  width: 104px;
+  height: 104px;
   border-radius: 50%;
+  background: #FFFFFF;
   border: 2px dashed #059669;
-  background: #F0FDF4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.15);
+}
+
+.premium-seal-inner {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 0.4rem;
-  flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.12);
 }
 
 .premium-seal-text-top {
-  font-size: 0.58rem;
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #065F46;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 0.2rem;
+  line-height: 1;
+}
+
+.premium-seal-text-bottom {
+  font-size: 0.72rem;
   font-weight: 800;
   color: #047857;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  line-height: 1.1;
-}
-
-.premium-seal-check {
-  margin: 0.15rem 0;
-  color: #047857;
-}
-
-.premium-seal-text-bottom {
-  font-size: 0.58rem;
-  font-weight: 800;
-  color: #059669;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  margin-top: 0.15rem;
+  line-height: 1;
 }
 
 /* Compact version for Application Reviews & Cards */
@@ -209,11 +232,11 @@
   display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 860px) {
   .premium-badge-card {
     flex-direction: column;
     align-items: flex-start;
-    padding: 1.25rem;
+    padding: 1.35rem;
   }
   .premium-badge-left {
     flex-direction: column;
@@ -221,6 +244,6 @@
   }
   .premium-seal-stamp {
     align-self: center;
-    margin-top: 0.5rem;
+    margin-top: 0.75rem;
   }
 }

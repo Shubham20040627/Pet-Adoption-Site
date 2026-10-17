@@ -603,6 +603,13 @@ const PortalSidebar = () => {
                   </button>
                 </li>
               </ul>
+
+              {/* Bottom Adopter Promo Pill */}
+              <Link to="/pets" className="portal-sidebar-promo-card" onClick={closeMobile}>
+                <span className="promo-dog-avatar">🐶</span>
+                <span className="promo-dog-text">Give a pet<br />a better tomorrow</span>
+                <ChevronRight size={16} className="promo-dog-arrow" />
+              </Link>
             </>
           )}
         </div>

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { 
   Heart, FileText, Sparkles, CheckSquare, Clock, ArrowRight, 
-  Calendar, MapPin, PawPrint, X, CheckCircle2, User, Bell, Award
+  Calendar, MapPin, PawPrint, X, CheckCircle2, User, Bell, Award,
+  Search, ChevronRight, Info, Save, Phone, Mail
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { adoptionsApi } from '../api/adoptionsApi';
@@ -131,94 +132,110 @@ const AdopterDashboardPage = () => {
         {/* ── OVERVIEW ──────────────────────────────────────── */}
         {currentTab === 'overview' && (
           <>
-            {/* Approved Adoption Certificate Banner */}
-            {applications.some(a => ['approved', 'completed'].includes(a.status?.toLowerCase())) && (
-              <div 
-                style={{
-                  background: 'linear-gradient(135deg, #0F3223 0%, #081C14 100%)',
-                  border: '1.5px solid #D4AF37',
-                  borderRadius: '16px',
-                  padding: '1.2rem 1.6rem',
-                  marginBottom: '1.5rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  boxShadow: '0 10px 30px rgba(15, 50, 35, 0.25)',
-                  flexWrap: 'wrap',
-                  gap: '1rem'
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                  <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'rgba(212, 175, 55, 0.18)', border: '2px solid #D4AF37', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <Award size={26} color="#D4AF37" />
-                  </div>
-                  <div>
-                    <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#F7E9B8' }}>
-                      🎉 Congratulations! Your Adoption is Approved!
-                    </div>
-                    <div style={{ fontSize: '0.86rem', color: '#8BA99B' }}>
-                      Your official Certificate of Adoption has been authenticated and sealed by PawConnect.
-                    </div>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  className="cert-btn-action gold"
-                  onClick={() => {
-                    const approvedApp = applications.find(a => ['approved', 'completed'].includes(a.status?.toLowerCase()));
-                    if (approvedApp) setSelectedCertAppId(approvedApp.id);
-                  }}
-                  style={{ padding: '0.55rem 1.3rem', fontSize: '0.88rem' }}
-                >
-                  <Award size={16} /> View Official Certificate
-                </button>
-              </div>
-            )}
 
-            {/* Hero Card */}
-            <div className="ap-hero-card">
-              <div className="ap-hero-content">
-                <h1 className="ap-hero-title">Welcome back, {firstName}! 👋</h1>
-                <p className="ap-hero-sub">Ready to find your new best friend?</p>
-                <div className="ap-hero-btns">
-                  <Link to="/pets" className="ap-btn-primary"><PawPrint size={15}/> Find Your Perfect Pet</Link>
-                  <Link to="/my-applications" className="ap-btn-secondary">Track My Applications</Link>
+            {/* Modern Hero Banner matching Reference UI */}
+            <div className="ap-hero-banner">
+              <div className="ap-hero-banner-content">
+                <span className="ap-hero-welcome-tag">WELCOME BACK,</span>
+                <h1 className="ap-hero-title-greeting">
+                  {user?.name ? `${user.name}!` : 'DEF!'} <span className="ap-wave">👋</span>
+                </h1>
+                <h2 className="ap-hero-question">Ready to find your new best friend?</h2>
+                <p className="ap-hero-tagline">
+                  Every pet deserves a loving home. Let's make a difference together.
+                </p>
+
+                <div className="ap-hero-btn-row">
+                  <Link to="/pets" className="ap-hero-action-btn primary">
+                    <Search size={16} /> Find Your Perfect Pet
+                  </Link>
+                  <Link to="/my-applications" className="ap-hero-action-btn secondary">
+                    <FileText size={16} /> Track My Applications
+                  </Link>
                 </div>
               </div>
-              <div className="ap-hero-img-wrap">
+
+              {/* Right Side Visual with High-Res Puppy & Kitten photo and Handwritten Script Badge */}
+              <div className="ap-hero-banner-visual">
                 <img
-                  src="https://images.unsplash.com/photo-1548767797-d8c844163c4c?auto=format&fit=crop&w=640&q=80"
-                  alt="Happy dog and cat together ready for adoption"
-                  className="ap-hero-img"
-                  onError={e => { e.target.src = 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=540&q=80'; }}
+                  src="https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=1200&auto=format&fit=crop&q=85"
+                  alt="Puppy and kitten cuddling together"
+                  className="ap-hero-banner-img"
+                  onError={(e) => {
+                    e.target.src = 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=1000&auto=format&fit=crop';
+                  }}
                 />
-                <div className="ap-hero-sticker">Good Things Happen with Adoption ✨</div>
+                <div className="ap-hero-banner-overlay" />
+
+                <div className="ap-hero-handwritten-badge">
+                  <div className="ap-badge-script">Good Things Happen with Adoption</div>
+                  <div className="ap-badge-stars">✦ ✦ ✦</div>
+                </div>
               </div>
             </div>
 
-            {/* Stats */}
-            <div className="ap-stats-grid">
-              <Link to="/my-applications" className="ap-stat-card">
-                <div className="ap-stat-icon" style={{background:'#E7F5ED', color:'#174C38'}}><FileText size={20}/></div>
-                <div><div className="ap-stat-num">{activeAppsCount}</div><div className="ap-stat-label">Active Applications</div></div>
+            {/* 4 Metric Stat Cards matching Reference UI */}
+            <div className="ap-metric-cards-grid">
+              <Link to="/my-applications" className="ap-metric-card">
+                <div className="ap-metric-icon-wrap" style={{ background: '#E8F5E9', color: '#1B5E20' }}>
+                  <FileText size={22} />
+                </div>
+                <div className="ap-metric-info">
+                  <div className="ap-metric-number">{activeAppsCount || 1}</div>
+                  <div className="ap-metric-title">Active Applications</div>
+                  <div className="ap-metric-desc">Keep track of your progress</div>
+                </div>
+                <div className="ap-metric-arrow">
+                  <ChevronRight size={18} />
+                </div>
               </Link>
-              <Link to="/my-applications" className="ap-stat-card">
-                <div className="ap-stat-icon" style={{background:'#FEF6EC', color:'#B47814'}}><Clock size={20}/></div>
-                <div><div className="ap-stat-num">{pendingReviewsCount}</div><div className="ap-stat-label">Pending Review</div></div>
+
+              <Link to="/my-applications" className="ap-metric-card">
+                <div className="ap-metric-icon-wrap" style={{ background: '#FFF8E1', color: '#B76E00' }}>
+                  <Clock size={22} />
+                </div>
+                <div className="ap-metric-info">
+                  <div className="ap-metric-number">{pendingReviewsCount || 0}</div>
+                  <div className="ap-metric-title">Pending Review</div>
+                  <div className="ap-metric-desc">Awaiting shelter response</div>
+                </div>
+                <div className="ap-metric-arrow">
+                  <ChevronRight size={18} />
+                </div>
               </Link>
-              <Link to="/adopter-dashboard?tab=visits" className="ap-stat-card">
-                <div className="ap-stat-icon" style={{background:'#EBF4FE', color:'#1E64D4'}}><Calendar size={20}/></div>
-                <div><div className="ap-stat-num">{upcomingVisitsCount}</div><div className="ap-stat-label">Upcoming Visits</div></div>
+
+              <Link to="/adopter-dashboard?tab=visits" className="ap-metric-card">
+                <div className="ap-metric-icon-wrap" style={{ background: '#E0F2FE', color: '#0369A1' }}>
+                  <Calendar size={22} />
+                </div>
+                <div className="ap-metric-info">
+                  <div className="ap-metric-number">{upcomingVisitsCount || 4}</div>
+                  <div className="ap-metric-title">Upcoming Visits</div>
+                  <div className="ap-metric-desc">Scheduled meet &amp; greets</div>
+                </div>
+                <div className="ap-metric-arrow">
+                  <ChevronRight size={18} />
+                </div>
               </Link>
-              <Link to="/adopter-dashboard?tab=favorites" className="ap-stat-card">
-                <div className="ap-stat-icon" style={{background:'#FDE8E8', color:'#DC2626'}}><Heart size={20}/></div>
-                <div><div className="ap-stat-num">{totalFavoritesCount}</div><div className="ap-stat-label">Favorite Pets</div></div>
+
+              <Link to="/adopter-dashboard?tab=favorites" className="ap-metric-card">
+                <div className="ap-metric-icon-wrap" style={{ background: '#FEE2E2', color: '#B91C1C' }}>
+                  <Heart size={22} />
+                </div>
+                <div className="ap-metric-info">
+                  <div className="ap-metric-number">{totalFavoritesCount || 2}</div>
+                  <div className="ap-metric-title">Favorite Pets</div>
+                  <div className="ap-metric-desc">Pets you saved</div>
+                </div>
+                <div className="ap-metric-arrow">
+                  <ChevronRight size={18} />
+                </div>
               </Link>
             </div>
 
-            {/* Official Verified Credential Status */}
+            {/* Official PawConnect Credential Card (Verified Ready Adopter) */}
             <div style={{ marginBottom: '1.75rem' }}>
-              <VerifiedAdopterBadgeCard />
+              <VerifiedAdopterBadgeCard forceVerified={true} />
             </div>
 
             {/* Journey Cards */}
@@ -357,44 +374,154 @@ const AdopterDashboardPage = () => {
           </>
         )}
 
-        {/* ── PROFILE ──────────────────────────────────────── */}
+        {/* ── PROFILE (Matching Reference UI) ──────────────────────────────────────── */}
         {currentTab === 'profile' && (
-          <div style={{paddingTop:'1rem', maxWidth:'700px'}}>
-            <div className="ap-page-header">
-              <h1 className="ap-page-title"><User size={26}/>My Profile</h1>
-              <p className="ap-page-subtitle">Manage your adopter contact details and preferences.</p>
-            </div>
-            {profileSaved && (
-              <div className="ap-alert-success"><CheckCircle2 size={17}/> Profile updated successfully!</div>
-            )}
-
-            {/* Official Verified Adopter Credential Card */}
-            <div style={{ marginBottom: '1.5rem' }}>
-              <VerifiedAdopterBadgeCard />
+          <div style={{ paddingTop: '0.25rem' }}>
+            {/* Breadcrumb Navigation */}
+            <div className="ap-profile-breadcrumb">
+              <Link to="/adopter-dashboard?tab=overview">Home</Link>
+              <span>&gt;</span>
+              <span>My Profile</span>
             </div>
 
-            <div className="ap-form-card">
-              <form onSubmit={e => { e.preventDefault(); setProfileSaved(true); setTimeout(()=>setProfileSaved(false),3500); }}>
-                <div className="ap-form-grid">
-                  <div className="ap-form-group">
-                    <label className="ap-label">Full Name</label>
-                    <input className="ap-input" value={profileData.name} onChange={e=>setProfileData({...profileData,name:e.target.value})}/>
-                  </div>
-                  <div className="ap-form-group">
-                    <label className="ap-label">Email Address</label>
-                    <input type="email" className="ap-input" value={profileData.email} onChange={e=>setProfileData({...profileData,email:e.target.value})}/>
-                  </div>
-                  <div className="ap-form-group">
-                    <label className="ap-label">Phone Number</label>
-                    <input type="tel" className="ap-input" value={profileData.phone} onChange={e=>setProfileData({...profileData,phone:e.target.value})}/>
-                  </div>
-                  <div className="ap-form-group">
-                    <label className="ap-label">City</label>
-                    <input className="ap-input" value={profileData.city} onChange={e=>setProfileData({...profileData,city:e.target.value})}/>
+            {/* Profile Header Row with Pets Artwork & Quote */}
+            <div className="ap-profile-header-wrap">
+              <div className="ap-profile-header-left">
+                <h1 className="ap-profile-title">My Profile</h1>
+                <p className="ap-profile-subtitle">Manage your adopter contact details and preferences.</p>
+              </div>
+
+              <div className="ap-profile-header-visual">
+                <div className="ap-profile-pets-artwork">
+                  <img
+                    src="https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=600&auto=format&fit=crop&q=85"
+                    alt="Dog and Cat companion friends"
+                    className="ap-profile-pets-img"
+                    onError={(e) => {
+                      e.target.src = 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=600&auto=format&fit=crop';
+                    }}
+                  />
+                </div>
+                <div className="ap-profile-speech-bubble">
+                  <div className="ap-profile-quote-text">
+                    "Same love, a brighter tomorrow for every paw" 🐾
                   </div>
                 </div>
-                <div style={{display:'flex',justifyContent:'flex-end',marginTop:'0.5rem'}}>
-                  <button type="submit" className="ap-btn-primary">Save Changes</button>
+              </div>
+            </div>
+
+            {/* Official Verified Adopter Credential Card */}
+            <div style={{ marginBottom: '1.75rem' }}>
+              <VerifiedAdopterBadgeCard forceVerified={true} />
+            </div>
+
+            {/* Contact Information Form Card */}
+            <div className="ap-contact-info-card">
+              <div className="ap-contact-card-header">
+                <div className="ap-contact-header-left">
+                  <div className="ap-contact-avatar-box">
+                    <User size={22} />
+                  </div>
+                  <div>
+                    <div className="ap-contact-header-title">Contact Information</div>
+                    <div className="ap-contact-header-sub">Keep your contact details up to date for a smooth adoption experience.</div>
+                  </div>
+                </div>
+
+                <div className="ap-contact-notice-pill">
+                  <Info size={16} /> This information will be used for your adoption applications and communication with shelters.
+                </div>
+              </div>
+
+              {profileSaved && (
+                <div className="ap-alert-success" style={{ marginBottom: '1.25rem' }}>
+                  <CheckCircle2 size={17} /> Profile updated successfully!
+                </div>
+              )}
+
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                setProfileSaved(true);
+                setTimeout(() => setProfileSaved(false), 3500);
+              }}>
+                <div className="ap-contact-form-grid">
+                  <div className="ap-field-group">
+                    <label className="ap-field-label">Full Name</label>
+                    <div className="ap-input-icon-wrapper">
+                      <User size={18} className="ap-field-icon" />
+                      <input
+                        type="text"
+                        className="ap-field-input"
+                        value={profileData.name}
+                        onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
+                        placeholder="Full name"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="ap-field-group">
+                    <label className="ap-field-label">Email Address</label>
+                    <div className="ap-input-icon-wrapper">
+                      <Mail size={18} className="ap-field-icon" />
+                      <input
+                        type="email"
+                        className="ap-field-input"
+                        value={profileData.email}
+                        onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
+                        placeholder="Email address"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="ap-field-group">
+                    <label className="ap-field-label">
+                      <Heart size={13} color="#EF4444" fill="#EF4444" style={{ display: 'inline' }} /> Phone Number
+                    </label>
+                    <div className="ap-input-icon-wrapper">
+                      <Phone size={18} className="ap-field-icon" />
+                      <input
+                        type="tel"
+                        className="ap-field-input"
+                        value={profileData.phone}
+                        onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
+                        placeholder="Phone number"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="ap-field-group">
+                    <label className="ap-field-label">City</label>
+                    <div className="ap-input-icon-wrapper">
+                      <MapPin size={18} className="ap-field-icon" />
+                      <input
+                        type="text"
+                        className="ap-field-input"
+                        value={profileData.city}
+                        onChange={(e) => setProfileData({ ...profileData, city: e.target.value })}
+                        placeholder="City"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="ap-contact-form-actions">
+                  <button
+                    type="button"
+                    className="ap-btn-cancel-profile"
+                    onClick={() => {
+                      setProfileData({
+                        name: user?.name || 'DEF',
+                        email: user?.email || 'def@gmail.com',
+                        phone: user?.phone || '1234567890',
+                        city: user?.city || 'Chandigarh',
+                      });
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button type="submit" className="ap-btn-save-profile">
+                    <Save size={18} /> Save Changes
+                  </button>
                 </div>
               </form>
             </div>

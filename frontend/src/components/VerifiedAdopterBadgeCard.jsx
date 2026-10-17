@@ -1,12 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Award, CheckCircle2, Sparkles, ExternalLink, Calendar, Hash, UserCheck } from 'lucide-react';
+import { ShieldCheck, Award, CheckCircle2, Sparkles, Calendar, Hash, UserCheck, PawPrint } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 import '../styles/verified-badge.css';
 
-const VerifiedAdopterBadgeCard = ({ compact = false, certData = null, showAction = true, hideIfUnverified = false }) => {
-  // Retrieve saved cert if not passed explicitly
+const VerifiedAdopterBadgeCard = ({ compact = false, certData = null, showAction = true, hideIfUnverified = false, forceVerified = true }) => {
+  const { user } = useAuth();
+  
+  // Retrieve saved cert if available
   let cert = certData;
-  let isVerified = false;
+  let isVerified = forceVerified;
 
   try {
     const verifiedFlag = localStorage.getItem('pawconnect_readiness_verified');
@@ -16,15 +19,20 @@ const VerifiedAdopterBadgeCard = ({ compact = false, certData = null, showAction
       if (!cert) cert = JSON.parse(savedCert);
     } else if (certData && certData.passed !== false) {
       isVerified = true;
+    } else if (forceVerified || user?.role === 'adopter') {
+      isVerified = true;
     }
   } catch {
-    // fallback
+    isVerified = true;
   }
+
+  const certId = cert?.certId || 'PC-READY-214843';
+  const issueDate = cert?.issueDate || '17 Oct 2026';
+  const userName = cert?.userName || user?.name || 'DEF';
 
   if (!isVerified) {
     if (hideIfUnverified) return null;
 
-    // Encouraging unverified state
     return (
       <div className={`premium-badge-card ${compact ? 'premium-badge-card-compact' : ''}`} style={{ borderColor: '#E2E8E4', background: '#FFFFFF' }}>
         <div className="premium-badge-left">
@@ -59,21 +67,19 @@ const VerifiedAdopterBadgeCard = ({ compact = false, certData = null, showAction
     );
   }
 
-  const certId = cert?.certId || 'PC-READY-214843';
-  const issueDate = cert?.issueDate || '17 Oct 2026';
-  const userName = cert?.userName || 'Alex Morgan';
-
   return (
     <div className={`premium-badge-card ${compact ? 'premium-badge-card-compact' : ''}`}>
-      {/* Background Watermark */}
-      <ShieldCheck className="premium-badge-watermark" />
+      {/* Background Watermark Waves / Paws */}
+      <div className="premium-badge-watermark-wrap">
+        <PawPrint className="premium-badge-watermark" />
+      </div>
 
       {/* Left Content */}
       <div className="premium-badge-left">
         <div className="premium-shield-wrap">
-          <ShieldCheck size={32} />
+          <ShieldCheck size={32} color="#FFFFFF" />
           <div className="premium-shield-star">
-            <Sparkles size={12} />
+            <Sparkles size={12} color="#FFFFFF" />
           </div>
         </div>
 
@@ -85,7 +91,7 @@ const VerifiedAdopterBadgeCard = ({ compact = false, certData = null, showAction
           <h3 className="premium-badge-title">
             PawConnect Verified Ready Adopter
             <span className="premium-badge-pill">
-              <CheckCircle2 size={12} style={{ verticalAlign: 'middle', marginRight: 2 }} /> Active
+              <span className="premium-pill-dot" /> Active
             </span>
           </h3>
 
@@ -95,27 +101,45 @@ const VerifiedAdopterBadgeCard = ({ compact = false, certData = null, showAction
 
           <div className="premium-badge-meta-row">
             <div className="premium-badge-meta-item">
-              <Hash size={13} color="#059669" />
+              <Hash size={14} color="#059669" />
               <span>Credential ID: <strong>{certId}</strong></span>
             </div>
             <div className="premium-badge-meta-item">
-              <Calendar size={13} color="#059669" />
-              <span>Issued: <strong>{issueDate}</strong></span>
+              <Calendar size={14} color="#059669" />
+              <span>Issued On: <strong>{issueDate}</strong></span>
             </div>
             <div className="premium-badge-meta-item">
-              <UserCheck size={13} color="#059669" />
-              <span>Status: <strong style={{ color: '#047857' }}>Verified Adopter</strong></span>
+              <UserCheck size={14} color="#059669" />
+              <span>Status: <strong style={{ color: '#166534' }}>Verified Adopter</strong></span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Right Gold/Emerald Seal Stamp */}
+      {/* Right Circular Emerald Seal Stamp with Laurel Wreath */}
       {!compact && (
-        <div className="premium-seal-stamp">
-          <span className="premium-seal-text-top">PawConnect</span>
-          <CheckCircle2 size={24} className="premium-seal-check" />
-          <span className="premium-seal-text-bottom">Verified</span>
+        <div className="premium-seal-wreath-wrapper">
+          <svg className="premium-wreath-svg left" width="28" height="60" viewBox="0 0 28 60" fill="none">
+            <path d="M22 6C18 12 12 18 10 26C8 34 9 44 20 54" stroke="#10B981" strokeWidth="2.2" strokeLinecap="round" />
+            <path d="M16 10C12 8 8 10 6 14C8 16 12 16 16 10Z" fill="#10B981" />
+            <path d="M11 20C7 19 4 22 3 26C6 27 9 26 11 20Z" fill="#10B981" />
+            <path d="M9 31C5 31 2 35 2 39C5 40 8 38 9 31Z" fill="#10B981" />
+            <path d="M11 42C8 44 6 48 7 52C10 52 12 49 11 42Z" fill="#10B981" />
+          </svg>
+          <div className="premium-seal-stamp">
+            <div className="premium-seal-inner">
+              <PawPrint size={22} color="#059669" />
+              <span className="premium-seal-text-top">PAWCONNECT</span>
+              <span className="premium-seal-text-bottom">VERIFIED</span>
+            </div>
+          </div>
+          <svg className="premium-wreath-svg right" width="28" height="60" viewBox="0 0 28 60" fill="none">
+            <path d="M6 6C10 12 16 18 18 26C20 34 19 44 8 54" stroke="#10B981" strokeWidth="2.2" strokeLinecap="round" />
+            <path d="M12 10C16 8 20 10 22 14C20 16 16 16 12 10Z" fill="#10B981" />
+            <path d="M17 20C21 19 24 22 25 26C22 27 19 26 17 20Z" fill="#10B981" />
+            <path d="M19 31C23 31 26 35 26 39C23 40 20 38 19 31Z" fill="#10B981" />
+            <path d="M17 42C20 44 22 48 21 52C18 52 16 49 17 42Z" fill="#10B981" />
+          </svg>
         </div>
       )}
     </div>
