@@ -20,4 +20,9 @@ export const authApi = {
     const res = await api.put('/auth/me/', updates);
     return res.data;
   },
+
+  googleAuth: async (payload) => {
+    const res = await api.post('/auth/google/', payload);
+    return res.data;
+  },
 };

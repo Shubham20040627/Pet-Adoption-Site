@@ -1284,18 +1284,12 @@ def list_conversations(request):
             'pet': serialize_doc(pet_doc) if pet_doc else {'id': pet_id, 'name': 'Pet'},
             'other_party': {
                 'id': other_user_id,
-                'name': (other_user_doc.get('shelter_name') or other_user_doc.get('name')) if other_user_doc else ('Hope & Paws Sanctuary' if is_adopter else 'Adopter'),
+                'name': (other_user_doc.get('shelter_name') or other_user_doc.get('name')) if other_user_doc else (pet_doc.get('shelter_name') if pet_doc else ('Shelter' if is_adopter else 'Adopter')),
                 'email': other_user_doc.get('email') if other_user_doc else '',
                 'role': other_user_doc.get('role') if other_user_doc else ('shelter' if is_adopter else 'adopter'),
             },
             'application': serialize_doc(app),
-            'last_message': {
-                'text': f"Adoption application on file for {pet_name} • Status: {app_status}",
-                'created_at': app.get('created_at').isoformat() if hasattr(app.get('created_at'), 'isoformat') else str(app.get('created_at', '')),
-                'sender_id': 'system',
-                'sender_name': 'PawConnect System',
-                'sender_role': 'system',
-            },
+            'last_message': None,
             'unread_count': 0,
         })
 

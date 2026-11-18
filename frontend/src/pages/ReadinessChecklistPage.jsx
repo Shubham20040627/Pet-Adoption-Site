@@ -5,6 +5,7 @@ import {
   Sparkles, Check, Heart, HelpCircle, FileCheck2, ExternalLink, Printer 
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { authApi } from '../api/authApi';
 import AdopterHeader from '../components/AdopterHeader';
 import VerifiedAdopterBadgeCard from '../components/VerifiedAdopterBadgeCard';
 import '../styles/adopter-portal.css';
@@ -160,8 +161,10 @@ const QUESTIONS = [
 ];
 
 const ReadinessChecklistPage = () => {
-  const { user } = useAuth();
+  const { user, updateUserProfile } = useAuth();
   const navigate = useNavigate();
+  const userId = user?.id || user?._id || user?.email || 'guest';
+  const userEmail = (user?.email || '').toLowerCase();
 
   // State: current step, selected answers, whether certificate is earned
   const [currentStep, setCurrentStep] = useState(0);
@@ -170,21 +173,49 @@ const ReadinessChecklistPage = () => {
   const [hasPassed, setHasPassed] = useState(false);
   const [certData, setCertData] = useState(null);
 
-  // Load existing certification from localStorage if already cleared
+  // Load existing certification for this specific user
   useEffect(() => {
     try {
+      // 1. First check user profile from backend
+      if (user?.is_readiness_verified && user?.readiness_cert) {
+        setCertData(user.readiness_cert);
+        setHasPassed(true);
+        setIsCompleted(true);
+        return;
+      }
+
+      // 2. Check user-specific localStorage key
+      const userSavedVerified = localStorage.getItem(`pawconnect_readiness_verified_${userId}`);
+      const userSavedCert = localStorage.getItem(`pawconnect_readiness_cert_${userId}`);
+      if (userSavedVerified === 'true' && userSavedCert) {
+        const parsed = JSON.parse(userSavedCert);
+        if (parsed.passed !== false) {
+          setCertData(parsed);
+          setHasPassed(true);
+          setIsCompleted(true);
+          return;
+        }
+      }
+
+      // 3. Check generic storage only if it belongs to this user
       const savedVerified = localStorage.getItem('pawconnect_readiness_verified');
       const savedCert = localStorage.getItem('pawconnect_readiness_cert');
       if (savedVerified === 'true' && savedCert) {
         const parsed = JSON.parse(savedCert);
-        setCertData(parsed);
-        setHasPassed(parsed.passed !== false);
-        setIsCompleted(true);
+        const matchesEmail = parsed.userEmail && userEmail && parsed.userEmail.toLowerCase() === userEmail;
+        const matchesId = parsed.userId && user?.id && parsed.userId === user.id;
+        const matchesName = !parsed.userEmail && parsed.userName && user?.name && parsed.userName.toLowerCase() === user.name.toLowerCase();
+
+        if ((matchesEmail || matchesId || matchesName) && parsed.passed !== false) {
+          setCertData(parsed);
+          setHasPassed(true);
+          setIsCompleted(true);
+        }
       }
     } catch {
       // ignore
     }
-  }, []);
+  }, [user, userId, userEmail]);
 
   const currentQ = QUESTIONS[currentStep];
   const selectedOptionId = selectedAnswers[currentStep];
@@ -224,10 +255,12 @@ const ReadinessChecklistPage = () => {
       const passed = totalScore >= 80;
 
       if (passed) {
-        // Issue official certificate
+        // Issue official certificate for this specific user
         const cert = {
           certId: `PC-READY-${Math.floor(100000 + Math.random() * 900000)}`,
-          userName: user?.name || user?.full_name || 'Alex Morgan',
+          userId: user?.id || user?._id || '',
+          userEmail: user?.email || '',
+          userName: user?.name || user?.full_name || 'Verified Adopter',
           issueDate: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
           score: totalScore,
           status: 'PawConnect Certified Ready Adopter',
@@ -235,8 +268,22 @@ const ReadinessChecklistPage = () => {
         };
 
         try {
+          localStorage.setItem(`pawconnect_readiness_verified_${userId}`, 'true');
+          localStorage.setItem(`pawconnect_readiness_cert_${userId}`, JSON.stringify(cert));
           localStorage.setItem('pawconnect_readiness_verified', 'true');
           localStorage.setItem('pawconnect_readiness_cert', JSON.stringify(cert));
+
+          // Save to user profile in MongoDB
+          if (user) {
+            authApi.updateMe({
+              is_readiness_verified: true,
+              readiness_cert: cert
+            }).then((res) => {
+              if (updateUserProfile && res?.user) {
+                updateUserProfile(res.user);
+              }
+            }).catch((err) => console.warn('Could not sync cert to profile:', err));
+          }
         } catch (e) {
           console.error(e);
         }
@@ -253,6 +300,8 @@ const ReadinessChecklistPage = () => {
         };
 
         try {
+          localStorage.removeItem(`pawconnect_readiness_verified_${userId}`);
+          localStorage.removeItem(`pawconnect_readiness_cert_${userId}`);
           localStorage.removeItem('pawconnect_readiness_verified');
           localStorage.removeItem('pawconnect_readiness_cert');
         } catch (e) {

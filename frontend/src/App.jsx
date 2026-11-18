@@ -1,10 +1,11 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import PortalSidebar from './components/PortalSidebar';
+import AdopterNavbar from './components/AdopterNavbar';
+import ShelterNavbar from './components/ShelterNavbar';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Pages
@@ -57,29 +58,72 @@ const AppContent = () => {
     ))
   );
 
-  // Only approved shelters display the Shelter Portal sidebar
-  const isShelterPortalRoute = isShelterApproved && (
+  // Shelter Portal routes display the dedicated top horizontal Shelter Navbar matching reference mockup
+  const isShelterPortalRoute = isShelter && (
     location.pathname.startsWith('/shelter-dashboard') ||
     location.pathname.startsWith('/shelter_dashboard') ||
     location.pathname === '/pets/new' ||
-    location.pathname === '/messages' ||
+    (isShelter && location.pathname === '/messages') ||
     /^\/pets\/[^/]+\/edit/.test(location.pathname)
   );
 
   const isAdminPortalRoute = location.pathname.startsWith('/admin-dashboard');
 
-  const isPortal = isAdopterPortalRoute || isShelterPortalRoute || isAdminPortalRoute;
+  const isAdopterPortal = !isShelterPortalRoute && !isAdminPortalRoute && isAdopterPortalRoute;
+  const isLoginPage = location.pathname === '/login';
+
+  const renderNav = () => {
+    if (isLoginPage) {
+      return null;
+    }
+    if (isAdminPortalRoute) {
+      return <PortalSidebar />;
+    }
+    if (isShelterPortalRoute) {
+      return <ShelterNavbar />;
+    }
+    if (isAdopterPortal) {
+      return <AdopterNavbar />;
+    }
+    return <Navbar />;
+  };
+
+  const wrapperClass = isLoginPage
+    ? 'login-app-wrapper'
+    : isAdminPortalRoute
+    ? 'portal-app-wrapper'
+    : isShelterPortalRoute
+    ? 'shelter-app-wrapper'
+    : isAdopterPortal
+    ? 'adopter-app-wrapper'
+    : 'public-app-wrapper';
+
+  const contentAreaClass = isLoginPage
+    ? 'login-content-area'
+    : isAdminPortalRoute
+    ? 'portal-content-area'
+    : isShelterPortalRoute
+    ? 'shelter-content-area'
+    : isAdopterPortal
+    ? 'adopter-content-area'
+    : 'public-content-area';
+
+  const mainContentClass = isLoginPage
+    ? 'login-main-content'
+    : isAdminPortalRoute
+    ? 'portal-main-content'
+    : isShelterPortalRoute
+    ? 'shelter-main-content'
+    : isAdopterPortal
+    ? 'adopter-main-content'
+    : 'main-content';
 
   return (
-    <div className={isPortal ? 'portal-app-wrapper' : 'public-app-wrapper'}>
-      {isPortal ? (
-        <PortalSidebar />
-      ) : (
-        <Navbar />
-      )}
+    <div className={wrapperClass}>
+      {renderNav()}
 
-      <div className={isPortal ? 'portal-content-area' : 'public-content-area'}>
-        <main className={isPortal ? 'portal-main-content' : 'main-content'}>
+      <div className={contentAreaClass}>
+        <main className={mainContentClass}>
           <Routes>
             {/* Public Pages */}
             <Route path="/" element={<HomePage />} />
@@ -113,6 +157,9 @@ const AppContent = () => {
                 </ProtectedRoute>
               }
             />
+            <Route path="/adopter" element={<Navigate to="/adopter-dashboard" replace />} />
+            <Route path="/shelter" element={<Navigate to="/shelter-dashboard" replace />} />
+            <Route path="/admin" element={<Navigate to="/admin-dashboard" replace />} />
             <Route
               path="/my-applications"
               element={
@@ -178,7 +225,7 @@ const AppContent = () => {
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
-        {!isPortal && <Footer />}
+        {!isAdminPortalRoute && !isShelterPortalRoute && !isAdopterPortal && !isLoginPage && <Footer />}
       </div>
     </div>
   );

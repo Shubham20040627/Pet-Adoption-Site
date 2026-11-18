@@ -28,3 +28,7 @@ yarn-error.log*
 .DS_Store
 Thumbs.db
 
+# Temporary & Office lock files
+~$*
+*.tmp
+

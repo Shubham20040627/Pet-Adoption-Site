@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { Search, MapPin, Heart, PawPrint, SlidersHorizontal, Layers, Coins, X } from 'lucide-react';
+import { Search, MapPin, Heart, PawPrint, SlidersHorizontal, Layers, Coins, X, Building } from 'lucide-react';
 import { petsApi } from '../api/petsApi';
 import { useAuth } from '../context/AuthContext';
 import AdopterHeader from '../components/AdopterHeader';
@@ -31,7 +31,19 @@ const BrowsePetsPage = () => {
   const [age, setAge] = useState('all');
   const [gender, setGender] = useState('all');
   const [location, setLocation] = useState('all');
+  const [shelter, setShelter] = useState(searchParams.get('shelter') || 'all');
   const [sortBy, setSortBy] = useState('newest');
+
+  useEffect(() => {
+    const sParam = searchParams.get('shelter');
+    if (sParam) {
+      setShelter(sParam);
+    }
+    const qParam = searchParams.get('search');
+    if (qParam !== null) {
+      setSearchTerm(qParam);
+    }
+  }, [searchParams]);
 
   const estimatePetMonthlyCost = (pet) => {
     const sp = (pet.species || '').toLowerCase();
@@ -51,9 +63,16 @@ const BrowsePetsPage = () => {
       if (species !== 'all') params.species = species;
       if (gender !== 'all') params.gender = gender;
       if (location !== 'all') params.location = location;
+      if (shelter !== 'all') params.shelter = shelter;
 
       const data = await petsApi.list(params);
       let list = data.pets || [];
+      if (shelter !== 'all') {
+        list = list.filter(p =>
+          (p.shelter_name || p.shelter?.name || '').toLowerCase().includes(shelter.toLowerCase()) ||
+          p.shelter_id === shelter
+        );
+      }
       if (breed !== 'all') list = list.filter(p => p.breed?.toLowerCase().includes(breed.toLowerCase()));
       if (age === 'young') list = list.filter(p => p.age <= 2);
       else if (age === 'adult') list = list.filter(p => p.age > 2 && p.age < 7);
@@ -74,7 +93,7 @@ const BrowsePetsPage = () => {
     }
   };
 
-  useEffect(() => { fetchPets(); }, [species, breed, age, gender, location, sortBy, budgetLimit]);
+  useEffect(() => { fetchPets(); }, [species, breed, age, gender, location, shelter, sortBy, budgetLimit]);
 
   const handleSearch = (e) => {
     if (e && e.preventDefault) e.preventDefault();
@@ -178,6 +197,16 @@ const BrowsePetsPage = () => {
                 <option value="mumbai">Mumbai</option>
                 <option value="delhi">Delhi</option>
                 <option value="bangalore">Bangalore</option>
+                <option value="portland">Portland, OR</option>
+              </select>
+            </div>
+
+            <div className="ap-filter-group">
+              <span className="ap-filter-label">Shelter</span>
+              <select className="ap-select" value={shelter} onChange={e=>setShelter(e.target.value)}>
+                <option value="all">All Shelters</option>
+                <option value="Hope & Paws Animal Sanctuary">Hope &amp; Paws Sanctuary (10 pets)</option>
+                <option value="Alpha">Alpha Shelter (1 pet)</option>
               </select>
             </div>
 
@@ -186,7 +215,7 @@ const BrowsePetsPage = () => {
             </button>
 
             <button
-              onClick={() => { setSpecies('all'); setBreed('all'); setAge('all'); setGender('all'); setLocation('all'); setSearchTerm(''); }}
+              onClick={() => { setSpecies('all'); setBreed('all'); setAge('all'); setGender('all'); setLocation('all'); setShelter('all'); setSearchTerm(''); }}
               className="ap-btn-secondary"
               style={{marginTop:'1.15rem', fontSize:'0.82rem', padding:'0.5rem 0.85rem'}}
             >
@@ -194,6 +223,23 @@ const BrowsePetsPage = () => {
             </button>
           </div>
         </div>
+
+        {/* Shelter Filter Banner */}
+        {shelter !== 'all' && (
+          <div style={{ background: '#E8F5EE', border: '1px solid #B7DEC8', borderRadius: 14, padding: '0.75rem 1.25rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', color: '#174C38', fontSize: '0.9rem', fontWeight: 700 }}>
+              <Building size={18} />
+              <span>Showing verified rescue pets from: <u>{shelter}</u></span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setShelter('all')}
+              style={{ background: '#FFFFFF', border: '1px solid #D5CDC2', borderRadius: 8, padding: '0.35rem 0.8rem', fontSize: '0.8rem', cursor: 'pointer', color: '#4A6359', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.35rem' }}
+            >
+              <X size={14} /> Clear Shelter Filter
+            </button>
+          </div>
+        )}
 
         {/* Budget Filter Banner */}
         {budgetLimit && (
@@ -263,8 +309,14 @@ const BrowsePetsPage = () => {
                     <div className="ap-pet-name">{pet.name}</div>
                     <div className="ap-pet-breed">{pet.breed || pet.species}</div>
                     <div className="ap-pet-meta">{pet.age ? `${pet.age} years` : 'Adult'} • {pet.gender || 'Unknown'}</div>
-                    <div className="ap-pet-location"><MapPin size={12}/><span>{pet.shelter?.city || pet.city || 'Chandigarh'}</span></div>
+                    <div className="ap-pet-location"><MapPin size={12}/><span>{pet.shelter?.city || pet.city || pet.location || 'Portland, OR'}</span></div>
                     
+                    {/* Shelter attribution */}
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.78rem', color: '#174C38', fontWeight: 600, marginTop: '0.25rem' }}>
+                      <Building size={12} color="#174C38" />
+                      <span>{pet.shelter_name || pet.shelter?.name || 'Hope & Paws Sanctuary'}</span>
+                    </div>
+
                     {/* Monthly budget indicator pill */}
                     <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.74rem', color: '#166534', background: '#E8F5E9', padding: '0.2rem 0.55rem', borderRadius: 6, fontWeight: 700, marginTop: '0.35rem', width: 'fit-content' }}>
                       <Coins size={12} /> ~₹{estCost.toLocaleString('en-IN')}/mo care

@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import NotificationDropdown from './NotificationDropdown';
+import PawConnectLogo from './PawConnectLogo';
 import '../styles/portal-sidebar.css';
 
 const PortalSidebar = () => {
@@ -50,18 +51,12 @@ const PortalSidebar = () => {
         </button>
 
         {isAdminPortal ? (
-          <Link to="/admin-dashboard" className="portal-mobile-brand">
-            <div className="portal-brand-icon" style={{ background: '#14382A', border: '1px solid #D4AF37' }}>
-              <ShieldCheck size={18} color="#D4AF37" />
-            </div>
-            <span className="portal-brand-text" style={{ color: '#FFFFFF' }}>PawConnect <span style={{ color: '#D4AF37' }}>Admin</span></span>
+          <Link to="/admin-dashboard" className="portal-mobile-brand" style={{ textDecoration: 'none' }}>
+            <PawConnectLogo size="sm" variant="full" theme="admin" />
           </Link>
         ) : (
-          <Link to="/" className="portal-mobile-brand">
-            <div className="portal-brand-icon">
-              <PawPrint size={18} />
-            </div>
-            <span className="portal-brand-text">Paw<span>Connect</span></span>
+          <Link to="/" className="portal-mobile-brand" style={{ textDecoration: 'none' }}>
+            <PawConnectLogo size="sm" variant="full" theme="light" />
           </Link>
         )}
 
@@ -87,14 +82,8 @@ const PortalSidebar = () => {
         {/* Top: Brand & Portal Badge */}
         {isAdminPortal ? (
           <div className="portal-sidebar-admin-header">
-            <Link to="/admin-dashboard" className="portal-admin-brand-link" onClick={closeMobile}>
-              <div className="portal-admin-paw-box">
-                <PawPrint size={22} color="#FFFFFF" strokeWidth={2.4} />
-              </div>
-              <div className="portal-admin-brand-text">
-                <div className="portal-admin-brand-title">PawConnect</div>
-                <div className="portal-admin-brand-subtitle">PLATFORM ADMIN</div>
-              </div>
+            <Link to="/admin-dashboard" className="portal-admin-brand-link" onClick={closeMobile} style={{ textDecoration: 'none' }}>
+              <PawConnectLogo size="md" variant="full" theme="admin" showSubtitle subtitleText="PLATFORM ADMIN" />
             </Link>
             <button 
               className="portal-sidebar-close" 
@@ -107,14 +96,8 @@ const PortalSidebar = () => {
           </div>
         ) : !isShelterPortal ? (
           <div className="portal-sidebar-adopter-header">
-            <Link to="/" className="portal-adopter-brand-link" onClick={closeMobile}>
-              <div className="portal-adopter-paw-icon">
-                <PawPrint size={20} color="#FFFFFF" strokeWidth={2.2} />
-              </div>
-              <div className="portal-adopter-brand-text">
-                <div className="portal-adopter-brand-title">PawConnect</div>
-                <div className="portal-adopter-brand-subtitle">Pet Adoption Portal</div>
-              </div>
+            <Link to="/" className="portal-adopter-brand-link" onClick={closeMobile} style={{ textDecoration: 'none' }}>
+              <PawConnectLogo size="md" variant="full" theme="dark" showSubtitle subtitleText="Pet Adoption Portal" />
             </Link>
             <button 
               className="portal-sidebar-close" 
@@ -127,14 +110,8 @@ const PortalSidebar = () => {
           </div>
         ) : (
           <div className="portal-sidebar-shelter-header">
-            <Link to="/shelter-dashboard?tab=overview" className="portal-shelter-brand-link" onClick={closeMobile}>
-              <div className="portal-shelter-paw-icon">
-                <PawPrint size={20} color="#FFFFFF" strokeWidth={2.2} />
-              </div>
-              <div className="portal-shelter-brand-text">
-                <div className="portal-shelter-brand-title">PawConnect</div>
-                <div className="portal-shelter-brand-subtitle">Shelter Portal</div>
-              </div>
+            <Link to="/shelter-dashboard?tab=overview" className="portal-shelter-brand-link" onClick={closeMobile} style={{ textDecoration: 'none' }}>
+              <PawConnectLogo size="md" variant="full" theme="dark" showSubtitle subtitleText="Shelter Portal" />
             </Link>
             <button 
               className="portal-sidebar-close" 

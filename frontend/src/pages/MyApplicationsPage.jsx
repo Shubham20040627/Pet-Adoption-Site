@@ -22,61 +22,6 @@ import '../styles/meet-and-greet.css';
 
 const FALLBACK = 'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=200&q=80';
 
-// Fallback demo applications matching reference UI
-const DEMO_APPLICATIONS = [
-  {
-    id: 'demo-oliver',
-    status: 'submitted',
-    created_at: '2026-10-16T10:30:00Z',
-    pet: {
-      id: 'demo-oliver-pet',
-      name: 'Oliver',
-      breed: 'Russian Blue Mix',
-      species: 'Cat',
-      image_url: 'https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=800&auto=format&fit=crop',
-    }
-  },
-  {
-    id: 'demo-luna',
-    status: 'approved',
-    created_at: '2026-10-16T09:15:00Z',
-    contract_signed: true,
-    pet: {
-      id: 'demo-luna-pet',
-      name: 'Luna',
-      breed: 'Border Collie Mix',
-      species: 'Dog',
-      image_url: 'https://images.unsplash.com/photo-1517849845537-4d257902454a?w=800&auto=format&fit=crop',
-    }
-  },
-  {
-    id: 'demo-max',
-    status: 'approved',
-    created_at: '2026-10-14T14:20:00Z',
-    contract_signed: true,
-    pet: {
-      id: 'demo-max-pet',
-      name: 'Max',
-      breed: 'Golden Retriever Mix',
-      species: 'Dog',
-      image_url: 'https://images.unsplash.com/photo-1552053831-71594a27632d?w=800&auto=format&fit=crop',
-    }
-  },
-  {
-    id: 'demo-bella',
-    status: 'approved',
-    created_at: '2026-10-10T11:45:00Z',
-    contract_signed: true,
-    pet: {
-      id: 'demo-bella-pet',
-      name: 'Bella',
-      breed: 'Domestic Shorthair',
-      species: 'Cat',
-      image_url: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800&auto=format&fit=crop',
-    }
-  }
-];
-
 const MyApplicationsPage = () => {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -90,20 +35,10 @@ const MyApplicationsPage = () => {
   const loadApplications = async () => {
     try {
       const res = await adoptionsApi.getMyApplications();
-      const list = res.applications || [];
-      if (list.length >= 4) {
-        setApplications(list);
-      } else if (list.length > 0) {
-        // Merge real applications with demo applications so the UI always has 4 populated entries
-        const existingPetNames = new Set(list.map(a => a.pet?.name?.toLowerCase()));
-        const complement = DEMO_APPLICATIONS.filter(d => !existingPetNames.has(d.pet.name.toLowerCase()));
-        setApplications([...list, ...complement]);
-      } else {
-        setApplications(DEMO_APPLICATIONS);
-      }
+      setApplications(res.applications || []);
     } catch (e) {
       console.error('Failed to load applications:', e);
-      setApplications(DEMO_APPLICATIONS);
+      setApplications([]);
     } finally {
       setLoading(false);
     }
@@ -156,7 +91,7 @@ const MyApplicationsPage = () => {
 
         {/* Official Verified Adopter Credential Card */}
         <div style={{ marginBottom: '1.5rem' }}>
-          <VerifiedAdopterBadgeCard forceVerified={true} />
+          <VerifiedAdopterBadgeCard />
         </div>
 
         {/* Filter Pills + Search & Sort Toolbar */}

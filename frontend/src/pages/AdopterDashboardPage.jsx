@@ -3,7 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { 
   Heart, FileText, Sparkles, CheckSquare, Clock, ArrowRight, 
   Calendar, MapPin, PawPrint, X, CheckCircle2, User, Bell, Award,
-  Search, ChevronRight, Info, Save, Phone, Mail
+  Search, ChevronRight, ChevronLeft, Info, Save, Phone, Mail, Building
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { adoptionsApi } from '../api/adoptionsApi';
@@ -16,6 +16,30 @@ import '../styles/adopter-portal.css';
 
 const FALLBACK_PET_IMG = 'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=600&q=80';
 const FALLBACK_PET_IMG2 = 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=600&q=80';
+
+// High-resolution rescue pet images for the animated dashboard hero background slider
+const DASHBOARD_HERO_SLIDES = [
+  {
+    image: 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=1400&auto=format&fit=crop&q=85',
+    alt: 'Adorable rescue guinea pigs on green grass',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1552053831-71594a27632d?w=1400&auto=format&fit=crop&q=85',
+    alt: 'Happy golden retriever smiling companion',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1400&auto=format&fit=crop&q=85',
+    alt: 'Cute tabby rescue kitten',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=1400&auto=format&fit=crop&q=85',
+    alt: 'Playful companion rescue pup outdoors',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=1400&auto=format&fit=crop&q=85',
+    alt: 'Gentle rescue bunny rabbit',
+  },
+];
 
 const AdopterDashboardPage = () => {
   const { user, favoriteIds, toggleFavorite, refreshFavorites } = useAuth();
@@ -32,12 +56,36 @@ const AdopterDashboardPage = () => {
   const [selectedCertAppId, setSelectedCertAppId] = useState(null);
 
   const [profileData, setProfileData] = useState({
-    name: user?.name || 'Alex Morgan',
-    email: user?.email || 'alex@example.com',
-    phone: user?.phone || '9876543210',
-    city: user?.city || 'Chandigarh',
+    name: user?.name || '',
+    email: user?.email || '',
+    phone: user?.phone || '',
+    city: user?.city || '',
   });
   const [profileSaved, setProfileSaved] = useState(false);
+
+  // Background pet image slider state for the Dashboard Hero Banner
+  const [heroSlide, setHeroSlide] = useState(0);
+  const [heroPaused, setHeroPaused] = useState(false);
+
+  // Auto-advance dashboard hero slider at a regular, noticeable interval (every 2.2 seconds)
+  useEffect(() => {
+    if (heroPaused) return;
+    const interval = setInterval(() => {
+      setHeroSlide((prev) => (prev + 1) % DASHBOARD_HERO_SLIDES.length);
+    }, 2200);
+    return () => clearInterval(interval);
+  }, [heroPaused]);
+
+  useEffect(() => {
+    if (user) {
+      setProfileData({
+        name: user.name || '',
+        email: user.email || '',
+        phone: user.phone || '',
+        city: user.city || '',
+      });
+    }
+  }, [user]);
 
   const loadData = async () => {
     setLoading(true);
@@ -118,8 +166,12 @@ const AdopterDashboardPage = () => {
         <div className="ap-pet-name">{pet.name}</div>
         <div className="ap-pet-breed">{pet.breed || pet.species}</div>
         <div className="ap-pet-meta">{pet.age ? `${pet.age} years` : 'Adult'} • {pet.gender || 'Unknown'}</div>
-        <div className="ap-pet-location"><MapPin size={12} /><span>{pet.shelter?.city || pet.city || 'Chandigarh'}</span></div>
-        <Link to={`/pets/${pet.id}`} className="ap-pet-view-btn">View Details</Link>
+        <div className="ap-pet-location"><MapPin size={12} /><span>{pet.shelter?.city || pet.city || pet.location || 'Portland, OR'}</span></div>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.78rem', color: '#174C38', fontWeight: 600, marginTop: '0.2rem' }}>
+          <Building size={12} color="#174C38" />
+          <span>{pet.shelter_name || pet.shelter?.name || 'Hope & Paws Sanctuary'}</span>
+        </div>
+        <Link to={`/pets/${pet.id}`} className="ap-pet-view-btn" style={{ marginTop: '0.5rem' }}>View Details</Link>
       </div>
     </div>
   );
@@ -133,12 +185,94 @@ const AdopterDashboardPage = () => {
         {currentTab === 'overview' && (
           <>
 
-            {/* Modern Hero Banner matching Reference UI */}
+            {/* Modern Hero Banner with Animated Background Pet Image Slider */}
             <div className="ap-hero-banner">
+              {/* Background Sliding Images Carousel */}
+              <div className="ap-hero-slider-wrap">
+                <div
+                  className="ap-hero-slider-track"
+                  style={{
+                    width: `${DASHBOARD_HERO_SLIDES.length * 100}%`,
+                    transform: `translateX(-${heroSlide * (100 / DASHBOARD_HERO_SLIDES.length)}%)`,
+                  }}
+                >
+                  {DASHBOARD_HERO_SLIDES.map((slide, idx) => (
+                    <div
+                      key={idx}
+                      className="ap-hero-slider-slide"
+                      style={{ width: `${100 / DASHBOARD_HERO_SLIDES.length}%` }}
+                    >
+                      <img
+                        src={slide.image}
+                        alt={slide.alt}
+                        className="ap-hero-banner-img"
+                        onError={(e) => {
+                          e.target.src = FALLBACK_PET_IMG;
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Smooth Gradient Overlay ensuring complete readability of left-side text */}
+                <div className="ap-hero-banner-overlay" />
+
+                {/* Handwritten Script Badge matching Reference Screenshot */}
+                <div className="ap-hero-handwritten-badge">
+                  <div className="ap-badge-script">Good Things Happen with Adoption</div>
+                  <div className="ap-badge-stars">🐾 🐾</div>
+                </div>
+
+                {/* Slider Navigation Controls (Prev, Next & Indicator Dots) */}
+                <div 
+                  className="ap-hero-slider-controls"
+                  onMouseEnter={() => setHeroPaused(true)}
+                  onMouseLeave={() => setHeroPaused(false)}
+                >
+                  <button
+                    type="button"
+                    className="ap-hero-nav-btn prev"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setHeroSlide((prev) => (prev - 1 + DASHBOARD_HERO_SLIDES.length) % DASHBOARD_HERO_SLIDES.length);
+                    }}
+                    aria-label="Previous pet slide"
+                  >
+                    <ChevronLeft size={13} />
+                  </button>
+                  <div className="ap-hero-slider-dots">
+                    {DASHBOARD_HERO_SLIDES.map((_, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        className={`ap-hero-dot ${idx === heroSlide ? 'active' : ''}`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setHeroSlide(idx);
+                        }}
+                        aria-label={`Go to slide ${idx + 1}`}
+                      />
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    className="ap-hero-nav-btn next"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setHeroSlide((prev) => (prev + 1) % DASHBOARD_HERO_SLIDES.length);
+                    }}
+                    aria-label="Next pet slide"
+                  >
+                    <ChevronRight size={13} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Foreground Banner Content (Greetings, Tagline & Action Buttons) */}
               <div className="ap-hero-banner-content">
                 <span className="ap-hero-welcome-tag">WELCOME BACK,</span>
                 <h1 className="ap-hero-title-greeting">
-                  {user?.name ? `${user.name}!` : 'DEF!'} <span className="ap-wave">👋</span>
+                  {user?.name ? `${user.name}!` : 'Adopter!'} <span className="ap-wave">👋</span>
                 </h1>
                 <h2 className="ap-hero-question">Ready to find your new best friend?</h2>
                 <p className="ap-hero-tagline">
@@ -154,24 +288,6 @@ const AdopterDashboardPage = () => {
                   </Link>
                 </div>
               </div>
-
-              {/* Right Side Visual with High-Res Puppy & Kitten photo and Handwritten Script Badge */}
-              <div className="ap-hero-banner-visual">
-                <img
-                  src="https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=1200&auto=format&fit=crop&q=85"
-                  alt="Puppy and kitten cuddling together"
-                  className="ap-hero-banner-img"
-                  onError={(e) => {
-                    e.target.src = 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=1000&auto=format&fit=crop';
-                  }}
-                />
-                <div className="ap-hero-banner-overlay" />
-
-                <div className="ap-hero-handwritten-badge">
-                  <div className="ap-badge-script">Good Things Happen with Adoption</div>
-                  <div className="ap-badge-stars">✦ ✦ ✦</div>
-                </div>
-              </div>
             </div>
 
             {/* 4 Metric Stat Cards matching Reference UI */}
@@ -181,7 +297,7 @@ const AdopterDashboardPage = () => {
                   <FileText size={22} />
                 </div>
                 <div className="ap-metric-info">
-                  <div className="ap-metric-number">{activeAppsCount || 1}</div>
+                  <div className="ap-metric-number">{activeAppsCount}</div>
                   <div className="ap-metric-title">Active Applications</div>
                   <div className="ap-metric-desc">Keep track of your progress</div>
                 </div>
@@ -195,7 +311,7 @@ const AdopterDashboardPage = () => {
                   <Clock size={22} />
                 </div>
                 <div className="ap-metric-info">
-                  <div className="ap-metric-number">{pendingReviewsCount || 0}</div>
+                  <div className="ap-metric-number">{pendingReviewsCount}</div>
                   <div className="ap-metric-title">Pending Review</div>
                   <div className="ap-metric-desc">Awaiting shelter response</div>
                 </div>
@@ -209,7 +325,7 @@ const AdopterDashboardPage = () => {
                   <Calendar size={22} />
                 </div>
                 <div className="ap-metric-info">
-                  <div className="ap-metric-number">{upcomingVisitsCount || 4}</div>
+                  <div className="ap-metric-number">{upcomingVisitsCount}</div>
                   <div className="ap-metric-title">Upcoming Visits</div>
                   <div className="ap-metric-desc">Scheduled meet &amp; greets</div>
                 </div>
@@ -223,7 +339,7 @@ const AdopterDashboardPage = () => {
                   <Heart size={22} />
                 </div>
                 <div className="ap-metric-info">
-                  <div className="ap-metric-number">{totalFavoritesCount || 2}</div>
+                  <div className="ap-metric-number">{totalFavoritesCount}</div>
                   <div className="ap-metric-title">Favorite Pets</div>
                   <div className="ap-metric-desc">Pets you saved</div>
                 </div>
@@ -235,8 +351,29 @@ const AdopterDashboardPage = () => {
 
             {/* Official PawConnect Credential Card (Verified Ready Adopter) */}
             <div style={{ marginBottom: '1.75rem' }}>
-              <VerifiedAdopterBadgeCard forceVerified={true} />
+              <VerifiedAdopterBadgeCard />
             </div>
+
+            {/* Featured Pets from Hope & Paws Animal Sanctuary */}
+            {recommended.length > 0 && (
+              <div style={{ marginBottom: '2.25rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+                  <div>
+                    <h2 className="ap-section-title" style={{ margin: 0 }}>Available Pets from Hope &amp; Paws Sanctuary</h2>
+                    <p style={{ margin: '3px 0 0', fontSize: '0.86rem', color: '#7A9187' }}>Verified rescue companions ready for adoption</p>
+                  </div>
+                  <Link to="/pets?shelter=Hope%20%26%20Paws%20Animal%20Sanctuary" className="ap-btn-secondary" style={{ fontSize: '0.84rem', padding: '0.42rem 0.95rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', textDecoration: 'none' }}>
+                    View All 10 Shelter Pets <ArrowRight size={14} />
+                  </Link>
+                </div>
+
+                <div className="ap-pets-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
+                  {recommended.map(pet => (
+                    <PetCard key={pet.id} pet={pet} isFav={favoriteIds.includes(pet.id)} />
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Journey Cards */}
             <div style={{marginBottom:'2rem'}}>
@@ -412,7 +549,7 @@ const AdopterDashboardPage = () => {
 
             {/* Official Verified Adopter Credential Card */}
             <div style={{ marginBottom: '1.75rem' }}>
-              <VerifiedAdopterBadgeCard forceVerified={true} />
+              <VerifiedAdopterBadgeCard />
             </div>
 
             {/* Contact Information Form Card */}
@@ -510,10 +647,10 @@ const AdopterDashboardPage = () => {
                     className="ap-btn-cancel-profile"
                     onClick={() => {
                       setProfileData({
-                        name: user?.name || 'DEF',
-                        email: user?.email || 'def@gmail.com',
-                        phone: user?.phone || '1234567890',
-                        city: user?.city || 'Chandigarh',
+                        name: user?.name || '',
+                        email: user?.email || '',
+                        phone: user?.phone || '',
+                        city: user?.city || '',
                       });
                     }}
                   >

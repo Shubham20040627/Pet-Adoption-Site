@@ -1,0 +1,831 @@
+/* ==========================================================================
+   PawConnect — Redesigned Modern Login Page Styles
+   Matches Reference Mockup (media_1793247108661_ce4594b3.jpg)
+   Colors: Emerald Green #10B981, Deep Charcoal/Dark Forest #111A16
+   ========================================================================== */
+
+/* Login Page Dedicated Wrappers to eliminate vertical scrollbars completely */
+.login-app-wrapper,
+.login-content-area,
+.login-main-content {
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Page Wrapper */
+.login-page-container {
+  height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 1.5rem 2rem;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  background-color: #08110D;
+}
+
+/* ── Scenic High-Quality Background Backdrop ────────────────── */
+.login-bg-scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.login-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 26%;
+  filter: brightness(0.82) contrast(1.05) saturate(1.1);
+  transform: scale(1.03);
+  transition: transform 12s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.login-bg-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(6, 18, 12, 0.32) 0%, rgba(3, 10, 6, 0.62) 100%),
+    linear-gradient(180deg, rgba(3, 10, 6, 0.40) 0%, rgba(3, 10, 6, 0.15) 35%, rgba(3, 10, 6, 0.65) 100%);
+  box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.5);
+}
+
+/* Ambient Floating Paw Watermarks */
+.login-watermark-paw {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.07);
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+}
+
+.login-watermark-paw.paw-left-1 {
+  top: 12%;
+  left: 3%;
+  transform: rotate(-25deg);
+}
+
+.login-watermark-paw.paw-left-2 {
+  bottom: 12%;
+  left: 5%;
+  transform: rotate(18deg);
+}
+
+.login-watermark-paw.paw-right-1 {
+  top: 10%;
+  right: 4%;
+  transform: rotate(32deg);
+}
+
+.login-watermark-paw.paw-right-2 {
+  bottom: 16%;
+  right: 2%;
+  transform: rotate(-15deg);
+}
+
+/* ── Site Brand Logo in Corner Outside the Login Card ────────── */
+.login-corner-brand {
+  position: absolute;
+  top: 1.35rem;
+  left: 2rem;
+  z-index: 25;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  background: rgba(8, 18, 14, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(12px);
+  padding: 0.5rem 1.05rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  transition: all 0.2s ease;
+}
+
+.login-corner-brand:hover {
+  background: rgba(8, 18, 14, 0.88);
+  border-color: rgba(16, 185, 129, 0.45);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+}
+
+/* ── Main Dual-Column Login Card ────────────────────────── */
+.login-card-wrapper {
+  max-width: 1100px;
+  width: 100%;
+  display: flex;
+  border-radius: 24px;
+  overflow: hidden;
+  background-color: #111A16;
+  box-shadow: 0 32px 85px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.12);
+  min-height: min(585px, calc(100vh - 2.5rem));
+  max-height: calc(100vh - 2rem);
+  position: relative;
+  z-index: 10;
+  transform: translateY(-0.6rem); /* Shift card slightly upward */
+  backdrop-filter: blur(10px);
+}
+
+/* ── LEFT COLUMN: Interactive Hero Image Slider ─────────── */
+.login-left-slider-col {
+  flex: 1.15;
+  position: relative;
+  overflow: hidden;
+  align-self: stretch;
+  display: flex;
+  min-height: 100%;
+}
+
+/* Sliding Track */
+.login-slider-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  display: flex;
+  transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+}
+
+.login-slider-slide {
+  height: 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.login-slider-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: brightness(0.96) contrast(1.05);
+}
+
+/* Gradient Overlay for Text Legibility */
+.login-slider-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(180deg, rgba(8, 20, 15, 0.65) 0%, rgba(8, 20, 15, 0.15) 35%, rgba(8, 20, 15, 0.45) 60%, rgba(8, 20, 15, 0.94) 100%),
+    linear-gradient(90deg, rgba(8, 20, 15, 0.55) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Slider Foreground Content */
+.login-slider-content-overlay {
+  position: absolute;
+  inset: 0;
+  padding: 2rem 2.25rem 1.85rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.login-slider-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  pointer-events: auto;
+}
+
+/* Handwritten Cursive Badge in Mockup: "Good Pets Brighter Tomorrows" */
+.login-slider-script-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.32rem 0.8rem;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+  backdrop-filter: blur(8px);
+  color: #FFFFFF;
+}
+
+.script-text {
+  font-family: 'Caveat', 'Segoe Script', cursive, sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #F0FDF4;
+  letter-spacing: 0.02em;
+}
+
+.script-paw {
+  color: #34D399;
+}
+
+/* Middle / Bottom Hero Typography */
+.login-slider-bottom-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  pointer-events: auto;
+}
+
+.login-slider-title {
+  font-size: 2.3rem;
+  font-weight: 900;
+  line-height: 1.14;
+  color: #FFFFFF;
+  letter-spacing: -0.03em;
+  margin: 0;
+  font-family: var(--font-heading);
+}
+
+.login-highlight {
+  color: #10B981;
+  display: block;
+}
+
+.login-slider-desc {
+  font-size: 0.92rem;
+  color: #D1E5DD;
+  line-height: 1.45;
+  margin: 0;
+  max-width: 460px;
+}
+
+/* 4 Feature Points */
+.login-slider-features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.2rem;
+}
+
+.login-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: #E2EFE9;
+  font-size: 0.86rem;
+  font-weight: 500;
+}
+
+.login-feature-icon-wrap {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #34D399;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Slider Pagination Dots */
+.login-slider-dots {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+
+.login-slider-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.25s ease;
+  outline: none;
+}
+
+.login-slider-dot:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.login-slider-dot.active {
+  width: 24px;
+  height: 8px;
+  border-radius: 9999px;
+  background: #10B981;
+}
+
+/* RIGHT COLUMN: Dynamic Role-Themed Login Form */
+.login-right-form-col {
+  flex: 0.95;
+  padding: 2.1rem 2.5rem 1.85rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  background-color: transparent;
+}
+
+/* ── Base Layer: Holds previous role color during the sweep ── */
+.login-card-bg-base {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ── Sweeping Layer: Incoming new role color from Bottom-Right to Top-Left ── */
+.login-card-bg-sweep {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.login-card-bg-sweep.animate-sweep {
+  clip-path: circle(0% at 100% 100%);
+  animation: roleSweepCircle 1.15s cubic-bezier(0.25, 1, 0.4, 1) forwards;
+  filter: drop-shadow(-4px -4px 14px var(--sweep-accent));
+}
+
+@keyframes roleSweepCircle {
+  0% {
+    clip-path: circle(0% at 100% 100%);
+  }
+  100% {
+    clip-path: circle(185% at 100% 100%);
+  }
+}
+
+/* ── Role Backgrounds & Accents (Rich, High-Contrast & Legible) ── */
+/* 1. ADOPTER THEME (Deep Emerald Pine) */
+.role-bg-adopter {
+  background-color: #0B2317;
+  --sweep-accent: #10B981;
+}
+
+.login-right-form-col.role-active-adopter {
+  --role-accent: #10B981;
+  --role-accent-hover: #059669;
+  --role-accent-soft: rgba(16, 185, 129, 0.16);
+  --role-accent-border: rgba(16, 185, 129, 0.38);
+  --role-accent-text: #34D399;
+  --role-input-bg: #112F21;
+  --role-input-border: #1F4C35;
+  --role-input-focus-bg: #173E2C;
+}
+
+/* 2. SHELTER THEME (Deep Warm Cognac Espresso) */
+.role-bg-shelter {
+  background-color: #2A160A;
+  --sweep-accent: #F59E0B;
+}
+
+.login-right-form-col.role-active-shelter {
+  --role-accent: #F59E0B;
+  --role-accent-hover: #D97706;
+  --role-accent-soft: rgba(245, 158, 11, 0.16);
+  --role-accent-border: rgba(245, 158, 11, 0.38);
+  --role-accent-text: #FBBF24;
+  --role-input-bg: #381E0E;
+  --role-input-border: #592E14;
+  --role-input-focus-bg: #4A2712;
+}
+
+/* 3. ADMIN THEME (Deep Midnight Royal Navy) */
+.role-bg-admin {
+  background-color: #111633;
+  --sweep-accent: #6366F1;
+}
+
+.login-right-form-col.role-active-admin {
+  --role-accent: #6366F1;
+  --role-accent-hover: #4F46E5;
+  --role-accent-soft: rgba(99, 102, 241, 0.16);
+  --role-accent-border: rgba(99, 102, 241, 0.38);
+  --role-accent-text: #818CF8;
+  --role-input-bg: #181E44;
+  --role-input-border: #28326E;
+  --role-input-focus-bg: #21295D;
+}
+
+/* ── Animated Content Gliding Smoothly from Bottom-Right to Top-Left ─────── */
+.login-role-content-body {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  animation: roleContentGlideFromBottomRight 0.75s cubic-bezier(0.25, 1, 0.4, 1) forwards;
+}
+
+@keyframes roleContentGlideFromBottomRight {
+  0% {
+    opacity: 0.5;
+    transform: translate(12px, 12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+
+/* Top Role Switcher & Back Link Row */
+.login-top-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.1rem;
+  position: relative;
+  z-index: 3;
+}
+
+/* Segmented Pill Tabs */
+.login-role-segmented-pill {
+  display: inline-flex;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  padding: 3px;
+  transition: all 0.2s ease;
+}
+
+.login-role-tab {
+  padding: 0.36rem 1.05rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  color: #94A3B8;
+  background: transparent;
+  transition: all 0.18s ease;
+  outline: none;
+  font-family: inherit;
+}
+
+.login-role-tab:hover {
+  color: #FFFFFF;
+}
+
+.login-role-tab.active {
+  background: var(--role-accent, #10B981);
+  color: #FFFFFF;
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+.login-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #94A3B8;
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.login-back-link:hover {
+  color: #FFFFFF;
+}
+
+/* Header & Role Icon Badge */
+.login-header-group {
+  margin-bottom: 1.15rem;
+}
+
+.login-role-icon-box {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--role-accent-soft, rgba(16, 185, 129, 0.12));
+  border: 1px solid var(--role-accent-border, rgba(16, 185, 129, 0.28));
+  color: var(--role-accent, #10B981);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.55rem;
+  transition: all 0.25s ease;
+}
+
+.login-form-title {
+  font-size: 1.72rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0 0 0.25rem;
+  letter-spacing: -0.025em;
+  font-family: var(--font-heading);
+}
+
+.login-form-subtitle {
+  font-size: 0.85rem;
+  color: #D1D5DB;
+  margin: 0;
+  line-height: 1.4;
+  font-weight: 400;
+}
+
+/* Form Styles */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.88rem;
+}
+
+.login-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.login-field-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #E2E8F0;
+  letter-spacing: 0.01em;
+}
+
+.login-input-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: var(--role-input-bg, #18231D);
+  border: 1px solid var(--role-input-border, #24352B);
+  border-radius: 9px;
+  padding: 0.58rem 0.9rem;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.login-input-container:focus-within {
+  border-color: var(--role-accent, #10B981);
+  background-color: var(--role-input-focus-bg, #1C2922);
+  box-shadow: 0 0 0 2px var(--role-accent-soft, rgba(16, 185, 129, 0.12));
+}
+
+.login-input-icon {
+  color: #94A3B8;
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.login-input-container:focus-within .login-input-icon {
+  color: var(--role-accent, #10B981);
+}
+
+.login-text-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: #FFFFFF;
+  width: 100%;
+  font-weight: 500;
+}
+
+.login-text-input::placeholder {
+  color: #94A3B8;
+}
+
+.login-password-eye-btn {
+  background: transparent;
+  border: none;
+  color: #64748B;
+  cursor: pointer;
+  padding: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease;
+  outline: none;
+}
+
+.login-password-eye-btn:hover {
+  color: #F8FAFC;
+}
+
+/* Remember Me & Forgot Password Row */
+.login-options-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: -0.15rem;
+}
+
+.login-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #94A3B8;
+  font-size: 0.8rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.login-checkbox-input {
+  accent-color: var(--role-accent, #10B981);
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.login-forgot-btn {
+  background: transparent;
+  border: none;
+  color: var(--role-accent-text, #34D399);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.15s ease;
+  font-family: inherit;
+}
+
+.login-forgot-btn:hover {
+  opacity: 0.85;
+}
+
+/* Submit Button */
+.login-submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.76rem 1.25rem;
+  border-radius: 9px;
+  background-color: var(--role-accent, #10B981);
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 0.92rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  font-family: inherit;
+  margin-top: 0.25rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.login-submit-btn:hover:not(:disabled) {
+  background-color: var(--role-accent-hover, #059669);
+  transform: translateY(-1px);
+}
+
+.login-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Error Alert */
+.login-error-alert {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.85rem;
+  background: rgba(220, 38, 38, 0.15);
+  border: 1px solid rgba(220, 38, 38, 0.35);
+  border-radius: 8px;
+  color: #FCA5A5;
+  font-size: 0.82rem;
+  font-weight: 500;
+  margin-bottom: 0.45rem;
+}
+
+/* OR Divider */
+.login-or-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin: 0.95rem 0 0.8rem;
+  color: #64748B;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.login-or-divider::before,
+.login-or-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Google Sign-in Container */
+.login-google-wrap {
+  width: 100%;
+}
+
+.login-google-btn-clean {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.68rem 1rem;
+  background-color: #FFFFFF;
+  color: #1E293B;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 1px solid #CBD5E1;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background-color 0.18s ease;
+  font-family: inherit;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.login-google-btn-clean:hover {
+  background-color: #F8FAFC;
+}
+
+/* Register Footer */
+.login-bottom-footer {
+  text-align: center;
+  margin-top: 0.95rem;
+  font-size: 0.84rem;
+  color: #94A3B8;
+}
+
+.login-register-link {
+  color: var(--role-accent-text, #34D399);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  margin-left: 0.25rem;
+  transition: opacity 0.15s ease;
+}
+
+.login-register-link:hover {
+  opacity: 0.85;
+}
+
+
+/* ── Responsive Mobile & Tablet ──────────────────────────── */
+@media (max-width: 992px) {
+  .login-corner-brand {
+    top: 0.85rem;
+    left: 1rem;
+    padding: 0.38rem 0.8rem;
+  }
+
+  .login-app-wrapper,
+  .login-content-area,
+  .login-main-content,
+  .login-page-container {
+    height: auto;
+    max-height: none;
+    overflow-y: auto;
+  }
+
+  .login-card-wrapper {
+    flex-direction: column;
+    max-width: 540px;
+    transform: none;
+    max-height: none;
+    min-height: unset;
+  }
+
+  .login-left-slider-col {
+    min-height: 340px;
+    height: 340px;
+  }
+
+  .login-slider-title {
+    font-size: 1.85rem;
+  }
+
+  .login-slider-features {
+    display: none;
+  }
+
+  .login-right-form-col {
+    padding: 1.85rem 1.6rem;
+  }
+}
+
+@media (max-width: 540px) {
+  .login-page-container {
+    padding: 1rem 0.75rem;
+  }
+
+  .login-slider-title {
+    font-size: 1.5rem;
+  }
+
+  .login-right-form-col {
+    padding: 1.35rem 1rem;
+  }
+
+  .login-top-actions-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.65rem;
+  }
+}

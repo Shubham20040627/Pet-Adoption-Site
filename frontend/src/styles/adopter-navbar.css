@@ -1,0 +1,843 @@
+/* ==========================================================================
+   PawConnect — Adopter Top Navigation Bar Styles
+   Matches Reference Mockup (media_1793245366838_6e5b1a72.png)
+   Colors: Forest Green #174C38, Light Green #E8F5EE, Warm Cream #F8F5EF
+   ========================================================================== */
+
+.adopter-navbar-wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #EDE8E1;
+  box-shadow: 0 2px 12px rgba(15, 56, 42, 0.035);
+  width: 100%;
+}
+
+.adopter-navbar-container {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0.75rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+/* 1. Left: Brand */
+.adopter-navbar-left {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.adopter-navbar-brand-link {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  outline: none;
+}
+
+/* 2. Middle: Nav links & dropdowns */
+.adopter-nav-links-desktop {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex: 1;
+  margin-left: 1rem;
+}
+
+/* Home Pill Button */
+.adopter-nav-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 1.15rem;
+  border-radius: 9999px;
+  font-size: 0.93rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: #385045;
+  background-color: transparent;
+  transition: all 0.16s ease;
+}
+
+.adopter-nav-pill-btn:hover {
+  background-color: #F8F5EF;
+  color: #174C38;
+}
+
+.adopter-nav-pill-btn.active {
+  background-color: #E8F5EE;
+  color: #174C38;
+  font-weight: 700;
+}
+
+/* Dropdown trigger wrapper */
+.adopter-nav-dropdown-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+/* Nav Item Button / Link */
+.adopter-nav-item-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.93rem;
+  font-weight: 500;
+  color: #385045;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  font-family: inherit;
+  transition: all 0.16s ease;
+  white-space: nowrap;
+}
+
+.adopter-nav-item-btn:hover {
+  background-color: #F8F5EF;
+  color: #174C38;
+}
+
+.adopter-nav-item-btn.active {
+  color: #174C38;
+  font-weight: 600;
+}
+
+.adopter-chevron {
+  transition: transform 0.2s ease;
+  color: #7A9187;
+  flex-shrink: 0;
+}
+
+.adopter-chevron.rotated {
+  transform: rotate(180deg);
+  color: #174C38;
+}
+
+/* ── Dropdown Menus ────────────────────────────────────────── */
+.adopter-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  background: #FFFFFF;
+  border: 1px solid #EDE8E1;
+  border-radius: 14px;
+  box-shadow: 0 14px 36px rgba(15, 56, 42, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 0.45rem;
+  min-width: 195px;
+  z-index: 1000;
+  animation: adopterFadeInDown 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.adopter-dropdown-menu.dropdown-menu-wide {
+  min-width: 225px;
+}
+
+.adopter-dropdown-menu.dropdown-menu-pets-mega {
+  min-width: 320px;
+  max-width: 360px;
+  padding: 0.6rem;
+}
+
+.adopter-pets-dropdown-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-bottom: 0.6rem;
+}
+
+.adopter-dropdown-item.primary-action {
+  background-color: #F8F5EF;
+  border: 1px solid #EDE8E1;
+}
+
+.adopter-dropdown-item.primary-action:hover {
+  background-color: #E8F5EE;
+  border-color: #B7DEC8;
+}
+
+.adopter-pets-dropdown-shelter-section {
+  border-top: 1px solid #EDE8E1;
+  padding-top: 0.65rem;
+}
+
+.adopter-shelter-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  padding: 0 0.35rem;
+}
+
+.shelter-preview-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #174C38;
+}
+
+.shelter-preview-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #15803D;
+  background-color: #DCFCE7;
+  padding: 1px 6px;
+  border-radius: 9999px;
+}
+
+.adopter-shelter-pets-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.45rem;
+  margin-bottom: 0.6rem;
+}
+
+.adopter-preview-pet-card {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem;
+  background: #FAF8F5;
+  border: 1px solid #EFECE6;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.adopter-preview-pet-card:hover {
+  background: #FFFFFF;
+  border-color: #174C38;
+  box-shadow: 0 4px 12px rgba(15, 56, 42, 0.08);
+  transform: translateY(-1px);
+}
+
+.adopter-preview-pet-img {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.adopter-preview-pet-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.adopter-preview-pet-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #162620;
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.adopter-preview-pet-breed {
+  font-size: 0.7rem;
+  color: #7A9187;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+
+.adopter-preview-pet-status {
+  font-size: 0.65rem;
+  color: #15803D;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 2px;
+}
+
+.status-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: #10B981;
+  display: inline-block;
+}
+
+.adopter-view-all-shelter-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 0.55rem;
+  background-color: #E8F5EE;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #174C38;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.adopter-view-all-shelter-link:hover {
+  background-color: #D3ECD9;
+}
+
+.adopter-dropdown-menu.dropdown-menu-user {
+  right: 0;
+  left: auto;
+  min-width: 260px;
+}
+
+@keyframes adopterFadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.adopter-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.58rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #162620;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  outline: none;
+}
+
+.adopter-dropdown-item:hover {
+  background-color: #F8F5EF;
+  color: #174C38;
+}
+
+.adopter-dropdown-item .dropdown-icon {
+  color: #7A9187;
+  flex-shrink: 0;
+  transition: color 0.15s ease;
+}
+
+.adopter-dropdown-item:hover .dropdown-icon {
+  color: #174C38;
+}
+
+.adopter-dropdown-item.logout-item {
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  color: #DC2626;
+}
+
+.adopter-dropdown-item.logout-item:hover {
+  background-color: #FEE2E2;
+  color: #B91C1C;
+}
+
+.dropdown-icon.danger {
+  color: #DC2626 !important;
+}
+
+.dropdown-pill-counter {
+  margin-left: auto;
+  background-color: #FEE2E2;
+  color: #B91C1C;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 9999px;
+}
+
+.dropdown-verified-tag {
+  background-color: #DCFCE7;
+  color: #15803D;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+}
+
+.adopter-dropdown-divider {
+  height: 1px;
+  background-color: #EDE8E1;
+  margin: 0.4rem 0;
+}
+
+/* User Card inside dropdown */
+.adopter-user-card-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.85rem 0.5rem;
+}
+
+.adopter-user-head-name {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #162620;
+  line-height: 1.2;
+}
+
+.adopter-user-head-email {
+  font-size: 0.75rem;
+  color: #7A9187;
+  margin-top: 1px;
+  max-width: 170px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.adopter-user-badge-row {
+  margin-top: 0.35rem;
+}
+
+.adopter-user-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 9999px;
+}
+
+.adopter-user-badge.verified {
+  background-color: #DCFCE7;
+  color: #15803D;
+}
+
+.adopter-user-badge.standard {
+  background-color: #F8F5EF;
+  color: #4A6359;
+}
+
+/* 3. Right side: Search, Notifications, User Pill */
+.adopter-navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-shrink: 0;
+}
+
+/* Search bar */
+.adopter-nav-search-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #F8F5EF;
+  border: 1px solid #E5E0D8;
+  border-radius: 9999px;
+  padding: 0.42rem 0.95rem;
+  width: 220px;
+  transition: all 0.2s ease;
+}
+
+.adopter-nav-search-form:focus-within {
+  width: 260px;
+  background-color: #FFFFFF;
+  border-color: #174C38;
+  box-shadow: 0 0 0 3px rgba(23, 76, 56, 0.08);
+}
+
+.adopter-search-icon {
+  color: #7A9187;
+  flex-shrink: 0;
+}
+
+.adopter-nav-search-input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: inherit;
+  font-size: 0.84rem;
+  color: #162620;
+  width: 100%;
+}
+
+.adopter-nav-search-input::placeholder {
+  color: #8C9E95;
+}
+
+/* Notification Bell wrapper */
+.adopter-nav-notification-wrap {
+  display: flex;
+  align-items: center;
+}
+
+/* User Pill button matching mockup */
+.adopter-user-pill-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 0.2rem 0.65rem 0.2rem 0.25rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.16s ease;
+  font-family: inherit;
+}
+
+.adopter-user-pill-btn:hover {
+  background-color: #F8F5EF;
+  border-color: #EDE8E1;
+}
+
+.adopter-user-avatar-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background-color: #174C38;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.adopter-user-avatar-circle.large {
+  width: 40px;
+  height: 40px;
+  font-size: 1.05rem;
+}
+
+.adopter-user-name-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #162620;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Mobile Toggle */
+.adopter-mobile-toggle-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #174C38;
+  cursor: pointer;
+  padding: 0.35rem;
+  border-radius: 8px;
+  outline: none;
+}
+
+/* 4. Mobile Navigation Panel */
+.adopter-mobile-nav-panel {
+  display: none;
+}
+
+@media (max-width: 1080px) {
+  .adopter-nav-links-desktop {
+    display: none;
+  }
+
+  .adopter-nav-search-form {
+    display: none;
+  }
+
+  .adopter-mobile-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .adopter-mobile-nav-panel {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1.5rem 1.5rem;
+    background: #FFFFFF;
+    border-top: 1px solid #EDE8E1;
+    border-bottom: 1px solid #EDE8E1;
+    box-shadow: 0 8px 24px rgba(15, 56, 42, 0.08);
+  }
+
+  .adopter-mobile-search-form {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #F8F5EF;
+    border: 1px solid #E5E0D8;
+    border-radius: 9999px;
+    padding: 0.55rem 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .adopter-mobile-search-input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 0.9rem;
+    width: 100%;
+  }
+
+  .adopter-mobile-section-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #7A9187;
+    margin: 0.8rem 0 0.4rem;
+  }
+
+  .adopter-mobile-links-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .adopter-mobile-link {
+    display: flex;
+    align-items: center;
+    padding: 0.55rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: #162620;
+    text-decoration: none;
+    transition: background 0.15s ease;
+  }
+
+  .adopter-mobile-link:hover,
+  .adopter-mobile-link.active {
+    background-color: #E8F5EE;
+    color: #174C38;
+    font-weight: 600;
+  }
+
+  .adopter-mobile-link.text-btn {
+    background: transparent;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .adopter-mobile-link.danger {
+    color: #DC2626;
+  }
+}
+
+/* 5. Adoption Guide Modal */
+.adopter-guide-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(10, 31, 23, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: adopterFadeIn 0.2s ease;
+}
+
+@keyframes adopterFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.adopter-guide-modal {
+  background: #FFFFFF;
+  border-radius: 20px;
+  max-width: 680px;
+  width: 100%;
+  box-shadow: 0 24px 60px rgba(15, 56, 42, 0.22);
+  border: 1px solid #EDE8E1;
+  overflow: hidden;
+  animation: adopterScaleUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes adopterScaleUp {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.adopter-guide-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 1.75rem 1.25rem;
+  border-bottom: 1px solid #EDE8E1;
+  background: #FDFBF8;
+}
+
+.adopter-guide-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.guide-header-icon {
+  color: #174C38;
+}
+
+.adopter-guide-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #174C38;
+  margin: 0;
+}
+
+.adopter-guide-subtitle {
+  font-size: 0.82rem;
+  color: #647B71;
+  margin: 2px 0 0;
+}
+
+.adopter-guide-close-btn {
+  background: transparent;
+  border: none;
+  color: #7A9187;
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.adopter-guide-close-btn:hover {
+  background: #EDE8E1;
+  color: #162620;
+}
+
+.adopter-guide-body {
+  padding: 1.5rem 1.75rem;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.adopter-guide-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.adopter-guide-step-card {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1rem 1.15rem;
+  background: #FAF8F5;
+  border: 1px solid #EDE8E1;
+  border-radius: 12px;
+}
+
+.adopter-step-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #174C38;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.adopter-step-content h4 {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #162620;
+  margin: 0 0 0.3rem;
+}
+
+.adopter-step-content p {
+  font-size: 0.86rem;
+  color: #4A6359;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.adopter-guide-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.75rem;
+  border-top: 1px solid #EDE8E1;
+  background: #FDFBF8;
+}
+
+.adopter-guide-btn-secondary {
+  padding: 0.55rem 1.25rem;
+  border-radius: 9999px;
+  border: 1px solid #D5CFC5;
+  background: #FFFFFF;
+  color: #4A6359;
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.adopter-guide-btn-secondary:hover {
+  background: #F8F5EF;
+  color: #162620;
+}
+
+.adopter-guide-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.4rem;
+  border-radius: 9999px;
+  background: #174C38;
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 0.88rem;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.adopter-guide-btn-primary:hover {
+  background: #123C2C;
+}
+
+/* 6. Layout wrapper for full-width adopter pages */
+.adopter-app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #F8F5EF;
+}
+
+.adopter-content-area {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  width: 100%;
+}
+
+.adopter-main-content {
+  flex: 1 0 auto;
+  width: 100%;
+}
+

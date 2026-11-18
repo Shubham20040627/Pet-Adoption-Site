@@ -4,31 +4,64 @@ import { ShieldCheck, Award, CheckCircle2, Sparkles, Calendar, Hash, UserCheck, 
 import { useAuth } from '../context/AuthContext';
 import '../styles/verified-badge.css';
 
-const VerifiedAdopterBadgeCard = ({ compact = false, certData = null, showAction = true, hideIfUnverified = false, forceVerified = true }) => {
+const VerifiedAdopterBadgeCard = ({
+  compact = false,
+  certData = null,
+  showAction = true,
+  hideIfUnverified = false,
+  forceVerified = false,
+}) => {
   const { user } = useAuth();
-  
-  // Retrieve saved cert if available
-  let cert = certData;
-  let isVerified = forceVerified;
+  const userId = user?.id || user?._id || user?.email || 'guest';
+  const userEmail = (user?.email || '').toLowerCase();
 
-  try {
-    const verifiedFlag = localStorage.getItem('pawconnect_readiness_verified');
-    const savedCert = localStorage.getItem('pawconnect_readiness_cert');
-    if (verifiedFlag === 'true' && savedCert) {
-      isVerified = true;
-      if (!cert) cert = JSON.parse(savedCert);
-    } else if (certData && certData.passed !== false) {
-      isVerified = true;
-    } else if (forceVerified || user?.role === 'adopter') {
-      isVerified = true;
-    }
-  } catch {
+  // Retrieve saved cert if available
+  let cert = certData || user?.readiness_cert || null;
+  let isVerified = false;
+
+  if (forceVerified) {
     isVerified = true;
+  } else if (certData && certData.passed !== false) {
+    isVerified = true;
+  } else if (user?.is_readiness_verified && user?.readiness_cert) {
+    isVerified = true;
+    cert = user.readiness_cert;
+  } else {
+    try {
+      // Check user-specific localStorage first
+      const userVerifiedFlag = localStorage.getItem(`pawconnect_readiness_verified_${userId}`);
+      const userSavedCert = localStorage.getItem(`pawconnect_readiness_cert_${userId}`);
+
+      if (userVerifiedFlag === 'true' && userSavedCert) {
+        const parsed = JSON.parse(userSavedCert);
+        if (parsed.passed !== false) {
+          isVerified = true;
+          if (!cert) cert = parsed;
+        }
+      } else {
+        // Fallback check generic keys with ownership verification
+        const genericVerified = localStorage.getItem('pawconnect_readiness_verified');
+        const genericCertStr = localStorage.getItem('pawconnect_readiness_cert');
+        if (genericVerified === 'true' && genericCertStr) {
+          const parsed = JSON.parse(genericCertStr);
+          const matchesEmail = parsed.userEmail && userEmail && parsed.userEmail.toLowerCase() === userEmail;
+          const matchesId = parsed.userId && user?.id && parsed.userId === user.id;
+          const matchesName = !parsed.userEmail && parsed.userName && user?.name && parsed.userName.toLowerCase() === user.name.toLowerCase();
+
+          if ((matchesEmail || matchesId || matchesName) && parsed.passed !== false) {
+            isVerified = true;
+            if (!cert) cert = parsed;
+          }
+        }
+      }
+    } catch {
+      isVerified = false;
+    }
   }
 
   const certId = cert?.certId || 'PC-READY-214843';
   const issueDate = cert?.issueDate || '17 Oct 2026';
-  const userName = cert?.userName || user?.name || 'DEF';
+  const userName = cert?.userName || user?.name || 'Verified Adopter';
 
   if (!isVerified) {
     if (hideIfUnverified) return null;

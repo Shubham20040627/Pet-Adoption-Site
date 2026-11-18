@@ -5,7 +5,8 @@ import {
   FileText, HeartHandshake, Eye, AlertCircle, X, Check, Building, Calendar,
   Search, Filter, ArrowUpDown, ChevronRight, ChevronLeft, Bell, User,
   MoreVertical, RefreshCw, PawPrint, Phone, Mail, MapPin, Heart, ShieldCheck,
-  Sparkles, ExternalLink, ArrowLeft, Camera, CheckSquare, Award, FileCheck2
+  Sparkles, ExternalLink, ArrowLeft, Camera, CheckSquare, Award, FileCheck2,
+  MessageSquare, LayoutGrid, PlusCircle, ArrowRight, Home, Zap, BarChart3
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { shelterApi } from '../api/shelterApi';
@@ -79,6 +80,58 @@ const ShelterDashboardPage = () => {
   const [selectedCertAppId, setSelectedCertAppId] = useState(null);
   const [selectedContractAppId, setSelectedContractAppId] = useState(null);
   const [appDetailTab, setAppDetailTab] = useState('form'); // 'form' | 'message'
+
+  // Screen 1: Featured Pet Spotlight Carousel state
+  const [featuredIndex, setFeaturedIndex] = useState(0);
+
+  const availablePetsForSpotlight = useMemo(() => {
+    return pets && pets.length > 0 ? pets : [
+      {
+        id: 'mock-1',
+        name: 'Bruno',
+        breed: 'Golden Retriever',
+        species: 'Dog',
+        bio: 'A loving dog looking for a forever home.',
+        image_url: 'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=900&q=85',
+      },
+      {
+        id: 'mock-2',
+        name: 'Luna',
+        breed: 'Tabby Kitten',
+        species: 'Cat',
+        bio: 'Playful and gentle kitten ready for a cozy family.',
+        image_url: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=900&q=85',
+      },
+      {
+        id: 'mock-3',
+        name: 'Cooper',
+        breed: 'Beagle Companion',
+        species: 'Dog',
+        bio: 'Gentle, friendly, and great with children.',
+        image_url: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=900&q=85',
+      },
+      {
+        id: 'mock-4',
+        name: 'Barnaby',
+        breed: 'Mini Rex',
+        species: 'Rabbit',
+        bio: 'Sweet and calm rabbit ready for indoor adoption.',
+        image_url: 'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?auto=format&fit=crop&w=900&q=85',
+      }
+    ];
+  }, [pets]);
+
+  const currentFeaturedPet = availablePetsForSpotlight[featuredIndex % availablePetsForSpotlight.length];
+
+  const handlePrevFeatured = (e) => {
+    e?.stopPropagation?.();
+    setFeaturedIndex((prev) => (prev === 0 ? availablePetsForSpotlight.length - 1 : prev - 1));
+  };
+
+  const handleNextFeatured = (e) => {
+    e?.stopPropagation?.();
+    setFeaturedIndex((prev) => (prev + 1) % availablePetsForSpotlight.length);
+  };
 
   // Screen 7: Visits filters
   const [visitTab, setVisitTab] = useState('upcoming'); // 'upcoming', 'past', 'cancelled'
@@ -502,15 +555,12 @@ const ShelterDashboardPage = () => {
     return <ShelterPendingApprovalView shelterProfile={profile || user?.shelter} />;
   }
 
+  const currentHour = new Date().getHours();
+  const greetingText = currentHour < 12 ? 'Good morning,' : currentHour < 18 ? 'Good afternoon,' : 'Good evening,';
+  const regNumber = profileForm.registration_number || user?.shelter?.registration_number || user?.registration_number || 'AWBI-2026-1979';
+
   return (
     <div className="shelter-dashboard-wrapper">
-      {/* ================= STICKY TOP BAR (Matches Reference Header) ================= */}
-      <ShelterHeader 
-        searchValue={globalSearch}
-        onSearchChange={setGlobalSearch}
-        searchPlaceholder="Search anything..."
-      />
-
       {/* Floating Toast Notification */}
       {feedbackMessage && (
         <div 
@@ -602,32 +652,6 @@ const ShelterDashboardPage = () => {
           </div>
         )}
 
-        {isApproved && (
-          <div className="shelter-approval-status-banner approved">
-            <div className="shelter-approval-icon-box">
-              <div className="shelter-approval-pulse-ring">
-                <ShieldCheck size={26} />
-              </div>
-            </div>
-            <div className="shelter-approval-text-wrap">
-              <div className="shelter-approval-top-row">
-                <div className="shelter-approval-title-group">
-                  <h3 className="shelter-approval-title">Verified &amp; Approved Rescue Partner</h3>
-                  <span className="shelter-approval-status-tag">Active Partner</span>
-                </div>
-                <span className="shelter-approval-meta-tag">
-                  NGO License #{profileForm.registration_number || user?.shelter?.registration_number || 'AWBI-2026-REG'}
-                </span>
-              </div>
-              <div className="shelter-approval-message-body">
-                <p>
-                  Your shelter registration is approved and in good standing. Public pet listings, legal digital adoption contracts, and Meet &amp; Greet appointments are fully active.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
         {isRejected && (
           <div className="shelter-approval-status-banner rejected">
             <div className="shelter-approval-icon-box">
@@ -655,217 +679,565 @@ const ShelterDashboardPage = () => {
         )}
 
         {/* =========================================================
-            SCREEN 1: DASHBOARD OVERVIEW
+            SCREEN 1: DASHBOARD OVERVIEW (Exact Match to New Mockup)
            ========================================================= */}
         {activeTab === 'overview' && (
-          <div>
-            {/* 1. Hero Banner with Dog cutout & quote */}
-            <section className="shelter-hero-banner">
-              <div className="shelter-hero-content">
-                <div className="shelter-hero-greeting">Good morning,</div>
-                <h1 className="shelter-hero-title">{shelterDisplayName} Team!</h1>
-                <p className="shelter-hero-subtitle">
-                  Together we give them a second chance.
-                </p>
-                <Link to="/pets/new" className="shelter-btn-primary shelter-hero-btn">
-                  <Plus size={18} /> Add New Pet
-                </Link>
-              </div>
-
-              <div className="shelter-hero-dog-wrap">
-                <img 
-                  src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=500&q=80" 
-                  alt="Happy rescue retriever" 
-                  className="shelter-hero-dog-img" 
-                />
-                <div className="shelter-hero-quote-sticker">
-                  <span>🌿</span> Rescue. Rehabilitate. Rehome. <span style={{ color: '#E11D48' }}>❤</span>
+          <div className="shelter-overview-content-layout">
+            
+            {/* 1. TOP BANNER: Verified & Approved Rescue Partner Card */}
+            <div className="shelter-partner-status-card">
+              <div className="shelter-partner-status-left">
+                <div className="shelter-partner-shield-circle">
+                  <CheckCircle2 size={24} />
+                </div>
+                <div className="shelter-partner-info-wrap">
+                  <div className="shelter-partner-headline-row">
+                    <span className="shelter-partner-headline">Verified &amp; Approved Rescue Partner</span>
+                    <span className="shelter-partner-active-chip">ACTIVE PARTNER</span>
+                  </div>
+                  <p className="shelter-partner-subtext">
+                    Your shelter registration is approved and in good standing. Public pet listings, legal digital adoption contracts, and Meet &amp; Greet appointments are fully active.
+                  </p>
                 </div>
               </div>
+              <div className="shelter-partner-status-right">
+                <div className="shelter-partner-paw-watermark" aria-hidden="true">
+                  <PawPrint size={90} />
+                </div>
+                <div className="shelter-partner-license-badge">
+                  <FileText size={22} className="license-badge-icon" />
+                  <div className="license-badge-text">
+                    <span className="license-badge-label">NGO License</span>
+                    <span className="license-badge-num">#{regNumber}</span>
+                  </div>
+                </div>
+                {/* Botanical flourish watermark */}
+                <div className="shelter-partner-leaf-flourish" aria-hidden="true" />
+              </div>
+            </div>
+
+            {/* 2. COMPOSITE HERO SECTION (2 Columns: Wide Combined Hero Banner + 3 Story Cards Stack) */}
+            <section className="shelter-hero-composite-row">
+              
+              {/* Part A: Combined Hero Banner Card */}
+              <div className="shelter-hero-banner-combined">
+                {/* Botanical Leaves framing watermark */}
+                <div className="shelter-hero-leaves-decor tl" aria-hidden="true" />
+                <div className="shelter-hero-leaves-decor bl" aria-hidden="true" />
+
+                {/* Left Side: Greeting, Subtitle, Values, and Actions */}
+                <div className="shelter-hero-greeting-col">
+                  <div className="shelter-hero-greeting-sub">{greetingText}</div>
+                  <h1 className="shelter-hero-title">
+                    {shelterDisplayName} <span className="shelter-title-team-accent">Team!</span>
+                  </h1>
+                  <p className="shelter-hero-subtitle">
+                    Together we give them a second chance.
+                  </p>
+
+                  {/* Core Values Row matching mockup */}
+                  <div className="shelter-hero-values-row">
+                    <span className="hero-value-chip">
+                      <Heart size={14} className="val-icon heart" />
+                      <span>Rescue</span>
+                    </span>
+                    <span className="hero-value-chip">
+                      <Home size={14} className="val-icon home" />
+                      <span>Rehabilitate</span>
+                    </span>
+                    <span className="hero-value-chip">
+                      <PawPrint size={14} className="val-icon paw" />
+                      <span>Rehome</span>
+                    </span>
+                  </div>
+
+                  {/* Action Buttons Row */}
+                  <div className="shelter-hero-actions-row">
+                    <Link to="/pets/new" className="shelter-hero-btn-add">
+                      <Plus size={16} /> Add New Pet
+                    </Link>
+                    <button
+                      type="button"
+                      className="shelter-hero-btn-listings"
+                      onClick={() => handleTabChange('pets')}
+                    >
+                      <FileText size={16} /> View Pet Listings
+                    </button>
+                  </div>
+                </div>
+
+                {/* Center Flourish Script with Heart loop sketch */}
+                <div className="shelter-hero-center-flourish" aria-hidden="true">
+                  <div className="script-flourish-wrap">
+                    <span className="script-flourish-line">Small Acts</span>
+                    <span className="script-flourish-line sub">Big Changes</span>
+                  </div>
+                  <svg className="flourish-heart-sketch" viewBox="0 0 80 80" fill="none">
+                    <path
+                      d="M 40 60 C 18 42, 8 28, 18 18 C 28 8, 38 18, 40 24 C 42 18, 52 8, 62 18 C 72 28, 62 42, 40 60 Z"
+                      stroke="#10B981"
+                      strokeWidth="1.8"
+                      strokeDasharray="4 4"
+                      fill="none"
+                    />
+                  </svg>
+                </div>
+
+                {/* Right Side: Featured Pet Photo & Spotlight Card */}
+                <div className="shelter-hero-spotlight-col">
+                  <img
+                    src={currentFeaturedPet.image_url || currentFeaturedPet.photo_url || 'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=900&q=85'}
+                    alt={currentFeaturedPet.name}
+                    className="shelter-spotlight-hero-img"
+                  />
+                  <div className="shelter-spotlight-gradient-overlay" />
+
+                  {/* Floating Spotlight Card info */}
+                  <div className="shelter-spotlight-floating-card">
+                    <span className="spotlight-tag-mini">FEATURED PET</span>
+                    <h3 className="spotlight-name-bold">Meet {currentFeaturedPet.name}</h3>
+                    <p className="spotlight-bio-text">
+                      {currentFeaturedPet.bio || `A loving companion looking for a forever home.`}
+                    </p>
+                    <button
+                      type="button"
+                      className="spotlight-view-details-pill"
+                      onClick={() => {
+                        setViewingPet(currentFeaturedPet);
+                        handleTabChange('pets');
+                      }}
+                    >
+                      <span>View Details</span>
+                      <ArrowRight size={13} />
+                    </button>
+                  </div>
+
+                  {/* Carousel navigation arrows */}
+                  <button
+                    type="button"
+                    className="spotlight-circle-arrow left"
+                    onClick={handlePrevFeatured}
+                    aria-label="Previous pet"
+                  >
+                    <ChevronLeft size={16} />
+                  </button>
+                  <button
+                    type="button"
+                    className="spotlight-circle-arrow right"
+                    onClick={handleNextFeatured}
+                    aria-label="Next pet"
+                  >
+                    <ChevronRight size={16} />
+                  </button>
+
+                  {/* Pagination capsule indicators */}
+                  <div className="spotlight-pagination-capsules">
+                    <span className="capsule-pill active" />
+                    <span className="capsule-dot" />
+                    <span className="capsule-dot" />
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Part B: Right 3-Tier Pet Story Cards Stack (Dark Frosted Cards) */}
+              <div className="shelter-hero-stories-stack">
+                <div className="shelter-story-frosted-card" onClick={() => handleTabChange('pets')}>
+                  <div className="story-thumb-wrap">
+                    <img
+                      src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=250&q=80"
+                      alt="Rescued kitten"
+                    />
+                  </div>
+                  <div className="story-text-wrap">
+                    <span className="story-text-line">Rescued.</span>
+                    <span className="story-text-line">Rehabilitated.</span>
+                    <span className="story-text-line highlight">Ready for Love.</span>
+                  </div>
+                  <div className="story-arrow-circle">
+                    <ChevronRight size={14} />
+                  </div>
+                </div>
+
+                <div className="shelter-story-frosted-card" onClick={() => handleTabChange('pets')}>
+                  <div className="story-thumb-wrap">
+                    <img
+                      src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=250&q=80"
+                      alt="Cared puppy"
+                    />
+                  </div>
+                  <div className="story-text-wrap">
+                    <span className="story-text-line">Care Today</span>
+                    <span className="story-text-line">for a Brighter</span>
+                    <span className="story-text-line highlight">Tomorrow.</span>
+                  </div>
+                  <div className="story-arrow-circle">
+                    <ChevronRight size={14} />
+                  </div>
+                </div>
+
+                <div className="shelter-story-frosted-card" onClick={() => handleTabChange('pets')}>
+                  <div className="story-thumb-wrap">
+                    <img
+                      src="https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?auto=format&fit=crop&w=250&q=80"
+                      alt="Rescue rabbit"
+                    />
+                  </div>
+                  <div className="story-text-wrap">
+                    <span className="story-text-line">Every Life</span>
+                    <span className="story-text-line highlight">Matters <span style={{ color: '#F43F5E' }}>❤</span></span>
+                  </div>
+                  <div className="story-arrow-circle">
+                    <ChevronRight size={14} />
+                  </div>
+                </div>
+              </div>
+
             </section>
 
-            {/* 2. 5 Stat Cards in One Row */}
-            <section className="shelter-stats-grid-5">
-              {/* Total Pets */}
+            {/* 3. 4 STAT CARDS IN A ROW WITH WAVE & BAR CHART GRAPHIC WATERMARKS */}
+            <section className="shelter-stats-grid-4">
+              
+              {/* Card 1: Total Pets */}
               <div 
-                className="shelter-stat-card-clean" 
+                className="shelter-stat-card-v2 theme-green"
                 onClick={() => handleTabChange('pets')}
                 title="View Pet Listings"
               >
-                <div className="shelter-stat-icon-box" style={{ backgroundColor: '#E8F5E9', color: '#15803D' }}>
-                  <PawPrint size={20} />
+                <div className="stat-card-top-row">
+                  <div className="stat-card-icon-box green">
+                    <PawPrint size={18} />
+                  </div>
+                  <div className="stat-card-arrow-pill green">
+                    <ChevronRight size={14} />
+                  </div>
                 </div>
-                <div className="shelter-stat-number">{stats?.total_listings ?? pets.length}</div>
-                <div className="shelter-stat-title-label">Total Pets</div>
+
+                <div className="stat-card-metric-num">{stats?.total_listings ?? pets.length}</div>
+                <div className="stat-card-metric-title">Total Pets</div>
+                <div className="stat-card-metric-sub">Pets currently in your shelter</div>
+
+                {/* Decorative Bottom-Right Wave & Bar Chart Graphic Watermark */}
+                <div className="stat-card-watermark-bars green" aria-hidden="true">
+                  <svg viewBox="0 0 100 60" fill="none" className="watermark-svg">
+                    <path d="M 0 50 Q 30 35, 60 48 T 100 38 L 100 60 L 0 60 Z" fill="currentColor" opacity="0.3" />
+                    <rect x="58" y="28" width="8" height="24" rx="3" fill="currentColor" />
+                    <rect x="72" y="18" width="8" height="34" rx="3" fill="currentColor" />
+                    <rect x="86" y="8" width="8" height="44" rx="3" fill="currentColor" />
+                  </svg>
+                </div>
               </div>
 
-              {/* Available */}
+              {/* Card 2: Adoption Applications */}
               <div 
-                className="shelter-stat-card-clean" 
-                onClick={() => {
-                  setPetStatusFilter('available');
-                  handleTabChange('pets');
-                }}
-                title="View Available Pets"
+                className="shelter-stat-card-v2 theme-blue"
+                onClick={() => handleTabChange('applications')}
+                title="View Adoption Applications"
               >
-                <div className="shelter-stat-icon-box" style={{ backgroundColor: '#E8F5E9', color: '#15803D' }}>
-                  <Check size={20} />
+                <div className="stat-card-top-row">
+                  <div className="stat-card-icon-box blue">
+                    <FileText size={18} />
+                  </div>
+                  <div className="stat-card-arrow-pill blue">
+                    <ChevronRight size={14} />
+                  </div>
                 </div>
-                <div className="shelter-stat-number">{stats?.available_pets ?? pets.filter(p => p.status === 'available').length}</div>
-                <div className="shelter-stat-title-label">Available</div>
+
+                <div className="stat-card-metric-num">
+                  {stats?.pending_applications ?? displayApplications.filter(a => a.status === 'pending' || a.status === 'submitted').length}
+                </div>
+                <div className="stat-card-metric-title">Adoption Applications</div>
+                <div className="stat-card-metric-sub">Requests from adopters</div>
+
+                <div className="stat-card-watermark-bars blue" aria-hidden="true">
+                  <svg viewBox="0 0 100 60" fill="none" className="watermark-svg">
+                    <path d="M 0 50 Q 30 35, 60 48 T 100 38 L 100 60 L 0 60 Z" fill="currentColor" opacity="0.3" />
+                    <rect x="58" y="28" width="8" height="24" rx="3" fill="currentColor" />
+                    <rect x="72" y="18" width="8" height="34" rx="3" fill="currentColor" />
+                    <rect x="86" y="8" width="8" height="44" rx="3" fill="currentColor" />
+                  </svg>
+                </div>
               </div>
 
-              {/* Pending Applications */}
+              {/* Card 3: Meet & Greets */}
               <div 
-                className="shelter-stat-card-clean" 
-                onClick={() => {
-                  setAppStatusFilter('pending');
-                  handleTabChange('applications');
-                }}
-                title="View Pending Applications"
-              >
-                <div className="shelter-stat-icon-box" style={{ backgroundColor: '#FFF3E0', color: '#D97706' }}>
-                  <FileText size={20} />
-                </div>
-                <div className="shelter-stat-number">{stats?.pending_applications ?? displayApplications.filter(a => a.status === 'pending' || a.status === 'submitted').length}</div>
-                <div className="shelter-stat-title-label">Pending Applications</div>
-              </div>
-
-              {/* Completed Adoptions */}
-              <div 
-                className="shelter-stat-card-clean" 
-                onClick={() => {
-                  setAppStatusFilter('approved');
-                  handleTabChange('applications');
-                }}
-                title="View Adoptions"
-              >
-                <div className="shelter-stat-icon-box" style={{ backgroundColor: '#F3E8FF', color: '#7C3AED' }}>
-                  <Heart size={20} />
-                </div>
-                <div className="shelter-stat-number">{stats?.completed_adoptions ?? displayApplications.filter(a => a.status === 'approved' || a.status === 'completed').length}</div>
-                <div className="shelter-stat-title-label">Completed Adoptions</div>
-              </div>
-
-              {/* Scheduled Visits */}
-              <div 
-                className="shelter-stat-card-clean" 
+                className="shelter-stat-card-v2 theme-amber"
                 onClick={() => handleTabChange('visits')}
                 title="View Scheduled Visits"
               >
-                <div className="shelter-stat-icon-box" style={{ backgroundColor: '#E0F2FE', color: '#0284C7' }}>
-                  <Calendar size={20} />
+                <div className="stat-card-top-row">
+                  <div className="stat-card-icon-box amber">
+                    <Calendar size={18} />
+                  </div>
+                  <div className="stat-card-arrow-pill amber">
+                    <ChevronRight size={14} />
+                  </div>
                 </div>
-                <div className="shelter-stat-number">{stats?.upcoming_visits ?? displayVisits.length}</div>
-                <div className="shelter-stat-title-label">Scheduled Visits</div>
+
+                <div className="stat-card-metric-num">
+                  {stats?.upcoming_visits ?? displayVisits.filter(v => v.status === 'confirmed' || v.status === 'scheduled').length}
+                </div>
+                <div className="stat-card-metric-title">Meet &amp; Greets</div>
+                <div className="stat-card-metric-sub">Scheduled appointments</div>
+
+                <div className="stat-card-watermark-bars amber" aria-hidden="true">
+                  <svg viewBox="0 0 100 60" fill="none" className="watermark-svg">
+                    <path d="M 0 50 Q 30 35, 60 48 T 100 38 L 100 60 L 0 60 Z" fill="currentColor" opacity="0.3" />
+                    <rect x="58" y="28" width="8" height="24" rx="3" fill="currentColor" />
+                    <rect x="72" y="18" width="8" height="34" rx="3" fill="currentColor" />
+                    <rect x="86" y="8" width="8" height="44" rx="3" fill="currentColor" />
+                  </svg>
+                </div>
               </div>
+
+              {/* Card 4: Messages */}
+              <div 
+                className="shelter-stat-card-v2 theme-purple"
+                onClick={() => navigate('/messages')}
+                title="View Messages"
+              >
+                <div className="stat-card-top-row">
+                  <div className="stat-card-icon-box purple">
+                    <MessageSquare size={18} />
+                  </div>
+                  <div className="stat-card-arrow-pill purple">
+                    <ChevronRight size={14} />
+                  </div>
+                </div>
+
+                <div className="stat-card-metric-num">
+                  {unreadCount || (stats?.unread_messages ?? 5)}
+                </div>
+                <div className="stat-card-metric-title">Messages</div>
+                <div className="stat-card-metric-sub">Unread messages</div>
+
+                <div className="stat-card-watermark-bars purple" aria-hidden="true">
+                  <svg viewBox="0 0 100 60" fill="none" className="watermark-svg">
+                    <path d="M 0 50 Q 30 35, 60 48 T 100 38 L 100 60 L 0 60 Z" fill="currentColor" opacity="0.3" />
+                    <rect x="58" y="28" width="8" height="24" rx="3" fill="currentColor" />
+                    <rect x="72" y="18" width="8" height="34" rx="3" fill="currentColor" />
+                    <rect x="86" y="8" width="8" height="44" rx="3" fill="currentColor" />
+                  </svg>
+                </div>
+              </div>
+
             </section>
 
-            {/* 3. Two-Column Activity Feed */}
-            <section className="shelter-activity-row-2">
-              {/* Left Column: Recent Applications */}
-              <div>
+            {/* 4. THREE-COLUMN BOTTOM ACTIVITY & QUICK ACTIONS ROW */}
+            <section className="shelter-bottom-tri-grid">
+              
+              {/* Column 1: Recent Adoption Applications */}
+              <div className="shelter-bottom-col">
                 <div className="shelter-section-header">
-                  <h2 className="shelter-section-title">Recent Applications</h2>
+                  <h2 className="shelter-section-title">
+                    <PawPrint size={18} className="shelter-feed-header-icon" />
+                    Recent Adoption Applications
+                  </h2>
                   <Link 
                     to="/shelter-dashboard?tab=applications" 
                     className="shelter-link-view-all"
                   >
-                    View all →
+                    View All →
                   </Link>
                 </div>
 
-                <div className="shelter-feed-list">
+                <div className="shelter-tri-card-container">
                   {displayApplications.length === 0 ? (
-                    <div style={{ textAlign: 'center', padding: '2rem 1rem', background: '#FFFFFF', borderRadius: 12, border: '1px solid #E5E0D8' }}>
-                      <FileText size={28} color="#7A9187" style={{ margin: '0 auto 0.5rem auto' }} />
-                      <div style={{ fontWeight: 600, fontSize: '0.92rem', color: '#162620' }}>No applications yet</div>
-                      <p style={{ color: '#7A9187', fontSize: '0.8rem', marginTop: '0.25rem' }}>Applications for your listed pets will appear here.</p>
+                    <div className="shelter-mini-empty-state">
+                      <FileText size={22} className="empty-state-icon" />
+                      <div className="empty-state-title">No recent applications</div>
+                      <p className="empty-state-desc">New applications from adopters will appear here.</p>
                     </div>
                   ) : (
                     displayApplications.slice(0, 3).map((app) => (
                       <div 
                         key={app.id} 
-                        className="shelter-feed-card"
+                        className="shelter-app-item-row"
                         onClick={() => {
                           setViewingApp(app);
                           handleTabChange('applications');
                         }}
                       >
                         <img 
-                          src={app.pet?.image_url || app.pet?.photo_url || 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=150&q=80'} 
+                          src={app.pet?.image_url || app.pet?.photo_url || 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=120&q=80'} 
                           alt={app.pet?.name || 'Pet'} 
-                          className="shelter-feed-thumb" 
+                          className="shelter-app-thumb" 
                         />
-                        <div className="shelter-feed-info">
-                          <div className="shelter-feed-title">
-                            Application #{app.id}
-                          </div>
-                          <div className="shelter-feed-subtitle">
-                            for {app.pet?.name || 'Pet'} ({app.pet?.breed || app.pet?.species || 'Rescue'})
-                          </div>
-                          <div className="shelter-feed-meta">
-                            {app.adopter_name || app.adopter?.name || 'Applicant'} • {app.created_at ? new Date(app.created_at).toLocaleDateString() : 'Recent'}
+                        <div className="shelter-app-info">
+                          <div className="shelter-app-pet-name">{app.pet?.name || 'Bruno'}</div>
+                          <div className="shelter-app-breed-meta">
+                            {app.pet?.breed || 'Golden Retriever'} • {app.pet?.age ? `${app.pet.age} ${app.pet.age_unit || 'years'}` : '1 year'}
                           </div>
                         </div>
-                        <span className={`shelter-badge-soft ${
-                          app.status === 'approved' ? 'shelter-badge-soft-green' : app.status === 'rejected' ? 'shelter-badge-soft-red' : 'shelter-badge-soft-amber'
-                        }`}>
-                          {app.status === 'approved' ? 'Approved' : app.status === 'rejected' ? 'Rejected' : app.status === 'under_review' ? 'Under Review' : 'Pending'}
-                        </span>
+                        <div className="shelter-app-end-meta">
+                          <span className={`shelter-status-pill-clean ${
+                            app.status === 'approved' ? 'approved' : app.status === 'under_review' ? 'review' : 'new'
+                          }`}>
+                            {app.status === 'approved' ? 'Approved' : app.status === 'under_review' ? 'Under Review' : 'New'}
+                          </span>
+                          <span className="shelter-app-date-text">
+                            {app.created_at ? new Date(app.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Oct 29, 2026'}
+                          </span>
+                          <ChevronRight size={14} className="shelter-item-row-arrow" />
+                        </div>
                       </div>
                     ))
                   )}
                 </div>
               </div>
 
-              {/* Right Column: Upcoming Meet & Greets */}
-              <div>
+              {/* Column 2: Upcoming Meet & Greets */}
+              <div className="shelter-bottom-col">
                 <div className="shelter-section-header">
-                  <h2 className="shelter-section-title">Upcoming Meet &amp; Greets</h2>
+                  <h2 className="shelter-section-title">
+                    <Calendar size={18} className="shelter-feed-header-icon blue" />
+                    Upcoming Meet &amp; Greets
+                  </h2>
                   <Link 
                     to="/shelter-dashboard?tab=visits" 
                     className="shelter-link-view-all"
                   >
-                    View all →
+                    View All →
                   </Link>
                 </div>
 
-                <div className="shelter-feed-list">
+                <div className="shelter-tri-card-container">
                   {displayVisits.length === 0 ? (
-                    <div style={{ textAlign: 'center', padding: '2rem 1rem', background: '#FFFFFF', borderRadius: 12, border: '1px solid #E5E0D8' }}>
-                      <Calendar size={28} color="#7A9187" style={{ margin: '0 auto 0.5rem auto' }} />
-                      <div style={{ fontWeight: 600, fontSize: '0.92rem', color: '#162620' }}>No scheduled visits</div>
-                      <p style={{ color: '#7A9187', fontSize: '0.8rem', marginTop: '0.25rem' }}>Meet &amp; Greet appointments for your pets will appear here.</p>
+                    <div className="shelter-mini-empty-state">
+                      <Calendar size={22} className="empty-state-icon" />
+                      <div className="empty-state-title">No upcoming meet &amp; greets</div>
+                      <p className="empty-state-desc">Scheduled meet &amp; greets will appear here.</p>
                     </div>
                   ) : (
                     displayVisits.slice(0, 3).map((visit) => (
                       <div 
                         key={visit.id} 
-                        className="shelter-feed-card"
+                        className="shelter-app-item-row"
                         onClick={() => handleTabChange('visits')}
                       >
                         <img 
-                          src={visit.pet_image || visit.pet?.photo_url || 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=150&q=80'} 
+                          src={visit.pet_image || visit.pet?.photo_url || 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=120&q=80'} 
                           alt={visit.pet_name || 'Pet'} 
-                          className="shelter-feed-thumb" 
+                          className="shelter-app-thumb" 
                         />
-                        <div className="shelter-feed-info">
-                          <div className="shelter-feed-title">{visit.pet_name || 'Pet Visit'}</div>
-                          <div className="shelter-feed-subtitle">{visit.visit_date}</div>
-                          <div className="shelter-feed-meta">{visit.visit_time || visit.time_slot || 'Time not specified'}</div>
+                        <div className="shelter-app-info">
+                          <div className="shelter-app-pet-name">Meet with {visit.adopter_name || 'Priya S.'}</div>
+                          <div className="shelter-app-breed-meta">
+                            For {visit.pet_name || 'Bruno'}
+                          </div>
                         </div>
-                        <span className={`shelter-badge-soft ${
-                          visit.status === 'confirmed' ? 'shelter-badge-soft-green' : visit.status === 'cancelled' ? 'shelter-badge-soft-red' : 'shelter-badge-soft-amber'
-                        }`}>
-                          {visit.status === 'confirmed' ? 'Confirmed' : visit.status === 'cancelled' ? 'Cancelled' : 'Requested'}
-                        </span>
+                        <div className="shelter-app-end-meta">
+                          <span className="shelter-visit-datetime-tag">
+                            <Calendar size={12} /> {visit.visit_date ? new Date(visit.visit_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Oct 31, 2026'}
+                          </span>
+                          <span className="shelter-visit-datetime-tag">
+                            <Clock size={12} /> {visit.visit_time || '11:00 AM'}
+                          </span>
+                          <ChevronRight size={14} className="shelter-item-row-arrow" />
+                        </div>
                       </div>
                     ))
                   )}
                 </div>
               </div>
+
+              {/* Column 3: Quick Actions (Exact 2x3 Grid matching mockup) */}
+              <div className="shelter-bottom-col">
+                <div className="shelter-section-header">
+                  <h2 className="shelter-section-title">
+                    <Zap size={18} className="shelter-feed-header-icon amber" />
+                    Quick Actions
+                  </h2>
+                </div>
+
+                <div className="shelter-quick-actions-grid-2x3">
+                  {/* Action 1: Add New Pet */}
+                  <Link to="/pets/new" className="quick-action-card-tile tile-green">
+                    <div className="tile-icon-circle green">
+                      <Plus size={18} />
+                    </div>
+                    <div className="tile-text-wrap">
+                      <span className="tile-main-label">Add New Pet</span>
+                      <span className="tile-sub-label">Register a new pet</span>
+                    </div>
+                  </Link>
+
+                  {/* Action 2: View Pets */}
+                  <button
+                    type="button"
+                    className="quick-action-card-tile tile-blue"
+                    onClick={() => handleTabChange('pets')}
+                  >
+                    <div className="tile-icon-circle blue">
+                      <FileText size={18} />
+                    </div>
+                    <div className="tile-text-wrap">
+                      <span className="tile-main-label">View Pets</span>
+                      <span className="tile-sub-label">See all pets</span>
+                    </div>
+                  </button>
+
+                  {/* Action 3: Manage Appointments */}
+                  <button
+                    type="button"
+                    className="quick-action-card-tile tile-amber"
+                    onClick={() => handleTabChange('visits')}
+                  >
+                    <div className="tile-icon-circle amber">
+                      <Calendar size={18} />
+                    </div>
+                    <div className="tile-text-wrap">
+                      <span className="tile-main-label">Manage Appointments</span>
+                      <span className="tile-sub-label">Meet &amp; Greets</span>
+                    </div>
+                  </button>
+
+                  {/* Action 4: Reply to Messages */}
+                  <Link to="/messages" className="quick-action-card-tile tile-purple">
+                    <div className="tile-icon-circle purple with-badge">
+                      <MessageSquare size={18} />
+                      <span className="tile-badge-red">{unreadCount || 5}</span>
+                    </div>
+                    <div className="tile-text-wrap">
+                      <span className="tile-main-label">Reply to Messages</span>
+                      <span className="tile-sub-label">Respond to adopters</span>
+                    </div>
+                  </Link>
+
+                  {/* Action 5: Generate Report */}
+                  <button
+                    type="button"
+                    className="quick-action-card-tile tile-slate"
+                    onClick={() => showToast('Generating shelter analytics report...', 'success')}
+                  >
+                    <div className="tile-icon-circle slate">
+                      <BarChart3 size={18} />
+                    </div>
+                    <div className="tile-text-wrap">
+                      <span className="tile-main-label">Generate Report</span>
+                      <span className="tile-sub-label">Shelter analytics</span>
+                    </div>
+                  </button>
+
+                  {/* Action 6: Shelter Profile */}
+                  <button
+                    type="button"
+                    className="quick-action-card-tile tile-slate"
+                    onClick={() => handleTabChange('profile')}
+                  >
+                    <div className="tile-icon-circle slate">
+                      <Building size={18} />
+                    </div>
+                    <div className="tile-text-wrap">
+                      <span className="tile-main-label">Shelter Profile</span>
+                      <span className="tile-sub-label">Update details</span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
             </section>
+
           </div>
         )}
 

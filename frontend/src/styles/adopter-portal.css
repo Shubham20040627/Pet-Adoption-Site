@@ -52,9 +52,9 @@
 }
 
 .ap-wrap {
-  max-width: 1240px;
+  max-width: 1320px;
   margin: 0 auto;
-  padding: 0 1.5rem 4rem;
+  padding: 1.5rem 1.5rem 4rem;
 }
 
 /* ==========================================================================
@@ -487,14 +487,28 @@
   transform: translateY(-2px);
 }
 
-/* Hero Visual Banner (Image + Mask + Handwritten script) */
-.ap-hero-banner-visual {
+/* Hero Animated Background Slider */
+.ap-hero-slider-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.ap-hero-slider-track {
   position: absolute;
   top: 0;
-  right: 0;
-  bottom: 0;
-  width: 58%;
-  pointer-events: none;
+  left: 0;
+  height: 100%;
+  display: flex;
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.ap-hero-slider-slide {
+  height: 100%;
+  position: relative;
+  flex-shrink: 0;
 }
 
 .ap-hero-banner-img {
@@ -503,38 +517,119 @@
   object-fit: cover;
   object-position: center right;
   display: block;
+  filter: brightness(0.94) contrast(1.05);
 }
 
+/* Gradient overlay: rich forest green on left for crystal-clear readability, seamlessly transparent on right to showcase pet photos */
 .ap-hero-banner-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, #0E2E20 0%, #0E2E20 22%, rgba(14, 46, 32, 0.9) 45%, rgba(14, 46, 32, 0.1) 75%, rgba(14, 46, 32, 0) 100%);
+  background: linear-gradient(
+    90deg, 
+    #0E2E20 0%, 
+    #0E2E20 32%, 
+    rgba(14, 46, 32, 0.94) 48%, 
+    rgba(14, 46, 32, 0.55) 70%, 
+    rgba(14, 46, 32, 0.15) 88%,
+    rgba(14, 46, 32, 0.04) 100%
+  );
+  pointer-events: none;
+  z-index: 2;
 }
 
 .ap-hero-handwritten-badge {
   position: absolute;
-  top: 24px;
+  top: 22px;
   right: 28px;
   color: #FFFFFF;
   text-align: center;
   transform: rotate(5deg);
   z-index: 4;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
+  pointer-events: none;
 }
 
 .ap-badge-script {
   font-family: 'Caveat', 'Segoe Script', cursive, sans-serif;
-  font-size: 1.15rem;
+  font-size: 1.18rem;
   font-weight: 700;
   line-height: 1.15;
-  max-width: 120px;
+  max-width: 125px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .ap-badge-stars {
   font-size: 0.75rem;
   letter-spacing: 2px;
-  opacity: 0.85;
+  opacity: 0.9;
   margin-top: 2px;
+}
+
+/* Slider Controls: Dots + Subtle Prev/Next buttons */
+.ap-hero-slider-controls {
+  position: absolute;
+  bottom: 16px;
+  right: 24px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(10, 32, 22, 0.6);
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.ap-hero-nav-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.18s ease;
+  outline: none;
+}
+
+.ap-hero-nav-btn:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.ap-hero-slider-dots {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0 0.2rem;
+}
+
+.ap-hero-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.25s ease;
+  outline: none;
+}
+
+.ap-hero-dot:hover {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.ap-hero-dot.active {
+  width: 22px;
+  height: 7px;
+  border-radius: 999px;
+  background: #10B981;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.7);
 }
 
 /* ==========================================================================
@@ -1997,6 +2092,19 @@
   .ap-hero-img { max-height: 180px; }
   .ap-app-card { grid-template-columns: 68px 1fr; }
   .ap-tracker, .ap-app-card > :last-child { grid-column: span 2; }
+  .ap-hero-banner-content { padding: 1.75rem 1.5rem; max-width: 100%; }
+  .ap-hero-title-greeting { font-size: 2rem; }
+  .ap-hero-question { font-size: 1.15rem; }
+  .ap-hero-banner-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(14, 46, 32, 0.94) 0%,
+      rgba(14, 46, 32, 0.88) 60%,
+      rgba(14, 46, 32, 0.55) 100%
+    );
+  }
+  .ap-hero-handwritten-badge { display: none; }
+  .ap-hero-slider-controls { bottom: 12px; right: 14px; }
 }
 
 @media (max-width: 600px) {

@@ -57,12 +57,26 @@
   min-height: 100vh;
   color: var(--shelter-text-dark);
   padding-bottom: 5rem;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 .shelter-container {
-  max-width: 1240px;
+  max-width: 1380px;
+  width: 100%;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 1.25rem;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.shelter-overview-content-layout {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 /* ==========================================================================
@@ -291,171 +305,746 @@
 }
 
 /* ==========================================================================
-   Hero Banner (Screen 1 - Overview)
+   Accreditation / Verified Partner Status Card (Mockup: Placed At Top)
    ========================================================================== */
-.shelter-hero-banner {
-  background: linear-gradient(135deg, #EBF5F0 0%, #E2EFE9 100%);
-  border-radius: 16px;
-  border: 1px solid #D5E5DC;
-  padding: 2.25rem 2.75rem;
+.shelter-partner-status-card {
+  background: linear-gradient(90deg, #F0FDF4 0%, #E8F9EE 100%);
+  border: 1px solid #BBF7D0;
+  border-radius: 20px;
+  padding: 1.15rem 1.85rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.35rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 1.75rem;
-  margin-bottom: 1.5rem;
+  gap: 1.5rem;
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.04);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(14, 54, 40, 0.04);
 }
 
-.shelter-hero-content {
-  max-width: 520px;
+.shelter-partner-status-left {
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+  flex: 1;
+  position: relative;
   z-index: 2;
 }
 
-.shelter-hero-greeting {
-  font-size: 1.15rem;
-  color: #1E4636;
+.shelter-partner-shield-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #059669;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25);
+}
+
+.shelter-partner-info-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.shelter-partner-headline-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.shelter-partner-headline {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.shelter-partner-active-chip {
+  background-color: #10B981;
+  color: #FFFFFF;
+  border-radius: 9999px;
+  padding: 0.22rem 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.shelter-partner-subtext {
+  font-size: 0.86rem;
+  color: #4B5563;
+  margin: 0.25rem 0 0 0;
+  line-height: 1.45;
+}
+
+.shelter-partner-status-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.shelter-partner-paw-watermark {
+  position: absolute;
+  right: 170px;
+  top: 50%;
+  transform: translateY(-50%) rotate(20deg);
+  color: rgba(16, 185, 129, 0.12);
+  pointer-events: none;
+  user-select: none;
+}
+
+.shelter-partner-license-badge {
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 0.55rem 1.15rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  position: relative;
+  z-index: 2;
+}
+
+.license-badge-icon {
+  color: #059669;
+  flex-shrink: 0;
+}
+
+.license-badge-text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  line-height: 1.25;
+}
+
+.license-badge-label {
+  font-size: 0.72rem;
+  color: #64748B;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.license-badge-num {
+  font-size: 0.88rem;
+  color: #0F172A;
+  font-weight: 800;
+}
+
+/* ==========================================================================
+   Composite Hero Section (2 Columns: Wide Combined Hero Banner + 3 Story Cards)
+   ========================================================================== */
+.shelter-hero-composite-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 270px;
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
+  align-items: stretch;
+}
+
+.shelter-hero-composite-row > * {
+  min-width: 0;
+}
+
+/* Combined Hero Banner Card */
+.shelter-hero-banner-combined {
+  background: linear-gradient(135deg, #F0FAF4 0%, #E8F7ED 40%, #FFFDF8 100%);
+  border: 1px solid rgba(16, 185, 129, 0.22);
+  border-radius: 22px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  box-shadow: 0 4px 20px rgba(13, 51, 37, 0.04);
+  min-height: 310px;
+}
+
+/* Left greeting col */
+.shelter-hero-greeting-col {
+  padding: 2.25rem 2rem 2.25rem 2.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 3;
+  max-width: 420px;
+  flex-shrink: 0;
+}
+
+.shelter-hero-greeting-sub {
+  font-size: 1.15rem;
+  color: #374151;
+  font-weight: 500;
   margin-bottom: 0.25rem;
 }
 
 .shelter-hero-title {
   font-family: 'Nunito Sans', var(--shelter-font);
-  font-size: 2.25rem;
+  font-size: 2.35rem;
   font-weight: 800;
-  color: #0E3628;
-  letter-spacing: -0.02em;
+  color: #0F172A;
+  letter-spacing: -0.025em;
   line-height: 1.15;
   margin: 0 0 0.5rem 0;
 }
 
+.shelter-title-team-accent {
+  color: #10B981;
+}
+
 .shelter-hero-subtitle {
-  font-size: 0.95rem;
-  color: #446455;
-  margin: 0 0 1.5rem 0;
-  line-height: 1.4;
+  font-size: 0.98rem;
+  color: #4B5563;
+  margin: 0 0 1.2rem 0;
+  line-height: 1.45;
 }
 
-.shelter-hero-dog-wrap {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  z-index: 2;
-}
-
-.shelter-hero-dog-img {
-  width: 290px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(14, 54, 40, 0.12);
-  border: 3px solid #FFFFFF;
-}
-
-.shelter-hero-quote-sticker {
-  position: absolute;
-  top: -16px;
-  right: -20px;
-  background: #FFFFFF;
-  padding: 0.55rem 1.1rem;
-  border-radius: var(--shelter-radius-pill);
-  box-shadow: 0 6px 18px rgba(14, 54, 40, 0.1);
-  border: 1px solid #D5E5DC;
-  font-size: 0.84rem;
-  font-weight: 700;
-  color: #0E3628;
+.shelter-hero-values-row {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 1.15rem;
+  margin-bottom: 1.45rem;
+  flex-wrap: wrap;
+}
+
+.hero-value-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #374151;
+}
+
+.hero-value-chip .val-icon.heart {
+  color: #DC2626;
+}
+
+.hero-value-chip .val-icon.home {
+  color: #059669;
+}
+
+.hero-value-chip .val-icon.paw {
+  color: #0E382B;
+}
+
+.shelter-hero-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.shelter-hero-btn-add {
+  background-color: #0D3325;
+  color: #FFFFFF;
+  border-radius: 9999px;
+  padding: 0.68rem 1.45rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  text-decoration: none;
+  transition: all 0.18s ease;
+  box-shadow: 0 2px 8px rgba(13, 51, 37, 0.2);
+  border: none;
+  cursor: pointer;
   white-space: nowrap;
 }
 
-/* ==========================================================================
-   5 Stat Cards in One Row (Screen 1)
-   ========================================================================== */
-.shelter-stats-grid-5 {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 1.15rem;
-  margin-bottom: 2rem;
+.shelter-hero-btn-add:hover {
+  background-color: #072218;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(13, 51, 37, 0.28);
+  color: #FFFFFF;
 }
 
-.shelter-stat-card-clean {
-  background: #FFFFFF;
-  border: 1px solid var(--shelter-card-border);
-  border-radius: 14px;
-  padding: 1.25rem 1.2rem;
-  box-shadow: var(--shelter-shadow-xs);
+.shelter-hero-btn-listings {
+  background-color: #FFFFFF;
+  color: #059669;
+  border: 1px solid #10B981;
+  border-radius: 9999px;
+  padding: 0.68rem 1.35rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.shelter-hero-btn-listings:hover {
+  background-color: #F0FDF4;
+  border-color: #059669;
+  color: #047857;
+  transform: translateY(-1px);
+}
+
+/* Center flourish script */
+.shelter-hero-center-flourish {
+  position: absolute;
+  left: 42%;
+  top: 15%;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  align-items: center;
+  pointer-events: none;
+  user-select: none;
+  z-index: 4;
+}
+
+.script-flourish-wrap {
+  font-family: 'Caveat', 'Segoe Script', cursive, sans-serif;
+  font-size: 1.3rem;
+  color: #059669;
+  transform: rotate(-10deg);
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9);
+}
+
+.script-flourish-line.sub {
+  margin-left: 0.85rem;
+}
+
+.flourish-heart-sketch {
+  width: 48px;
+  height: 48px;
+  margin-top: 0.25rem;
+  opacity: 0.75;
+}
+
+/* Right Side: Featured Pet Photo & Spotlight Card */
+.shelter-hero-spotlight-col {
+  position: relative;
+  flex: 1;
+  min-width: 320px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.shelter-spotlight-hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+}
+
+.shelter-spotlight-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(240, 250, 244, 0.95) 0%, rgba(240, 250, 244, 0.45) 40%, rgba(0, 0, 0, 0.05) 75%, rgba(0, 0, 0, 0.3) 100%);
+}
+
+.shelter-spotlight-floating-card {
+  position: relative;
+  z-index: 3;
+  margin-left: 2rem;
+  max-width: 250px;
+}
+
+.spotlight-tag-mini {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #0E382B;
+  text-transform: uppercase;
+}
+
+.spotlight-name-bold {
+  font-family: 'Nunito Sans', var(--shelter-font);
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0.15rem 0 0.35rem;
+  line-height: 1.15;
+}
+
+.spotlight-bio-text {
+  font-size: 0.82rem;
+  color: #374151;
+  margin: 0 0 1rem 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.spotlight-view-details-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: #DCFCE7;
+  border: 1px solid #86EFAC;
+  color: #065F46;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.38rem 0.95rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.spotlight-view-details-pill:hover {
+  background-color: #BBF7D0;
+  transform: translateY(-1px);
+}
+
+.spotlight-circle-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background-color: rgba(25, 45, 35, 0.65);
+  color: #FFFFFF;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  backdrop-filter: blur(4px);
+}
+
+.spotlight-circle-arrow:hover {
+  background-color: rgba(25, 45, 35, 0.9);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.spotlight-circle-arrow.left {
+  left: 10px;
+}
+
+.spotlight-circle-arrow.right {
+  right: 15px;
+}
+
+.spotlight-pagination-capsules {
+  position: absolute;
+  bottom: 12px;
+  right: 25px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.spotlight-pagination-capsules .capsule-pill {
+  width: 18px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: #10B981;
+}
+
+.spotlight-pagination-capsules .capsule-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+/* Part B: Right 3-Tier Pet Stories Stack */
+.shelter-hero-stories-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  justify-content: space-between;
+}
+
+.shelter-story-frosted-card {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  background: linear-gradient(135deg, rgba(24, 46, 34, 0.95) 0%, rgba(12, 28, 20, 0.98) 100%);
+  border-radius: 16px;
+  padding: 0.75rem 0.95rem;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  height: calc((100% - 1.5rem) / 3);
+  min-height: 82px;
+  box-sizing: border-box;
+}
+
+.shelter-story-frosted-card:hover {
+  transform: translateX(3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.story-thumb-wrap {
+  width: 58px;
+  height: 58px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.story-thumb-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.story-text-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.80rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #E2E8F0;
+}
+
+.story-text-line.highlight {
+  color: #A7F3D0;
+}
+
+.story-arrow-circle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  flex-shrink: 0;
+  transition: all 0.18s ease;
+}
+
+.shelter-story-frosted-card:hover .story-arrow-circle {
+  background-color: #10B981;
+  border-color: #10B981;
+  transform: translateX(2px);
+}
+
+/* ==========================================================================
+   4 Stat Cards in a Row with Decorative Watermarks (Mockup)
+   ========================================================================== */
+.shelter-stats-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1.85rem;
+}
+
+.shelter-stats-grid-4 > * {
+  min-width: 0;
+}
+
+.shelter-stat-card-v2 {
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 18px;
+  padding: 1.35rem 1.45rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.shelter-stat-card-clean:hover {
+.shelter-stat-card-v2:hover {
   transform: translateY(-2px);
-  border-color: var(--shelter-primary-border);
-  box-shadow: var(--shelter-shadow-md);
+  border-color: #CBD5E1;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
-.shelter-stat-icon-box {
-  width: 40px;
-  height: 40px;
+.stat-card-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stat-card-icon-box {
+  width: 38px;
+  height: 38px;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 0.2rem;
 }
 
-.shelter-stat-number {
-  font-size: 1.65rem;
+.stat-card-arrow-pill {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.18s ease;
+}
+
+.shelter-stat-card-v2:hover .stat-card-arrow-pill {
+  transform: translateX(2px);
+}
+
+.stat-card-metric-num {
+  font-size: 2.2rem;
   font-weight: 800;
-  color: var(--shelter-text-dark);
-  line-height: 1;
+  color: #0F172A;
+  line-height: 1.1;
+  margin: 0.85rem 0 0.15rem 0;
 }
 
-.shelter-stat-title-label {
-  font-size: 0.82rem;
-  font-weight: 500;
-  color: var(--shelter-text-muted);
+.stat-card-metric-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.stat-card-metric-sub {
+  font-size: 0.78rem;
+  color: #64748B;
+  margin-top: 0.15rem;
+}
+
+/* Watermark Bars SVG Graphic in bottom-right corner */
+.stat-card-watermark-bars {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100px;
+  height: 60px;
+  pointer-events: none;
+}
+
+.watermark-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Theme variations for 4 Stat Cards */
+.shelter-stat-card-v2.theme-green .stat-card-icon-box {
+  background-color: #ECFDF5;
+  color: #10B981;
+}
+.shelter-stat-card-v2.theme-green .stat-card-arrow-pill {
+  background-color: #ECFDF5;
+  color: #10B981;
+}
+.stat-card-watermark-bars.green {
+  color: #10B981;
+}
+
+.shelter-stat-card-v2.theme-blue .stat-card-icon-box {
+  background-color: #EFF6FF;
+  color: #3B82F6;
+}
+.shelter-stat-card-v2.theme-blue .stat-card-arrow-pill {
+  background-color: #EFF6FF;
+  color: #3B82F6;
+}
+.stat-card-watermark-bars.blue {
+  color: #3B82F6;
+}
+
+.shelter-stat-card-v2.theme-amber .stat-card-icon-box {
+  background-color: #FFFBEB;
+  color: #F59E0B;
+}
+.shelter-stat-card-v2.theme-amber .stat-card-arrow-pill {
+  background-color: #FFFBEB;
+  color: #F59E0B;
+}
+.stat-card-watermark-bars.amber {
+  color: #F59E0B;
+}
+
+.shelter-stat-card-v2.theme-purple .stat-card-icon-box {
+  background-color: #FAF5FF;
+  color: #8B5CF6;
+}
+.shelter-stat-card-v2.theme-purple .stat-card-arrow-pill {
+  background-color: #FAF5FF;
+  color: #8B5CF6;
+}
+.stat-card-watermark-bars.purple {
+  color: #8B5CF6;
 }
 
 /* ==========================================================================
-   Two-Column Activity Feed (Screen 1)
+   Three-Column Bottom Activity & Quick Actions Grid (Mockup)
    ========================================================================== */
-.shelter-activity-row-2 {
+.shelter-bottom-tri-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.75rem;
-  margin-bottom: 2.5rem;
+  grid-template-columns: 1.15fr 1.15fr 0.95fr;
+  gap: 1.35rem;
+  margin-bottom: 2.8rem;
+  align-items: stretch;
+}
+
+.shelter-bottom-tri-grid > * {
+  min-width: 0;
+}
+
+.shelter-bottom-col {
+  display: flex;
+  flex-direction: column;
 }
 
 .shelter-section-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1.15rem;
+  margin-bottom: 0.85rem;
 }
 
 .shelter-section-title {
   font-family: 'Nunito Sans', var(--shelter-font);
-  font-size: 1.22rem;
-  font-weight: 800;
-  color: #0E3628;
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: #0F172A;
   margin: 0;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
+.shelter-feed-header-icon {
+  color: #059669;
+  flex-shrink: 0;
+}
+
+.shelter-feed-header-icon.blue {
+  color: #3B82F6;
+}
+
+.shelter-feed-header-icon.amber {
+  color: #D97706;
+}
+
 .shelter-link-view-all {
-  font-size: 0.86rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  color: #15803D;
+  color: #059669;
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -464,8 +1053,305 @@
 }
 
 .shelter-link-view-all:hover {
-  color: #0E3628;
+  color: #047857;
   text-decoration: underline;
+}
+
+.shelter-tri-card-container {
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 16px;
+  padding: 0.85rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex: 1;
+}
+
+.shelter-app-item-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: 12px;
+  background-color: #FFFFFF;
+  border: 1px solid #F1F5F9;
+  margin-bottom: 0.55rem;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.shelter-app-item-row:last-child {
+  margin-bottom: 0;
+}
+
+.shelter-app-item-row:hover {
+  background-color: #F8FAFC;
+  border-color: #CBD5E1;
+  transform: translateY(-1px);
+}
+
+.shelter-app-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.shelter-app-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.shelter-app-pet-name {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #0F172A;
+  line-height: 1.2;
+}
+
+.shelter-app-breed-meta {
+  font-size: 0.78rem;
+  color: #64748B;
+  margin-top: 0.15rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shelter-app-end-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.shelter-status-pill-clean {
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 9999px;
+  padding: 0.18rem 0.6rem;
+  line-height: 1;
+}
+
+.shelter-status-pill-clean.new {
+  background-color: #EFF6FF;
+  color: #2563EB;
+}
+
+.shelter-status-pill-clean.review {
+  background-color: #FEF3C7;
+  color: #D97706;
+}
+
+.shelter-status-pill-clean.approved,
+.shelter-status-pill-clean.confirmed {
+  background-color: #ECFDF5;
+  color: #059669;
+}
+
+.shelter-app-date-text {
+  font-size: 0.74rem;
+  color: #94A3B8;
+  white-space: nowrap;
+}
+
+.shelter-visit-datetime-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.74rem;
+  color: #64748B;
+  white-space: nowrap;
+}
+
+.shelter-item-row-arrow {
+  color: #94A3B8;
+}
+
+.shelter-mini-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.25rem 1rem;
+  text-align: center;
+}
+
+.empty-state-icon {
+  color: #94A3B8;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #1F2937;
+}
+
+.empty-state-desc {
+  font-size: 0.8rem;
+  color: #64748B;
+  margin: 0.2rem 0 0;
+}
+
+/* Quick Actions 2x3 Grid matching mockup */
+.shelter-quick-actions-grid-2x3 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.65rem;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 16px;
+  padding: 0.85rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  flex: 1;
+}
+
+.quick-action-card-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0.95rem 0.5rem;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.18s ease;
+  font-family: inherit;
+}
+
+.quick-action-card-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.tile-icon-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.45rem;
+  position: relative;
+}
+
+.tile-icon-circle.with-badge .tile-badge-red {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  background-color: #EF4444;
+  color: #FFFFFF;
+  font-size: 0.65rem;
+  font-weight: 700;
+  border-radius: 9999px;
+  padding: 0.1rem 0.35rem;
+  line-height: 1;
+}
+
+.quick-action-card-tile.tile-green {
+  background-color: #F0FDF4;
+  border-color: #DCFCE7;
+  color: #065F46;
+}
+
+.quick-action-card-tile.tile-green .tile-icon-circle {
+  background-color: #10B981;
+  color: #FFFFFF;
+}
+
+.quick-action-card-tile.tile-blue {
+  background-color: #EFF6FF;
+  border-color: #DBEAFE;
+  color: #1E40AF;
+}
+
+.quick-action-card-tile.tile-blue .tile-icon-circle {
+  background-color: #3B82F6;
+  color: #FFFFFF;
+}
+
+.quick-action-card-tile.tile-amber {
+  background-color: #FFFBEB;
+  border-color: #FEF3C7;
+  color: #92400E;
+}
+
+.quick-action-card-tile.tile-amber .tile-icon-circle {
+  background-color: #F59E0B;
+  color: #FFFFFF;
+}
+
+.quick-action-card-tile.tile-purple {
+  background-color: #FAF5FF;
+  border-color: #F3E8FF;
+  color: #6B21A8;
+}
+
+.quick-action-card-tile.tile-purple .tile-icon-circle {
+  background-color: #A855F7;
+  color: #FFFFFF;
+}
+
+.quick-action-card-tile.tile-slate {
+  background-color: #F8FAFC;
+  border-color: #E2E8F0;
+  color: #334155;
+}
+
+.quick-action-card-tile.tile-slate .tile-icon-circle {
+  background-color: #64748B;
+  color: #FFFFFF;
+}
+
+.tile-main-label {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: inherit;
+  line-height: 1.2;
+}
+
+.tile-sub-label {
+  font-size: 0.72rem;
+  opacity: 0.75;
+  margin-top: 0.15rem;
+}
+
+/* Responsive queries */
+@media (max-width: 1200px) {
+  .shelter-hero-composite-row {
+    grid-template-columns: 1fr;
+  }
+  .shelter-stats-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .shelter-bottom-tri-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .shelter-partner-status-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .shelter-stats-grid-4 {
+    grid-template-columns: 1fr;
+  }
+  .shelter-hero-actions-row {
+    flex-direction: column;
+    width: 100%;
+  }
+  .shelter-hero-btn-add,
+  .shelter-hero-btn-listings {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 .shelter-feed-card {

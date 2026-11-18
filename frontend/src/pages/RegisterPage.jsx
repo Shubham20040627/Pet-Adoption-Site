@@ -20,6 +20,9 @@ import {
   Compass,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import GoogleAuthButton from '../components/GoogleAuthButton';
+import PawConnectLogo from '../components/PawConnectLogo';
+import TurnstileWidget from '../components/TurnstileWidget';
 import '../styles/forms.css';
 
 const registerSlides = [
@@ -82,6 +85,7 @@ const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [turnstileToken, setTurnstileToken] = useState('');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -197,9 +201,16 @@ const RegisterPage = () => {
       return;
     }
 
+    if (!turnstileToken) {
+      setError('Please click the "Verify you are human" checkbox to proceed.');
+      setLoading(false);
+      return;
+    }
+
     try {
       const payload = {
         role,
+        turnstile_token: turnstileToken,
         ...formData,
       };
       const res = await register(payload);
@@ -254,6 +265,10 @@ const RegisterPage = () => {
         <div className="split-slider-overlay" />
 
         <div className="split-left-content">
+          <Link to="/" style={{ textDecoration: 'none', marginBottom: '1.25rem', alignSelf: 'flex-start' }}>
+            <PawConnectLogo size="lg" variant="full" theme="dark" showSubtitle subtitleText="Verified Pet Adoption" />
+          </Link>
+
           <div className="hero-badge-glass" style={{ alignSelf: 'flex-start' }}>
             <Sparkles size={16} color="#FFD166" /> Welcome to PawConnect
           </div>
@@ -722,6 +737,12 @@ const RegisterPage = () => {
               </>
             )}
 
+            {/* Cloudflare Turnstile "Tick Thing" */}
+            <TurnstileWidget
+              onVerify={(token) => setTurnstileToken(token)}
+              onExpire={() => setTurnstileToken('')}
+            />
+
             <button
               type="submit"
               className={`compact-submit-btn role-${role}`}
@@ -745,6 +766,19 @@ const RegisterPage = () => {
               )}
             </button>
           </form>
+
+          {/* Sign Up With Google - Positioned Below All Details */}
+          {role === 'adopter' && (
+            <>
+              <div className="auth-divider">
+                <span>Or sign up with</span>
+              </div>
+              <GoogleAuthButton
+                role="adopter"
+                mode="signup"
+              />
+            </>
+          )}
 
           <div className="compact-form-footer">
             <span>Already have an account?</span>{' '}

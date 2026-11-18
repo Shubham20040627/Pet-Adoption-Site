@@ -11,38 +11,37 @@ import '../styles/about-contact.css';
 
 const heroSlides = [
   {
-    image: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=1600&auto=format&fit=crop&q=85',
+    image: 'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=1800&auto=format&fit=crop&q=90',
+    tag: 'Rescue Pets',
+    caption: 'Gentle, Inquisitive & Looking for a Loving Forever Home',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=1800&auto=format&fit=crop&q=90',
     tag: 'Dogs & Puppies',
     caption: 'Bella & Friends • Playful & Loving Companions',
   },
   {
-    image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1600&auto=format&fit=crop&q=85',
+    image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1800&auto=format&fit=crop&q=90',
     tag: 'Cats & Kittens',
     caption: 'Milo • Sweet Purrs & Warm Sunlit Cuddles',
   },
   {
-    image: 'https://images.unsplash.com/photo-1534361960057-19889db9621e?w=1600&auto=format&fit=crop&q=85',
-    tag: 'Forever Families',
-    caption: 'Every Rescue Adoption Saves Two Lives',
+    image: 'https://images.unsplash.com/photo-1552053831-71594a27632d?w=1800&auto=format&fit=crop&q=90',
+    tag: 'Golden Companions',
+    caption: 'Buddy • Loyal, Friendly & Golden-Hearted',
   },
   {
-    image: 'https://images.unsplash.com/photo-1517849845537-4d257902454a?w=1600&auto=format&fit=crop&q=85',
+    image: 'https://images.unsplash.com/photo-1517849845537-4d257902454a?w=1800&auto=format&fit=crop&q=90',
     tag: 'Active Companions',
     caption: 'Luna • Agile, Smart & Ready For Adventures',
-  },
-  {
-    image: 'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=1600&auto=format&fit=crop&q=85',
-    tag: 'Small Rescue Pets',
-    caption: 'Thumper • Gentle & Indoor Litter Trained',
   },
 ];
 
 const autotypeWords = [
-  'Best Friend.',
-  'Loving Companion.',
-  'Soulmate.',
-  'Forever Playmate.',
-  'Family Member.',
+  'Fam',
+  'Best Friend',
+  'Soulmate',
+  'Companion',
 ];
 
 const HomePage = () => {
@@ -172,93 +171,51 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* Semi-transparent Forest Green Overlay for text readability */}
+        {/* Soft Vignette / Gradient Overlay for optimal contrast */}
         <div className="hero-bg-overlay" />
 
         {/* Foreground Content positioned cleanly over the full sliding background */}
         <div className="container hero-foreground">
           <div className="hero-content-box">
-            <div className="hero-badge-glass">
-              <Sparkles size={16} color="#FFD166" /> 100% Ethical & Verified Pet Adoption
-            </div>
-            
-            <h1 className="hero-title-light">
+            <h1 className="hero-title-main">
               Find Your <br />
-              <span className="autotype-highlight">{typedText}</span>
-              <span className="cursor-blink-light">|</span>
-              <br />
-              <span style={{ fontSize: '0.85em', color: '#FFFFFF', fontWeight: 600 }}>
-                Give Them a Forever Home.
-              </span>
+              <span className="hero-highlight-word">{typedText}</span>
+              <span className="cursor-blink-light">|</span> <br />
+              Give Them a Forever Home.
             </h1>
 
-            <p className="hero-subtitle-light">
-              PawConnect connects loving families with rescue pets in verified shelters. Explore available dogs, cats, rabbits, and birds ready to bring joy and warmth into your home.
+            <p className="hero-subtitle-main">
+              PawConnect connects loving families with rescue pets in verified shelters.
+              Explore available dogs, cats, rabbits, and birds ready to bring joy and warmth
+              into your home.
             </p>
 
-            {/* Quick Search Bar */}
-            <form onSubmit={handleSearchSubmit} className="hero-search-glass">
-              <Search size={22} color="var(--color-primary)" style={{ marginLeft: '0.5rem' }} />
-              <input
-                type="text"
-                placeholder="Search by name, breed (e.g. Golden, Beagle, Tabby)..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <button type="submit" className="btn btn-primary btn-sm">
-                Search Pets
-              </button>
-            </form>
-
-            {/* Call to Action Buttons */}
-            <div className="hero-actions-light">
-              <Link to="/pets" className="btn btn-primary btn-lg" style={{ backgroundColor: 'var(--color-primary-light)', borderColor: '#40916C' }}>
-                Browse Available Pets <ArrowRight size={18} />
+            {/* Call to Action Buttons matching screenshot */}
+            <div className="hero-actions-row">
+              <Link to="/pets" className="hero-btn-primary">
+                <span>Browse Available Pets</span>
+                <ArrowRight size={17} />
               </Link>
-              <Link to="/pawmatch" className="btn btn-outline btn-lg" style={{ color: '#FFFFFF', borderColor: 'rgba(255,255,255,0.6)', backgroundColor: 'rgba(255,255,255,0.1)' }}>
-                <Sparkles size={18} color="#FFD166" /> Take PawMatch Quiz
+              <Link to="/pawmatch" className="hero-btn-glass">
+                <Sparkles size={16} color="#FFD166" />
+                <span>Take PawMatch Quiz</span>
               </Link>
             </div>
+          </div>
 
-            {/* Bottom Slider Navigator Bar */}
-            <div className="hero-slider-nav-bar">
-              <div className="slide-caption-pill">
-                <span style={{ color: '#FFD166', fontWeight: 700 }}>{heroSlides[currentSlide].tag}</span>
-                <span>•</span>
-                <span>{heroSlides[currentSlide].caption}</span>
-              </div>
-
-              <div className="slider-controls-group">
+          {/* Bottom Right Slide Indicators matching screenshot */}
+          <div className="hero-bottom-slider-nav">
+            <div className="hero-slider-divider" />
+            <div className="hero-slider-dots">
+              {heroSlides.map((_, dotIdx) => (
                 <button
+                  key={dotIdx}
                   type="button"
-                  className="slider-arrow-btn-light"
-                  onClick={handlePrevSlide}
-                  aria-label="Previous Background Slide"
-                >
-                  <ChevronLeft size={20} />
-                </button>
-
-                <div className="slider-dots-light">
-                  {heroSlides.map((_, dotIdx) => (
-                    <button
-                      key={dotIdx}
-                      type="button"
-                      className={`slider-dot-light ${dotIdx === currentSlide ? 'active' : ''}`}
-                      onClick={() => setCurrentSlide(dotIdx)}
-                      aria-label={`Go to background slide ${dotIdx + 1}`}
-                    />
-                  ))}
-                </div>
-
-                <button
-                  type="button"
-                  className="slider-arrow-btn-light"
-                  onClick={handleNextSlide}
-                  aria-label="Next Background Slide"
-                >
-                  <ChevronRight size={20} />
-                </button>
-              </div>
+                  className={`hero-slider-dot ${dotIdx === currentSlide ? 'active' : ''}`}
+                  onClick={() => setCurrentSlide(dotIdx)}
+                  aria-label={`Slide ${dotIdx + 1}`}
+                />
+              ))}
             </div>
           </div>
         </div>

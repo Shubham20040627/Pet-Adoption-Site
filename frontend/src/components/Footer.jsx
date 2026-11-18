@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { PawPrint, Heart, Sparkles, ShieldCheck, Mail, MapPin } from 'lucide-react';
+import PawConnectLogo from './PawConnectLogo';
 import '../styles/footer.css';
 
 const Footer = () => {
@@ -16,9 +17,8 @@ const Footer = () => {
         <div className="footer-top">
           {/* Brand info */}
           <div>
-            <div className="footer-brand-title">
-              <PawPrint size={24} color="#52B788" />
-              Paw<span>Connect</span>
+            <div style={{ marginBottom: '1rem' }}>
+              <PawConnectLogo size="lg" variant="full" theme="dark" showSubtitle subtitleText="Verified Pet Adoption & Rescue" />
             </div>
             <p className="footer-desc">
               "Find Your Best Friend. Give Them a Forever Home." Connecting caring adopters with verified rescue shelters.

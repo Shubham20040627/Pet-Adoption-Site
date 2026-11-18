@@ -61,6 +61,9 @@ def list_pets(request):
     shelter_id = request.GET.get('shelter_id', '').strip()
     if shelter_id:
         query['shelter_id'] = shelter_id
+    shelter_name = request.GET.get('shelter_name', '').strip() or request.GET.get('shelter', '').strip()
+    if shelter_name and shelter_name.lower() != 'all':
+        query['shelter_name'] = {'$regex': shelter_name, '$options': 'i'}
 
     # Filter by specific IDs (e.g. for comparison)
     ids_param = request.GET.get('ids', '').strip()

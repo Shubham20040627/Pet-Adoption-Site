@@ -17,137 +17,12 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { adoptionsApi } from '../api/adoptionsApi';
+import { petsApi } from '../api/petsApi';
 import AdopterHeader from '../components/AdopterHeader';
 import ScheduleMeetAndGreetModal from '../components/ScheduleMeetAndGreetModal';
 import '../styles/chat.css';
 
 const FALLBACK_PET_IMG = 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&auto=format&fit=crop';
-
-// Sample fallback conversations for initial demo
-const DEMO_CONVERSATIONS = [
-  {
-    thread_id: 'luna_thread',
-    pet_id: 'demo-luna',
-    adopter_id: 'demo-adopter',
-    shelter_id: 'demo-shelter',
-    pet: {
-      id: 'demo-luna',
-      name: 'Luna',
-      breed: 'Border Collie Mix',
-      species: 'Dog',
-      image_url: 'https://images.unsplash.com/photo-1517849845537-4d257902454a?w=800&auto=format&fit=crop',
-    },
-    other_party: {
-      id: 'demo-shelter',
-      name: 'Hope & Paws Animal Sanctuary',
-      role: 'shelter',
-    },
-    application: {
-      status: 'approved',
-      created_at: '2026-10-16T09:15:00Z',
-    },
-    last_message: {
-      text: "Saturday between 10:00 AM and 1:00 PM works perfectly! We'll have her go-home packet ready.",
-      created_at: new Date(Date.now() - 1000 * 60 * 12).toISOString(),
-      sender_name: 'Hope & Paws Animal Sanctuary',
-      sender_role: 'shelter',
-    },
-    unread_count: 0,
-  },
-  {
-    thread_id: 'oliver_thread',
-    pet_id: 'demo-oliver',
-    adopter_id: 'demo-adopter',
-    shelter_id: 'demo-shelter',
-    pet: {
-      id: 'demo-oliver',
-      name: 'Oliver',
-      breed: 'Russian Blue Mix',
-      species: 'Cat',
-      image_url: 'https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=800&auto=format&fit=crop',
-    },
-    other_party: {
-      id: 'demo-shelter',
-      name: 'Sunny Paws Community Rescue',
-      role: 'shelter',
-    },
-    application: {
-      status: 'submitted',
-      created_at: '2026-10-16T10:30:00Z',
-    },
-    last_message: {
-      text: 'Hello DEF! Oliver thrives in calm, quiet spaces with cozy sunny spots. Reviewing your application today!',
-      created_at: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
-      sender_name: 'Sunny Paws Community Rescue',
-      sender_role: 'shelter',
-    },
-    unread_count: 1,
-  },
-  {
-    thread_id: 'max_thread',
-    pet_id: 'demo-max',
-    adopter_id: 'demo-adopter',
-    shelter_id: 'demo-shelter',
-    pet: {
-      id: 'demo-max',
-      name: 'Max',
-      breed: 'Golden Retriever Mix',
-      species: 'Dog',
-      image_url: 'https://images.unsplash.com/photo-1552053831-71594a27632d?w=800&auto=format&fit=crop',
-    },
-    other_party: {
-      id: 'demo-shelter',
-      name: 'Hope & Paws Animal Sanctuary',
-      role: 'shelter',
-    },
-    application: {
-      status: 'approved',
-      created_at: '2026-10-14T14:20:00Z',
-    },
-    last_message: {
-      text: 'Max is doing fantastic! Long morning walks and already learned sit and paw!',
-      created_at: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
-      sender_name: 'DEF',
-      sender_role: 'adopter',
-    },
-    unread_count: 0,
-  }
-];
-
-const DEMO_LUNA_MESSAGES = [
-  {
-    id: 'm1',
-    sender_id: 'demo-adopter',
-    sender_name: 'DEF',
-    sender_role: 'adopter',
-    message: "Hello Hope & Paws team! We are so thrilled that Luna's adoption was approved. We are preparing our home for her this week!",
-    created_at: new Date(Date.now() - 1000 * 60 * 65).toISOString(),
-  },
-  {
-    id: 'm2',
-    sender_id: 'demo-shelter',
-    sender_name: 'Hope & Paws Animal Sanctuary',
-    sender_role: 'shelter',
-    message: "Hi DEF! Congratulations again! Luna is in wonderful spirits. Her vaccinations and digital care certificate are complete and ready for you.",
-    created_at: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
-  },
-  {
-    id: 'm3',
-    sender_id: 'demo-adopter',
-    sender_name: 'DEF',
-    sender_role: 'adopter',
-    message: "Awesome! We've got her bed and harness ready. What time is best for her pickup on Saturday?",
-    created_at: new Date(Date.now() - 1000 * 60 * 25).toISOString(),
-  },
-  {
-    id: 'm4',
-    sender_id: 'demo-shelter',
-    sender_name: 'Hope & Paws Animal Sanctuary',
-    sender_role: 'shelter',
-    message: "Saturday between 10:00 AM and 1:00 PM works perfectly! We'll have her go-home packet and adoption agreement copy printed out for you.",
-    created_at: new Date(Date.now() - 1000 * 60 * 12).toISOString(),
-  }
-];
 
 const QUICK_PROMPTS = [
   "When can we schedule a Meet & Greet?",
@@ -177,22 +52,17 @@ const MessagesPage = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // 1. Load Conversations
+  // 1. Load Conversations from Database
   const fetchConversations = async () => {
     try {
       const res = await adoptionsApi.getConversations();
       const list = res.conversations || [];
-      if (list.length > 0) {
-        setConversations(list);
-        return list;
-      } else {
-        setConversations(DEMO_CONVERSATIONS);
-        return DEMO_CONVERSATIONS;
-      }
+      setConversations(list);
+      return list;
     } catch (e) {
-      console.warn('Could not fetch conversations, using fallback:', e);
-      setConversations(DEMO_CONVERSATIONS);
-      return DEMO_CONVERSATIONS;
+      console.warn('Could not fetch conversations:', e);
+      setConversations([]);
+      return [];
     } finally {
       setLoading(false);
     }
@@ -207,6 +77,30 @@ const MessagesPage = () => {
         if (found) {
           setActiveThread(found);
           return;
+        } else {
+          try {
+            const petRes = await petsApi.getById(petParamId);
+            const petObj = petRes.pet || petRes;
+            if (petObj && (petObj.id || petObj._id)) {
+              const newThread = {
+                thread_id: `inquiry_${petObj.id || petObj._id}`,
+                pet_id: petObj.id || petObj._id,
+                pet: petObj,
+                other_party: {
+                  id: petObj.shelter_id,
+                  name: petObj.shelter_name || 'Shelter',
+                  role: 'shelter',
+                },
+                application: null,
+                last_message: null,
+                unread_count: 0
+              };
+              setActiveThread(newThread);
+              return;
+            }
+          } catch (err) {
+            console.warn('Could not load pet for chat inquiry:', err);
+          }
         }
       }
       if (list.length > 0 && !activeThread) {
@@ -220,19 +114,10 @@ const MessagesPage = () => {
     if (!thread) return;
     try {
       const res = await adoptionsApi.getThreadMessages(thread.pet_id, thread.other_party?.id);
-      if (res.messages && res.messages.length > 0) {
-        setMessages(res.messages);
-      } else if (thread.thread_id === 'luna_thread' || thread.pet?.name === 'Luna') {
-        setMessages(DEMO_LUNA_MESSAGES);
-      } else {
-        setMessages([]);
-      }
+      setMessages(res.messages || []);
     } catch (e) {
-      if (thread.thread_id === 'luna_thread' || thread.pet?.name === 'Luna') {
-        setMessages(DEMO_LUNA_MESSAGES);
-      } else {
-        setMessages([]);
-      }
+      console.warn('Could not fetch thread messages:', e);
+      setMessages([]);
     }
   };
 
@@ -344,54 +229,64 @@ const MessagesPage = () => {
           </div>
 
           <div className="chat-threads-scroll">
-            {filteredConversations.map(conv => {
-              const isSelected = activeThread?.thread_id === conv.thread_id || activeThread?.pet_id === conv.pet_id;
-              const pet = conv.pet || {};
-              const other = conv.other_party || {};
-              const timeStr = conv.last_message?.created_at
-                ? new Date(conv.last_message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                : '';
+            {filteredConversations.length === 0 ? (
+              <div className="chat-empty-sidebar-state" style={{ padding: '2.5rem 1rem', textAlign: 'center', color: '#6B7280' }}>
+                <PawPrint size={32} color="#9CA3AF" style={{ margin: '0 auto 0.75rem auto', display: 'block' }} />
+                <p style={{ margin: '0 0 0.4rem 0', fontWeight: 600, color: '#374151', fontSize: '0.9rem' }}>No Conversations Yet</p>
+                <p style={{ margin: 0, fontSize: '0.78rem', color: '#6B7280', lineHeight: 1.4 }}>
+                  When you apply for a pet or message a shelter, your chats will appear here.
+                </p>
+              </div>
+            ) : (
+              filteredConversations.map(conv => {
+                const isSelected = activeThread?.thread_id === conv.thread_id || activeThread?.pet_id === conv.pet_id;
+                const pet = conv.pet || {};
+                const other = conv.other_party || {};
+                const timeStr = conv.last_message?.created_at
+                  ? new Date(conv.last_message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                  : '';
 
-              return (
-                <div
-                  key={conv.thread_id || conv.pet_id}
-                  className={`chat-thread-card ${isSelected ? 'active' : ''}`}
-                  onClick={() => setActiveThread(conv)}
-                >
-                  <div className="chat-thread-avatar-wrap">
-                    <img
-                      src={pet.image_url || pet.photo_url || FALLBACK_PET_IMG}
-                      alt={pet.name}
-                      className="chat-thread-pet-thumb"
-                      onError={e => { e.target.src = FALLBACK_PET_IMG; }}
-                    />
-                    <div className="chat-thread-online-indicator" />
+                return (
+                  <div
+                    key={conv.thread_id || conv.pet_id}
+                    className={`chat-thread-card ${isSelected ? 'active' : ''}`}
+                    onClick={() => setActiveThread(conv)}
+                  >
+                    <div className="chat-thread-avatar-wrap">
+                      <img
+                        src={pet.image_url || pet.photo_url || FALLBACK_PET_IMG}
+                        alt={pet.name}
+                        className="chat-thread-pet-thumb"
+                        onError={e => { e.target.src = FALLBACK_PET_IMG; }}
+                      />
+                      <div className="chat-thread-online-indicator" />
+                    </div>
+
+                    <div className="chat-thread-body">
+                      <div className="chat-thread-top-row">
+                        <span className="chat-thread-pet-name">{pet.name || 'Pet'}</span>
+                        <span className="chat-thread-time">{timeStr}</span>
+                      </div>
+
+                      <div className="chat-thread-party-name">
+                        {other.name || 'Shelter'}
+                      </div>
+
+                      <div className="chat-thread-preview-row">
+                        <p className="chat-thread-last-msg">
+                          {conv.last_message?.text || 'No messages yet'}
+                        </p>
+                        {conv.unread_count > 0 && (
+                          <span className="chat-thread-unread-pill">
+                            {conv.unread_count}
+                          </span>
+                        )}
+                      </div>
+                    </div>
                   </div>
-
-                  <div className="chat-thread-body">
-                    <div className="chat-thread-top-row">
-                      <span className="chat-thread-pet-name">{pet.name || 'Pet'}</span>
-                      <span className="chat-thread-time">{timeStr}</span>
-                    </div>
-
-                    <div className="chat-thread-party-name">
-                      {other.name || 'Shelter'}
-                    </div>
-
-                    <div className="chat-thread-preview-row">
-                      <p className="chat-thread-last-msg">
-                        {conv.last_message?.text || 'Tap to start conversation...'}
-                      </p>
-                      {conv.unread_count > 0 && (
-                        <span className="chat-thread-unread-pill">
-                          {conv.unread_count}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })
+            )}
           </div>
         </div>
 
@@ -463,36 +358,46 @@ const MessagesPage = () => {
               <div className="chat-date-separator">Today</div>
 
               {/* Message List */}
-              {messages.map((m, idx) => {
-                const isMe = String(m.sender_id) === String(user?.id) || m.sender_role === user?.role || m.pending;
-                const timeStr = m.created_at
-                  ? new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                  : '';
+              {messages.length === 0 ? (
+                <div className="chat-empty-thread-state" style={{ padding: '3.5rem 1.5rem', textAlign: 'center', margin: 'auto' }}>
+                  <MessageSquare size={38} color="#10B981" style={{ margin: '0 auto 0.75rem auto', display: 'block', opacity: 0.8 }} />
+                  <h4 style={{ margin: '0 0 0.4rem 0', color: '#14382A', fontWeight: 700, fontSize: '1rem' }}>No messages in this chat yet</h4>
+                  <p style={{ margin: 0, fontSize: '0.85rem', color: '#6B7280', maxWidth: '340px', lineHeight: 1.4 }}>
+                    Send your first message to {activeOther.name || 'the shelter'} below to start the conversation!
+                  </p>
+                </div>
+              ) : (
+                messages.map((m, idx) => {
+                  const isMe = String(m.sender_id) === String(user?.id) || m.sender_role === user?.role || m.pending;
+                  const timeStr = m.created_at
+                    ? new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                    : '';
 
-                return (
-                  <div
-                    key={m.id || m._id || idx}
-                    className={`chat-message-row ${isMe ? 'outgoing' : 'incoming'}`}
-                  >
-                    {!isMe && (
-                      <span className="chat-sender-label">
-                        {m.sender_name || activeOther.name}
-                      </span>
-                    )}
-
-                    <div className="chat-bubble">
-                      {m.message}
-                    </div>
-
-                    <div className="chat-meta-row">
-                      <span>{timeStr}</span>
-                      {isMe && (
-                        m.pending ? <Clock size={11} /> : <CheckCheck size={12} color="#10B981" />
+                  return (
+                    <div
+                      key={m.id || m._id || idx}
+                      className={`chat-message-row ${isMe ? 'outgoing' : 'incoming'}`}
+                    >
+                      {!isMe && (
+                        <span className="chat-sender-label">
+                          {m.sender_name || activeOther.name}
+                        </span>
                       )}
+
+                      <div className="chat-bubble">
+                        {m.message}
+                      </div>
+
+                      <div className="chat-meta-row">
+                        <span>{timeStr}</span>
+                        {isMe && (
+                          m.pending ? <Clock size={11} /> : <CheckCheck size={12} color="#10B981" />
+                        )}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })
+              )}
               <div ref={messagesEndRef} />
             </div>
 
@@ -535,10 +440,21 @@ const MessagesPage = () => {
             <div className="chat-empty-icon-wrap">
               <MessageSquare size={36} />
             </div>
-            <h3 className="chat-empty-title">Select a Conversation</h3>
+            <h3 className="chat-empty-title">Your Messages</h3>
             <p className="chat-empty-desc">
-              Choose an application or pet inquiry from the left to start communicating directly with verified shelters.
+              {conversations.length === 0
+                ? 'You have no active conversations yet. Explore pets and submit an inquiry or adoption application to connect with verified shelters.'
+                : 'Choose a conversation thread from the left to view messages and chat with shelters.'}
             </p>
+            {conversations.length === 0 && (
+              <Link
+                to="/pets"
+                className="ap-btn-primary"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem', marginTop: '1rem', padding: '0.6rem 1.25rem', fontSize: '0.85rem' }}
+              >
+                <PawPrint size={16} /> Browse Pets for Adoption
+              </Link>
+            )}
           </div>
         )}
       </div>

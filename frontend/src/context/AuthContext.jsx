@@ -48,6 +48,12 @@ export const AuthProvider = ({ children }) => {
     return res;
   };
 
+  const googleAuth = async (payload) => {
+    const res = await authApi.googleAuth(payload);
+    saveAuthSession(res.token, res.user);
+    return res;
+  };
+
   const updateUserProfile = (updatedUser) => {
     setUser(updatedUser);
     localStorage.setItem('pawconnect_user', JSON.stringify(updatedUser));
@@ -125,6 +131,7 @@ export const AuthProvider = ({ children }) => {
     isAdmin: user?.role === 'admin',
     login,
     register,
+    googleAuth,
     logout,
     updateUserProfile,
     favoriteIds,

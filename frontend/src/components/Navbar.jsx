@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { PawPrint, Heart, LogOut, Menu, X, User, PlusCircle, FileText, Sparkles, CheckSquare } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import NotificationDropdown from './NotificationDropdown';
+import PawConnectLogo from './PawConnectLogo';
 import '../styles/navbar.css';
 
 const Navbar = () => {
@@ -21,11 +22,8 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="container navbar-container">
         {/* Brand */}
-        <Link to="/" className="navbar-brand" onClick={closeMobile}>
-          <div className="brand-icon-box">
-            <PawPrint size={22} />
-          </div>
-          <div>Paw<span>Connect</span></div>
+        <Link to="/" className="navbar-brand" onClick={closeMobile} style={{ textDecoration: 'none' }}>
+          <PawConnectLogo size="md" variant="full" />
         </Link>
 
         {/* Main Navigation Links: Only Home, About, Contact as requested */}
