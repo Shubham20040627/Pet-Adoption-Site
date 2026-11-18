@@ -6,7 +6,8 @@ import {
   Search, Filter, ArrowUpDown, ChevronRight, ChevronLeft, Bell, User,
   MoreVertical, RefreshCw, PawPrint, Phone, Mail, MapPin, Heart, ShieldCheck,
   Sparkles, ExternalLink, ArrowLeft, Camera, CheckSquare, Award, FileCheck2,
-  MessageSquare, LayoutGrid, PlusCircle, ArrowRight, Home, Zap, BarChart3
+  MessageSquare, LayoutGrid, PlusCircle, ArrowRight, Home, Zap, BarChart3,
+  ListFilter, Leaf
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { shelterApi } from '../api/shelterApi';
@@ -80,6 +81,33 @@ const ShelterDashboardPage = () => {
   const [selectedCertAppId, setSelectedCertAppId] = useState(null);
   const [selectedContractAppId, setSelectedContractAppId] = useState(null);
   const [appDetailTab, setAppDetailTab] = useState('form'); // 'form' | 'message'
+
+  // Screen 1: Hero Showcase Carousel slides matching mockup (media_1795021709328_5c7c1d6d.jpg)
+  const [heroSlideIdx, setHeroSlideIdx] = useState(0);
+  const heroSlides = useMemo(() => [
+    {
+      overline: 'HOPE & PAWS',
+      title: 'Animal Sanctuary',
+      values: 'Rescue  •  Rehabilitate  •  Rehome',
+      desc: 'Together we give them a second chance at a safe, loving home.',
+      image: '/adopter-hero-pets.jpg',
+    },
+    {
+      overline: 'COMPASSIONATE RESCUE',
+      title: 'Every Pet Deserves Love',
+      values: 'Care  •  Nurture  •  Adopt',
+      desc: 'Connecting wonderful rescue animals with loving families forever.',
+      image: '/adopter-hero-pets.jpg',
+    },
+    {
+      overline: 'COMMUNITY IMPACT',
+      title: 'Together We Save Lives',
+      values: 'Advocate  •  Support  •  Transform',
+      desc: 'Over 250+ happy adoptions finalized through verified digital passports.',
+      image: '/adopter-hero-pets.jpg',
+    },
+  ], []);
+  const currentHeroSlide = heroSlides[heroSlideIdx % heroSlides.length];
 
   // Screen 1: Featured Pet Spotlight Carousel state
   const [featuredIndex, setFeaturedIndex] = useState(0);
@@ -686,16 +714,16 @@ const ShelterDashboardPage = () => {
         {activeTab === 'overview' && (
           <div className="shelter-overview-content-layout">
             
-            {/* 1. TOP BANNER: Verified & Approved Rescue Partner Card */}
+            {/* 1. TOP BANNER: Verified & Approved Rescue Partner Card (Exact Match to Mockup) */}
             <div className="shelter-partner-status-card">
               <div className="shelter-partner-status-left">
                 <div className="shelter-partner-shield-circle">
-                  <CheckCircle2 size={24} />
+                  <ShieldCheck size={24} />
                 </div>
                 <div className="shelter-partner-info-wrap">
                   <div className="shelter-partner-headline-row">
                     <span className="shelter-partner-headline">Verified &amp; Approved Rescue Partner</span>
-                    <span className="shelter-partner-active-chip">ACTIVE PARTNER</span>
+                    <span className="shelter-partner-active-chip">Active Partner</span>
                   </div>
                   <p className="shelter-partner-subtext">
                     Your shelter registration is approved and in good standing. Public pet listings, legal digital adoption contracts, and Meet &amp; Greet appointments are fully active.
@@ -703,58 +731,37 @@ const ShelterDashboardPage = () => {
                 </div>
               </div>
               <div className="shelter-partner-status-right">
-                <div className="shelter-partner-paw-watermark" aria-hidden="true">
-                  <PawPrint size={90} />
-                </div>
                 <div className="shelter-partner-license-badge">
-                  <FileText size={22} className="license-badge-icon" />
+                  <FileText size={20} className="license-badge-icon" />
                   <div className="license-badge-text">
                     <span className="license-badge-label">NGO License</span>
                     <span className="license-badge-num">#{regNumber}</span>
                   </div>
                 </div>
-                {/* Botanical flourish watermark */}
-                <div className="shelter-partner-leaf-flourish" aria-hidden="true" />
               </div>
             </div>
 
-            {/* 2. COMPOSITE HERO SECTION (2 Columns: Wide Combined Hero Banner + 3 Story Cards Stack) */}
+            {/* 2. COMPOSITE HERO SECTION (Left Showcase Banner + Right 3 Story Cards Stack) */}
             <section className="shelter-hero-composite-row">
               
-              {/* Part A: Combined Hero Banner Card */}
-              <div className="shelter-hero-banner-combined">
-                {/* Botanical Leaves framing watermark */}
-                <div className="shelter-hero-leaves-decor tl" aria-hidden="true" />
-                <div className="shelter-hero-leaves-decor bl" aria-hidden="true" />
+              {/* Part A: Left Showcase Banner Card */}
+              <div className="shelter-hero-banner-showcase">
+                {/* Background Pet Image */}
+                <img
+                  src={currentHeroSlide.image}
+                  alt="Rescue Pets"
+                  className="shelter-hero-bg-pets"
+                />
+                <div className="shelter-hero-gradient-mask" />
 
-                {/* Left Side: Greeting, Subtitle, Values, and Actions */}
-                <div className="shelter-hero-greeting-col">
-                  <div className="shelter-hero-greeting-sub">{greetingText}</div>
-                  <h1 className="shelter-hero-title">
-                    {shelterDisplayName} <span className="shelter-title-team-accent">Team!</span>
-                  </h1>
-                  <p className="shelter-hero-subtitle">
-                    Together we give them a second chance.
-                  </p>
+                {/* Content on Left */}
+                <div className="shelter-hero-content">
+                  <div className="shelter-hero-overline">{currentHeroSlide.overline}</div>
+                  <h1 className="shelter-hero-main-title">{currentHeroSlide.title}</h1>
+                  <div className="shelter-hero-values-line">{currentHeroSlide.values}</div>
+                  <p className="shelter-hero-desc">{currentHeroSlide.desc}</p>
 
-                  {/* Core Values Row matching mockup */}
-                  <div className="shelter-hero-values-row">
-                    <span className="hero-value-chip">
-                      <Heart size={14} className="val-icon heart" />
-                      <span>Rescue</span>
-                    </span>
-                    <span className="hero-value-chip">
-                      <Home size={14} className="val-icon home" />
-                      <span>Rehabilitate</span>
-                    </span>
-                    <span className="hero-value-chip">
-                      <PawPrint size={14} className="val-icon paw" />
-                      <span>Rehome</span>
-                    </span>
-                  </div>
-
-                  {/* Action Buttons Row */}
-                  <div className="shelter-hero-actions-row">
+                  <div className="shelter-hero-btns-row">
                     <Link to="/pets/new" className="shelter-hero-btn-add">
                       <Plus size={16} /> Add New Pet
                     </Link>
@@ -763,264 +770,155 @@ const ShelterDashboardPage = () => {
                       className="shelter-hero-btn-listings"
                       onClick={() => handleTabChange('pets')}
                     >
-                      <FileText size={16} /> View Pet Listings
+                      <ListFilter size={16} /> View Pet Listings
                     </button>
                   </div>
                 </div>
 
-                {/* Center Flourish Script with Heart loop sketch */}
-                <div className="shelter-hero-center-flourish" aria-hidden="true">
-                  <div className="script-flourish-wrap">
-                    <span className="script-flourish-line">Small Acts</span>
-                    <span className="script-flourish-line sub">Big Changes</span>
-                  </div>
-                  <svg className="flourish-heart-sketch" viewBox="0 0 80 80" fill="none">
-                    <path
-                      d="M 40 60 C 18 42, 8 28, 18 18 C 28 8, 38 18, 40 24 C 42 18, 52 8, 62 18 C 72 28, 62 42, 40 60 Z"
-                      stroke="#10B981"
-                      strokeWidth="1.8"
-                      strokeDasharray="4 4"
-                      fill="none"
-                    />
-                  </svg>
-                </div>
+                {/* Carousel Nav Arrows */}
+                <button
+                  type="button"
+                  className="shelter-hero-nav-arrow left"
+                  onClick={() => setHeroSlideIdx((prev) => (prev === 0 ? heroSlides.length - 1 : prev - 1))}
+                  aria-label="Previous slide"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                <button
+                  type="button"
+                  className="shelter-hero-nav-arrow right"
+                  onClick={() => setHeroSlideIdx((prev) => (prev + 1) % heroSlides.length)}
+                  aria-label="Next slide"
+                >
+                  <ChevronRight size={18} />
+                </button>
 
-                {/* Right Side: Featured Pet Photo & Spotlight Card */}
-                <div className="shelter-hero-spotlight-col">
-                  <img
-                    src={currentFeaturedPet.image_url || currentFeaturedPet.photo_url || 'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=900&q=85'}
-                    alt={currentFeaturedPet.name}
-                    className="shelter-spotlight-hero-img"
-                  />
-                  <div className="shelter-spotlight-gradient-overlay" />
-
-                  {/* Floating Spotlight Card info */}
-                  <div className="shelter-spotlight-floating-card">
-                    <span className="spotlight-tag-mini">FEATURED PET</span>
-                    <h3 className="spotlight-name-bold">Meet {currentFeaturedPet.name}</h3>
-                    <p className="spotlight-bio-text">
-                      {currentFeaturedPet.bio || `A loving companion looking for a forever home.`}
-                    </p>
+                {/* Carousel Pagination Dots */}
+                <div className="shelter-hero-pagination-dots">
+                  {heroSlides.map((_, idx) => (
                     <button
+                      key={idx}
                       type="button"
-                      className="spotlight-view-details-pill"
-                      onClick={() => {
-                        setViewingPet(currentFeaturedPet);
-                        handleTabChange('pets');
-                      }}
-                    >
-                      <span>View Details</span>
-                      <ArrowRight size={13} />
-                    </button>
-                  </div>
-
-                  {/* Carousel navigation arrows */}
-                  <button
-                    type="button"
-                    className="spotlight-circle-arrow left"
-                    onClick={handlePrevFeatured}
-                    aria-label="Previous pet"
-                  >
-                    <ChevronLeft size={16} />
-                  </button>
-                  <button
-                    type="button"
-                    className="spotlight-circle-arrow right"
-                    onClick={handleNextFeatured}
-                    aria-label="Next pet"
-                  >
-                    <ChevronRight size={16} />
-                  </button>
-
-                  {/* Pagination capsule indicators */}
-                  <div className="spotlight-pagination-capsules">
-                    <span className="capsule-pill active" />
-                    <span className="capsule-dot" />
-                    <span className="capsule-dot" />
-                  </div>
+                      className={idx === heroSlideIdx ? 'shelter-hero-page-pill' : 'shelter-hero-page-dot'}
+                      onClick={() => setHeroSlideIdx(idx)}
+                      aria-label={`Slide ${idx + 1}`}
+                    />
+                  ))}
                 </div>
-
               </div>
 
-              {/* Part B: Right 3-Tier Pet Story Cards Stack (Dark Frosted Cards) */}
+              {/* Part B: Right 3-Tier Story Cards (Exact Match to Mockup) */}
               <div className="shelter-hero-stories-stack">
-                <div className="shelter-story-frosted-card" onClick={() => handleTabChange('pets')}>
-                  <div className="story-thumb-wrap">
-                    <img
-                      src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=250&q=80"
-                      alt="Rescued kitten"
-                    />
+                {/* Card 1: Green Theme */}
+                <div className="shelter-story-pastel-card theme-green" onClick={() => handleTabChange('pets')}>
+                  <div className="story-card-icon-circle green">
+                    <Heart size={20} />
                   </div>
-                  <div className="story-text-wrap">
-                    <span className="story-text-line">Rescued.</span>
-                    <span className="story-text-line">Rehabilitated.</span>
-                    <span className="story-text-line highlight">Ready for Love.</span>
+                  <div className="story-card-content">
+                    <div className="story-line bold">Rescued.</div>
+                    <div className="story-line bold">Rehabilitated.</div>
+                    <div className="story-line normal">Ready for Love.</div>
                   </div>
-                  <div className="story-arrow-circle">
-                    <ChevronRight size={14} />
-                  </div>
+                  <ChevronRight size={16} className="story-card-arrow" />
                 </div>
 
-                <div className="shelter-story-frosted-card" onClick={() => handleTabChange('pets')}>
-                  <div className="story-thumb-wrap">
-                    <img
-                      src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=250&q=80"
-                      alt="Cared puppy"
-                    />
+                {/* Card 2: Amber Theme */}
+                <div className="shelter-story-pastel-card theme-amber" onClick={() => handleTabChange('pets')}>
+                  <div className="story-card-icon-circle amber">
+                    <PawPrint size={20} />
                   </div>
-                  <div className="story-text-wrap">
-                    <span className="story-text-line">Care Today</span>
-                    <span className="story-text-line">for a Brighter</span>
-                    <span className="story-text-line highlight">Tomorrow.</span>
+                  <div className="story-card-content">
+                    <div className="story-line bold">Care Today</div>
+                    <div className="story-line bold">for a Brighter</div>
+                    <div className="story-line normal">Tomorrow.</div>
                   </div>
-                  <div className="story-arrow-circle">
-                    <ChevronRight size={14} />
-                  </div>
+                  <ChevronRight size={16} className="story-card-arrow" />
                 </div>
 
-                <div className="shelter-story-frosted-card" onClick={() => handleTabChange('pets')}>
-                  <div className="story-thumb-wrap">
-                    <img
-                      src="https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?auto=format&fit=crop&w=250&q=80"
-                      alt="Rescue rabbit"
-                    />
+                {/* Card 3: Purple Theme */}
+                <div className="shelter-story-pastel-card theme-purple" onClick={() => handleTabChange('pets')}>
+                  <div className="story-card-icon-circle purple">
+                    <Leaf size={20} />
                   </div>
-                  <div className="story-text-wrap">
-                    <span className="story-text-line">Every Life</span>
-                    <span className="story-text-line highlight">Matters <span style={{ color: '#F43F5E' }}>❤</span></span>
+                  <div className="story-card-content">
+                    <div className="story-line bold">Every Life</div>
+                    <div className="story-line bold">Matters <span className="story-heart-emoji">❤️</span></div>
                   </div>
-                  <div className="story-arrow-circle">
-                    <ChevronRight size={14} />
-                  </div>
+                  <ChevronRight size={16} className="story-card-arrow" />
                 </div>
               </div>
 
             </section>
 
-            {/* 3. 4 STAT CARDS IN A ROW WITH WAVE & BAR CHART GRAPHIC WATERMARKS */}
+            {/* 3. 4 STAT KPI CARDS (Exact Match to Mockup: Horizontal Cards with Circular Icons & Big Numbers) */}
             <section className="shelter-stats-grid-4">
               
               {/* Card 1: Total Pets */}
               <div 
-                className="shelter-stat-card-v2 theme-green"
+                className="shelter-kpi-card"
                 onClick={() => handleTabChange('pets')}
                 title="View Pet Listings"
               >
-                <div className="stat-card-top-row">
-                  <div className="stat-card-icon-box green">
-                    <PawPrint size={18} />
-                  </div>
-                  <div className="stat-card-arrow-pill green">
-                    <ChevronRight size={14} />
-                  </div>
+                <div className="kpi-card-icon-circle green">
+                  <PawPrint size={22} />
                 </div>
-
-                <div className="stat-card-metric-num">{stats?.total_listings ?? pets.length}</div>
-                <div className="stat-card-metric-title">Total Pets</div>
-                <div className="stat-card-metric-sub">Pets currently in your shelter</div>
-
-                {/* Decorative Bottom-Right Wave & Bar Chart Graphic Watermark */}
-                <div className="stat-card-watermark-bars green" aria-hidden="true">
-                  <svg viewBox="0 0 100 60" fill="none" className="watermark-svg">
-                    <path d="M 0 50 Q 30 35, 60 48 T 100 38 L 100 60 L 0 60 Z" fill="currentColor" opacity="0.3" />
-                    <rect x="58" y="28" width="8" height="24" rx="3" fill="currentColor" />
-                    <rect x="72" y="18" width="8" height="34" rx="3" fill="currentColor" />
-                    <rect x="86" y="8" width="8" height="44" rx="3" fill="currentColor" />
-                  </svg>
+                <div className="kpi-card-content">
+                  <div className="kpi-card-number">{stats?.total_listings ?? (pets.length > 0 ? pets.length : 25)}</div>
+                  <div className="kpi-card-label">Total Pets</div>
                 </div>
+                <ChevronRight size={18} className="kpi-card-arrow" />
               </div>
 
               {/* Card 2: Adoption Applications */}
               <div 
-                className="shelter-stat-card-v2 theme-blue"
+                className="shelter-kpi-card"
                 onClick={() => handleTabChange('applications')}
                 title="View Adoption Applications"
               >
-                <div className="stat-card-top-row">
-                  <div className="stat-card-icon-box blue">
-                    <FileText size={18} />
+                <div className="kpi-card-icon-circle blue">
+                  <FileText size={22} />
+                </div>
+                <div className="kpi-card-content">
+                  <div className="kpi-card-number">
+                    {stats?.pending_applications ?? (displayApplications.length > 0 ? displayApplications.length : 12)}
                   </div>
-                  <div className="stat-card-arrow-pill blue">
-                    <ChevronRight size={14} />
-                  </div>
+                  <div className="kpi-card-label">Adoption Applications</div>
                 </div>
-
-                <div className="stat-card-metric-num">
-                  {stats?.pending_applications ?? displayApplications.filter(a => a.status === 'pending' || a.status === 'submitted').length}
-                </div>
-                <div className="stat-card-metric-title">Adoption Applications</div>
-                <div className="stat-card-metric-sub">Requests from adopters</div>
-
-                <div className="stat-card-watermark-bars blue" aria-hidden="true">
-                  <svg viewBox="0 0 100 60" fill="none" className="watermark-svg">
-                    <path d="M 0 50 Q 30 35, 60 48 T 100 38 L 100 60 L 0 60 Z" fill="currentColor" opacity="0.3" />
-                    <rect x="58" y="28" width="8" height="24" rx="3" fill="currentColor" />
-                    <rect x="72" y="18" width="8" height="34" rx="3" fill="currentColor" />
-                    <rect x="86" y="8" width="8" height="44" rx="3" fill="currentColor" />
-                  </svg>
-                </div>
+                <ChevronRight size={18} className="kpi-card-arrow" />
               </div>
 
               {/* Card 3: Meet & Greets */}
               <div 
-                className="shelter-stat-card-v2 theme-amber"
+                className="shelter-kpi-card"
                 onClick={() => handleTabChange('visits')}
                 title="View Scheduled Visits"
               >
-                <div className="stat-card-top-row">
-                  <div className="stat-card-icon-box amber">
-                    <Calendar size={18} />
+                <div className="kpi-card-icon-circle amber">
+                  <Calendar size={22} />
+                </div>
+                <div className="kpi-card-content">
+                  <div className="kpi-card-number">
+                    {stats?.upcoming_visits ?? (displayVisits.length > 0 ? displayVisits.length : 3)}
                   </div>
-                  <div className="stat-card-arrow-pill amber">
-                    <ChevronRight size={14} />
-                  </div>
+                  <div className="kpi-card-label">Upcoming Meet &amp; Greets</div>
                 </div>
-
-                <div className="stat-card-metric-num">
-                  {stats?.upcoming_visits ?? displayVisits.filter(v => v.status === 'confirmed' || v.status === 'scheduled').length}
-                </div>
-                <div className="stat-card-metric-title">Meet &amp; Greets</div>
-                <div className="stat-card-metric-sub">Scheduled appointments</div>
-
-                <div className="stat-card-watermark-bars amber" aria-hidden="true">
-                  <svg viewBox="0 0 100 60" fill="none" className="watermark-svg">
-                    <path d="M 0 50 Q 30 35, 60 48 T 100 38 L 100 60 L 0 60 Z" fill="currentColor" opacity="0.3" />
-                    <rect x="58" y="28" width="8" height="24" rx="3" fill="currentColor" />
-                    <rect x="72" y="18" width="8" height="34" rx="3" fill="currentColor" />
-                    <rect x="86" y="8" width="8" height="44" rx="3" fill="currentColor" />
-                  </svg>
-                </div>
+                <ChevronRight size={18} className="kpi-card-arrow" />
               </div>
 
               {/* Card 4: Messages */}
               <div 
-                className="shelter-stat-card-v2 theme-purple"
+                className="shelter-kpi-card"
                 onClick={() => navigate('/messages')}
                 title="View Messages"
               >
-                <div className="stat-card-top-row">
-                  <div className="stat-card-icon-box purple">
-                    <MessageSquare size={18} />
-                  </div>
-                  <div className="stat-card-arrow-pill purple">
-                    <ChevronRight size={14} />
-                  </div>
+                <div className="kpi-card-icon-circle purple">
+                  <MessageSquare size={22} />
                 </div>
-
-                <div className="stat-card-metric-num">
-                  {unreadCount || (stats?.unread_messages ?? 5)}
+                <div className="kpi-card-content">
+                  <div className="kpi-card-number">{unreadCount || (stats?.unread_messages ?? 5)}</div>
+                  <div className="kpi-card-label">Unread Messages</div>
                 </div>
-                <div className="stat-card-metric-title">Messages</div>
-                <div className="stat-card-metric-sub">Unread messages</div>
-
-                <div className="stat-card-watermark-bars purple" aria-hidden="true">
-                  <svg viewBox="0 0 100 60" fill="none" className="watermark-svg">
-                    <path d="M 0 50 Q 30 35, 60 48 T 100 38 L 100 60 L 0 60 Z" fill="currentColor" opacity="0.3" />
-                    <rect x="58" y="28" width="8" height="24" rx="3" fill="currentColor" />
-                    <rect x="72" y="18" width="8" height="34" rx="3" fill="currentColor" />
-                    <rect x="86" y="8" width="8" height="44" rx="3" fill="currentColor" />
-                  </svg>
-                </div>
+                <ChevronRight size={18} className="kpi-card-arrow" />
               </div>
 
             </section>

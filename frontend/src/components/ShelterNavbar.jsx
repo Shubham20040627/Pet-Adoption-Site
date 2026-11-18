@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
-  LayoutGrid,
+  Home,
   PawPrint,
   FileText,
   Calendar,
-  MessageSquare,
+  Mail,
   Bell,
   Building2,
   Search,
@@ -18,7 +18,6 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import NotificationDropdown from './NotificationDropdown';
-import PawConnectLogo from './PawConnectLogo';
 import '../styles/shelter-navbar.css';
 
 const ShelterNavbar = ({ onSearch }) => {
@@ -29,6 +28,7 @@ const ShelterNavbar = ({ onSearch }) => {
   const [openDropdown, setOpenDropdown] = useState(null); // 'pets' | 'apps' | 'visits' | 'user' | null
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [showNotificationMenu, setShowNotificationMenu] = useState(false);
 
   const navRef = useRef(null);
@@ -86,7 +86,7 @@ const ShelterNavbar = ({ onSearch }) => {
   const shelterName = 
     (user?.role === 'shelter' ? (user?.shelter?.shelter_name || user?.name || user?.shelter_name) : null) || 
     user?.shelter?.shelter_name || 
-    'Hope & Paws Animal Sanctuary';
+    'Hope & Paws Sanctuary';
   const regNo = user?.shelter?.registration_number || user?.registration_number || 'AWBI-2026-8941';
   const logoUrl = user?.shelter?.logo_url || user?.logo_url || '';
   const initial = shelterName ? shelterName.trim().charAt(0).toUpperCase() : 'H';
@@ -96,16 +96,16 @@ const ShelterNavbar = ({ onSearch }) => {
     <header className="shelter-navbar-wrapper" ref={navRef}>
       <div className="shelter-navbar-container">
         
-        {/* 1. Left: PawConnect Brand Logo with Subtitle */}
+        {/* 1. Left: PawConnect Brand Logo with Subtitle (Exact Match to Mockup) */}
         <div className="shelter-navbar-left">
           <Link to="/shelter-dashboard" className="shelter-navbar-brand-link" aria-label="PawConnect Shelter Portal Home">
-            <PawConnectLogo
-              size="sm"
-              variant="full"
-              theme="light"
-              showSubtitle={true}
-              subtitleText="SHELTER PORTAL"
-            />
+            <div className="shelter-brand-logo-custom">
+              <PawPrint size={22} className="shelter-brand-icon-green" />
+              <div className="shelter-brand-text-col">
+                <span className="shelter-brand-name-bold">PawConnect</span>
+                <span className="shelter-brand-portal-sub">Shelter Portal</span>
+              </div>
+            </div>
           </Link>
         </div>
 
@@ -117,7 +117,7 @@ const ShelterNavbar = ({ onSearch }) => {
             to="/shelter-dashboard?tab=overview"
             className={() => `shelter-nav-pill-btn ${isOverview ? 'active' : ''}`}
           >
-            <LayoutGrid size={15} className="shelter-nav-icon" />
+            <Home size={15} className="shelter-nav-icon" />
             <span>Overview</span>
           </NavLink>
 
@@ -207,7 +207,7 @@ const ShelterNavbar = ({ onSearch }) => {
             to="/messages"
             className={`shelter-nav-item-btn ${location.pathname === '/messages' ? 'active' : ''}`}
           >
-            <MessageSquare size={15} className="shelter-nav-icon" />
+            <Mail size={15} className="shelter-nav-icon" />
             <span>Messages</span>
           </Link>
 
@@ -235,23 +235,44 @@ const ShelterNavbar = ({ onSearch }) => {
 
         </nav>
 
-        {/* 3. Right: Search Input & User Profile Pill */}
+        {/* 3. Right: Search Button, Divider & User Profile Pill (Exact Match to Mockup) */}
         <div className="shelter-navbar-right">
           
-          {/* Search Pill Input matching mockup */}
-          <form onSubmit={handleSearchSubmit} className="shelter-nav-search-form">
-            <Search size={14} className="shelter-search-icon" />
-            <input
-              type="text"
-              placeholder="Search pets, applications, adopters..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              aria-label="Search shelter database"
-              className="shelter-nav-search-input"
-            />
-          </form>
+          {/* Search Trigger or Inline Expandable Form */}
+          <div className="shelter-nav-search-wrap">
+            {isSearchOpen ? (
+              <form onSubmit={handleSearchSubmit} className="shelter-nav-search-form active">
+                <Search size={15} className="shelter-search-icon" />
+                <input
+                  type="text"
+                  placeholder="Search pets, applications..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  autoFocus
+                  onBlur={() => !searchQuery && setIsSearchOpen(false)}
+                  className="shelter-nav-search-input"
+                />
+                <button type="button" className="shelter-search-close-btn" onClick={() => setIsSearchOpen(false)}>
+                  <X size={14} />
+                </button>
+              </form>
+            ) : (
+              <button
+                type="button"
+                className="shelter-nav-search-icon-btn"
+                onClick={() => setIsSearchOpen(true)}
+                title="Search"
+                aria-label="Search shelter portal"
+              >
+                <Search size={18} />
+              </button>
+            )}
+          </div>
 
-          {/* Shelter Staff Profile Pill & Dropdown (Matches Mockup [X] xyz ˅) */}
+          {/* Vertical Divider matching mockup */}
+          <div className="shelter-nav-v-divider" />
+
+          {/* Shelter Staff Profile Pill & Dropdown (Matches Mockup [H] Hope & Paws Sanctuary ˅) */}
           <div className="shelter-user-dropdown-wrap">
             <button
               type="button"

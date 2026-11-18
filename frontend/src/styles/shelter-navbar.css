@@ -42,6 +42,38 @@
   outline: none;
 }
 
+.shelter-brand-logo-custom {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.shelter-brand-icon-green {
+  color: #16A34A;
+  flex-shrink: 0;
+}
+
+.shelter-brand-text-col {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.shelter-brand-name-bold {
+  font-family: 'Nunito Sans', var(--shelter-font, sans-serif);
+  font-size: 1.18rem;
+  font-weight: 800;
+  color: #0F172A;
+  letter-spacing: -0.02em;
+}
+
+.shelter-brand-portal-sub {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #64748B;
+  letter-spacing: 0.01em;
+}
+
 /* 2. Middle: Navigation Links & Interactive Dropdowns */
 .shelter-nav-links-desktop {
   display: flex;
@@ -242,12 +274,43 @@
   margin: 0.35rem 0;
 }
 
-/* 3. Right: Search Form & User Profile Pill */
+/* 3. Right: Search Button, Divider & User Profile Pill */
 .shelter-navbar-right {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.65rem;
   flex-shrink: 0;
+}
+
+.shelter-nav-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.shelter-nav-search-icon-btn {
+  background: transparent;
+  border: none;
+  color: #374151;
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.18s ease;
+}
+
+.shelter-nav-search-icon-btn:hover {
+  background-color: #F1F5F9;
+  color: #0F172A;
+}
+
+.shelter-nav-v-divider {
+  width: 1px;
+  height: 22px;
+  background-color: #E2E8F0;
+  margin: 0 0.25rem;
 }
 
 /* Search Form */
@@ -269,21 +332,34 @@
   background: #F8FAFC;
   border: 1px solid #E2E8F0;
   border-radius: 9999px;
-  padding: 0.42rem 0.85rem 0.42rem 2.15rem;
+  padding: 0.42rem 2rem 0.42rem 2.15rem;
   font-size: 0.83rem;
   font-family: inherit;
   color: #0F172A;
   outline: none;
-  width: 190px;
+  width: 200px;
   transition: all 0.2s ease;
   box-sizing: border-box;
 }
 
 .shelter-nav-search-input:focus {
   background: #FFFFFF;
-  border-color: #059669;
-  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
-  width: 230px;
+  border-color: #16A34A;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+  width: 240px;
+}
+
+.shelter-search-close-btn {
+  position: absolute;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  color: #94A3B8;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .shelter-nav-search-input::placeholder {
@@ -321,7 +397,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background-color: #0E382B;
+  background-color: #16A34A;
   color: #FFFFFF;
   font-size: 0.88rem;
   font-weight: 700;
