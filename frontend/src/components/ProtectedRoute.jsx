@@ -20,7 +20,10 @@ const ProtectedRoute = ({ children, requiredRole = null }) => {
   }
 
   if (requiredRole && user?.role !== requiredRole) {
-    if (user?.role === 'admin') return <Navigate to="/admin-dashboard" replace />;
+    if (user?.role === 'admin') {
+      // Central admin can inspect shelter and adopter portals
+      return children;
+    }
     if (user?.role === 'shelter') return <Navigate to="/shelter-dashboard" replace />;
     return <Navigate to="/adopter-dashboard" replace />;
   }

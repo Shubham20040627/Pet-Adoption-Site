@@ -59,13 +59,12 @@ const AppContent = () => {
   );
 
   // Shelter Portal routes display the dedicated top horizontal Shelter Navbar matching reference mockup
-  const isShelterPortalRoute = isShelter && (
+  const isShelterPortalRoute = 
     location.pathname.startsWith('/shelter-dashboard') ||
     location.pathname.startsWith('/shelter_dashboard') ||
     location.pathname === '/pets/new' ||
-    (isShelter && location.pathname === '/messages') ||
-    /^\/pets\/[^/]+\/edit/.test(location.pathname)
-  );
+    /^\/pets\/[^/]+\/edit/.test(location.pathname) ||
+    (isShelter && location.pathname === '/messages');
 
   const isAdminPortalRoute = location.pathname.startsWith('/admin-dashboard');
 

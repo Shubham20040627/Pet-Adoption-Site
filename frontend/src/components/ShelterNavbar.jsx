@@ -82,11 +82,14 @@ const ShelterNavbar = ({ onSearch }) => {
     }
   };
 
-  // Shelter details derived dynamically from user auth data
-  const shelterName = user?.shelter?.shelter_name || user?.name || user?.shelter_name || 'Paw Haven';
+  // Shelter details derived dynamically from user auth data matching mockup
+  const shelterName = 
+    (user?.role === 'shelter' ? (user?.shelter?.shelter_name || user?.name || user?.shelter_name) : null) || 
+    user?.shelter?.shelter_name || 
+    'Hope & Paws Animal Sanctuary';
   const regNo = user?.shelter?.registration_number || user?.registration_number || 'AWBI-2026-8941';
   const logoUrl = user?.shelter?.logo_url || user?.logo_url || '';
-  const initial = shelterName ? shelterName.trim().charAt(0).toUpperCase() : 'P';
+  const initial = shelterName ? shelterName.trim().charAt(0).toUpperCase() : 'H';
   const displayNotifCount = unreadCount || 5;
 
   return (
