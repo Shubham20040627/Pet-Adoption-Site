@@ -83,7 +83,19 @@ const PortalSidebar = () => {
         {isAdminPortal ? (
           <div className="portal-sidebar-admin-header">
             <Link to="/admin-dashboard" className="portal-admin-brand-link" onClick={closeMobile} style={{ textDecoration: 'none' }}>
-              <PawConnectLogo size="md" variant="full" theme="admin" showSubtitle subtitleText="PLATFORM ADMIN" />
+              <div className="portal-admin-paw-box">
+                <svg viewBox="0 0 32 32" width="28" height="28" fill="#0066FF">
+                  <ellipse cx="8.5" cy="8.5" rx="3.2" ry="4.4" transform="rotate(-18 8.5 8.5)" />
+                  <ellipse cx="23.5" cy="8.5" rx="3.2" ry="4.4" transform="rotate(18 23.5 8.5)" />
+                  <ellipse cx="12.5" cy="5.2" rx="3" ry="4.2" transform="rotate(-6 12.5 5.2)" />
+                  <ellipse cx="19.5" cy="5.2" rx="3" ry="4.2" transform="rotate(6 19.5 5.2)" />
+                  <path d="M16 11 C10 11 6.5 16.5 8 21.5 C9.5 26.5 13.5 27.5 16 27.5 C18.5 27.5 22.5 26.5 24 21.5 C25.5 16.5 22 11 16 11 Z" />
+                </svg>
+              </div>
+              <div className="portal-admin-brand-text">
+                <span className="portal-admin-brand-title">PawConnect</span>
+                <span className="portal-admin-brand-subtitle">Animal Adoption Platform</span>
+              </div>
             </Link>
             <button 
               className="portal-sidebar-close" 
@@ -143,7 +155,7 @@ const PortalSidebar = () => {
                     }`}
                     onClick={closeMobile}
                   >
-                    <Clock size={18} strokeWidth={2} className="nav-icon" />
+                    <ShieldCheck size={18} strokeWidth={2} className="nav-icon" />
                     <span className="nav-label">Shelter Approvals</span>
                   </Link>
                 </li>
@@ -152,7 +164,7 @@ const PortalSidebar = () => {
                     to="/admin-dashboard?tab=all"
                     className={`portal-nav-item ${
                       location.pathname === '/admin-dashboard' && currentTab === 'all'
-                        ? 'active all-shelters-active'
+                        ? 'active'
                         : ''
                     }`}
                     onClick={closeMobile}
@@ -163,7 +175,7 @@ const PortalSidebar = () => {
                 </li>
               </ul>
 
-              <div className="portal-nav-section-title" style={{ marginTop: 'auto', paddingTop: '1.5rem' }}>
+              <div className="portal-nav-section-title" style={{ marginTop: '2.5rem' }}>
                 ADMIN CONTROLS
               </div>
               <ul className="portal-nav-list">
@@ -182,15 +194,22 @@ const PortalSidebar = () => {
                 </li>
               </ul>
 
-              {/* Admin Footer Badge */}
-              <div className="portal-admin-user-card">
-                <div className="portal-admin-avatar">
-                  <ShieldCheck size={18} color="#D4AF37" />
-                </div>
-                <div className="portal-admin-user-info">
-                  <div className="portal-admin-user-name">Platform Admin</div>
-                  <div className="portal-admin-user-email">{user?.email || 'admin@pawconnect.org'}</div>
-                </div>
+              {/* Bottom Pet Silhouette Graphic matching reference image */}
+              <div className="portal-admin-bottom-illustration" aria-hidden="true">
+                <svg viewBox="0 0 250 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="portal-admin-silhouette-svg">
+                  <path d="M0,90 Q125,55 250,85 L250,120 L0,120 Z" fill="#0C2044" />
+                  <path d="M0,96 Q110,72 250,94 L250,120 L0,120 Z" fill="#0E2856" />
+                  {/* Cat silhouette */}
+                  <g fill="#17346A">
+                    <path d="M48,90 C46,90 42,84 42,73 C42,64 46,58 51,55 L49,46 L56,51 C58,50 62,50 64,51 L71,46 L69,55 C74,58 78,64 78,73 C78,84 74,90 72,90 Z" />
+                    <path d="M42,80 C36,78 34,84 37,88 C40,92 44,90 44,90" stroke="#17346A" strokeWidth="4" strokeLinecap="round" fill="none" />
+                  </g>
+                  {/* Dog silhouette */}
+                  <g fill="#1E4285">
+                    <path d="M92,92 C88,92 83,83 83,66 C83,50 89,40 98,34 L95,23 L104,29 C108,27 115,27 119,29 L128,23 L125,34 C134,40 140,50 140,66 C140,83 135,92 131,92 Z" />
+                    <path d="M134,73 C142,76 146,68 144,62" stroke="#1E4285" strokeWidth="5" strokeLinecap="round" fill="none" />
+                  </g>
+                </svg>
               </div>
             </>
           ) : isShelterPortal ? (
