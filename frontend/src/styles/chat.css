@@ -5,7 +5,8 @@
 
 .chat-page-container {
   display: flex;
-  height: calc(100vh - 74px);
+  height: calc(100vh - 64px);
+  max-height: calc(100vh - 64px);
   background: #F8FAF7;
   overflow: hidden;
   font-family: var(--font-body, 'Inter', -apple-system, sans-serif);

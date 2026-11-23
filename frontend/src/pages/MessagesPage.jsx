@@ -46,10 +46,20 @@ const MessagesPage = () => {
   const [sending, setSending] = useState(false);
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
 
-  const messagesEndRef = useRef(null);
+  const chatViewportRef = useRef(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  // Keep window strictly anchored at top so whole screen never scrolls
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
+
+  const scrollToBottom = (smooth = true) => {
+    if (chatViewportRef.current) {
+      chatViewportRef.current.scrollTo({
+        top: chatViewportRef.current.scrollHeight,
+        behavior: smooth ? 'smooth' : 'auto',
+      });
+    }
   };
 
   // 1. Load Conversations from Database
@@ -127,9 +137,9 @@ const MessagesPage = () => {
     }
   }, [activeThread]);
 
-  // Scroll on message change
+  // Scroll on message change strictly inside the chat container
   useEffect(() => {
-    scrollToBottom();
+    scrollToBottom(false);
   }, [messages]);
 
   // 3. Real-Time Polling every 3.5 seconds
@@ -199,10 +209,10 @@ const MessagesPage = () => {
   const statusStr = (activeApp?.status || 'Active Inquiry').replace('_', ' ');
 
   return (
-    <div className="ap-page">
+    <div className="ap-page" style={{ height: 'calc(100vh - 64px)', minHeight: 'unset', maxHeight: 'calc(100vh - 64px)', overflow: 'hidden' }}>
       <AdopterHeader searchValue={searchQuery} onSearchChange={setSearchQuery} />
 
-      <div className="chat-page-container">
+      <div className="chat-page-container" style={{ height: '100%', maxHeight: '100%' }}>
         {/* ================================================================
             LEFT COLUMN: CONVERSATION THREADS
             ================================================================ */}
@@ -343,7 +353,7 @@ const MessagesPage = () => {
             </div>
 
             {/* Chat Messages Body */}
-            <div className="chat-messages-viewport">
+            <div className="chat-messages-viewport" ref={chatViewportRef}>
               {/* Context Summary Banner */}
               <div className="chat-system-card">
                 <div className="chat-system-card-title">
@@ -398,7 +408,6 @@ const MessagesPage = () => {
                   );
                 })
               )}
-              <div ref={messagesEndRef} />
             </div>
 
             {/* Quick Prompts Bar */}

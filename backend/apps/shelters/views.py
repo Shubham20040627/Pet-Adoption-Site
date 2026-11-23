@@ -7,6 +7,50 @@ from rest_framework import status
 from config.mongodb import get_db, serialize_doc, serialize_docs
 from config.auth import IsShelter
 
+def _get_shelter_match_criteria(db, user):
+    """
+    Robust resolver that matches shelter pets, applications, and visits across
+    user ID, shelter document ID, and shelter name to ensure complete visibility.
+    """
+    user_id_str = str(user.id)
+    ids_to_match = [user_id_str]
+    if ObjectId.is_valid(user_id_str):
+        ids_to_match.append(ObjectId(user_id_str))
+        
+    shelter_doc = db.shelters.find_one({'user_id': user_id_str})
+    if shelter_doc:
+        s_id_str = str(shelter_doc['_id'])
+        ids_to_match.append(s_id_str)
+        if ObjectId.is_valid(s_id_str):
+            ids_to_match.append(ObjectId(s_id_str))
+
+    shelter_name = getattr(user, 'name', '') or (shelter_doc.get('shelter_name') if shelter_doc else '')
+    
+    # Pet query criteria
+    pet_query_or = [{'shelter_id': {'$in': ids_to_match}}]
+    if shelter_name:
+        pet_query_or.append({'shelter_name': {'$regex': f"^{shelter_name}$", '$options': 'i'}})
+        
+    # Find all pets that belong to this shelter
+    shelter_pets = list(db.pets.find({'$or': pet_query_or}, {'_id': 1}))
+    pet_ids = []
+    for sp in shelter_pets:
+        pet_ids.append(str(sp['_id']))
+        if ObjectId.is_valid(str(sp['_id'])):
+            pet_ids.append(ObjectId(str(sp['_id'])))
+            
+    # Application / visit query criteria
+    app_query_or = [
+        {'shelter_id': {'$in': ids_to_match}}
+    ]
+    if pet_ids:
+        app_query_or.append({'pet_id': {'$in': pet_ids}})
+    if shelter_name:
+        app_query_or.append({'shelter_name': {'$regex': f"^{shelter_name}$", '$options': 'i'}})
+
+    return ids_to_match, pet_query_or, app_query_or, shelter_doc
+
+
 @api_view(['GET'])
 @permission_classes([IsShelter])
 def shelter_dashboard(request):
@@ -21,41 +65,37 @@ def shelter_dashboard(request):
     - pets_list
     """
     db = get_db()
-    shelter_id = request.user.id
-    shelter_id_str = str(shelter_id)
-    shelter_id_filter = {
-        '$in': [shelter_id_str, ObjectId(shelter_id_str)] if ObjectId.is_valid(shelter_id_str) else [shelter_id_str]
-    }
+    ids_to_match, pet_query_or, app_query_or, shelter_doc = _get_shelter_match_criteria(db, request.user)
 
     # Pets counts
-    total_pets = db.pets.count_documents({'shelter_id': shelter_id_filter, 'status': {'$ne': 'archived'}})
-    available_pets = db.pets.count_documents({'shelter_id': shelter_id_filter, 'status': 'available'})
-    adopted_pets = db.pets.count_documents({'shelter_id': shelter_id_filter, 'status': 'adopted'})
-    pending_pets = db.pets.count_documents({'shelter_id': shelter_id_filter, 'status': 'pending'})
+    total_pets = db.pets.count_documents({'$or': pet_query_or, 'status': {'$ne': 'archived'}})
+    available_pets = db.pets.count_documents({'$or': pet_query_or, 'status': 'available'})
+    adopted_pets = db.pets.count_documents({'$or': pet_query_or, 'status': 'adopted'})
+    pending_pets = db.pets.count_documents({'$or': pet_query_or, 'status': 'pending'})
 
     # Applications counts
     pending_apps = db.applications.count_documents({
-        'shelter_id': shelter_id_filter,
+        '$or': app_query_or,
         'status': {'$in': ['submitted', 'under_review']}
     })
     approved_apps = db.applications.count_documents({
-        'shelter_id': shelter_id_filter,
+        '$or': app_query_or,
         'status': 'approved'
     })
     completed_apps = db.applications.count_documents({
-        'shelter_id': shelter_id_filter,
+        '$or': app_query_or,
         'status': 'completed'
     })
 
     # Visits counts
-    total_visits = db.visits.count_documents({'shelter_id': shelter_id_filter})
+    total_visits = db.visits.count_documents({'$or': app_query_or})
     upcoming_visits = db.visits.count_documents({
-        'shelter_id': shelter_id_filter,
+        '$or': app_query_or,
         'status': {'$in': ['pending', 'confirmed']}
     })
 
     # Recent applications
-    recent_apps_cursor = db.applications.find({'shelter_id': shelter_id_filter}).sort('created_at', -1).limit(5)
+    recent_apps_cursor = db.applications.find({'$or': app_query_or}).sort('created_at', -1).limit(5)
     recent_apps = serialize_docs(recent_apps_cursor)
     for app in recent_apps:
         try:
@@ -66,11 +106,11 @@ def shelter_dashboard(request):
             pass
 
     # Recent pets
-    recent_pets_cursor = db.pets.find({'shelter_id': shelter_id_filter}).sort('created_at', -1).limit(6)
+    recent_pets_cursor = db.pets.find({'$or': pet_query_or, 'status': {'$ne': 'archived'}}).sort('created_at', -1).limit(6)
     recent_pets = serialize_docs(recent_pets_cursor)
 
     # Recent visits
-    recent_visits_cursor = db.visits.find({'shelter_id': shelter_id_filter}).sort('created_at', -1).limit(5)
+    recent_visits_cursor = db.visits.find({'$or': app_query_or}).sort('created_at', -1).limit(5)
     recent_visits = serialize_docs(recent_visits_cursor)
     for v in recent_visits:
         v['visit_time'] = v.get('time_slot') or v.get('visit_time') or ''
@@ -89,7 +129,6 @@ def shelter_dashboard(request):
                 pass
 
     # Shelter status and verification
-    shelter_doc = db.shelters.find_one({'user_id': shelter_id_str})
     shelter_status = 'pending'
     is_verified = False
     admin_note = ''
@@ -130,11 +169,8 @@ def shelter_my_pets(request):
     Strictly isolated to the logged-in shelter only.
     """
     db = get_db()
-    shelter_id_str = str(request.user.id)
-    shelter_id_filter = {
-        '$in': [shelter_id_str, ObjectId(shelter_id_str)] if ObjectId.is_valid(shelter_id_str) else [shelter_id_str]
-    }
-    pets_cursor = db.pets.find({'shelter_id': shelter_id_filter, 'status': {'$ne': 'archived'}}).sort('created_at', -1)
+    ids_to_match, pet_query_or, app_query_or, shelter_doc = _get_shelter_match_criteria(db, request.user)
+    pets_cursor = db.pets.find({'$or': pet_query_or, 'status': {'$ne': 'archived'}}).sort('created_at', -1)
     pets = serialize_docs(pets_cursor)
 
     return Response({

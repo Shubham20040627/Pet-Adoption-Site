@@ -14,7 +14,6 @@ import {
 import { adoptionsApi } from '../api/adoptionsApi';
 import AdopterHeader from '../components/AdopterHeader';
 import AdoptionCertificateModal from '../components/AdoptionCertificateModal';
-import AdoptionContractModal from '../components/AdoptionContractModal';
 import ScheduleMeetAndGreetModal from '../components/ScheduleMeetAndGreetModal';
 import VerifiedAdopterBadgeCard from '../components/VerifiedAdopterBadgeCard';
 import '../styles/adopter-portal.css';
@@ -29,7 +28,6 @@ const MyApplicationsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('newest');
   const [selectedCertAppId, setSelectedCertAppId] = useState(null);
-  const [selectedContractAppId, setSelectedContractAppId] = useState(null);
   const [selectedVisitApp, setSelectedVisitApp] = useState(null);
 
   const loadApplications = async () => {
@@ -257,57 +255,31 @@ const MyApplicationsPage = () => {
 
                     {/* Right: Actions */}
                     <div className="ap-app-right">
-                      {isApproved ? (
-                        <>
-                          <button
-                            type="button"
-                            onClick={() => setSelectedContractAppId(app.id || app._id)}
-                            className="ap-card-btn-dark"
-                            title="View Executed Digital Adoption Agreement"
-                          >
-                            <span className="btn-left">
-                              <FileText size={15} color="#FFFFFF" />
-                              <span>Contract Signed</span>
-                            </span>
-                            <ChevronRight size={15} color="#FFFFFF" />
-                          </button>
-
-                          <button
-                            type="button"
-                            onClick={() => setSelectedCertAppId(app.id || app._id)}
-                            className="ap-card-btn-dark"
-                            title="View Official Adoption Certificate"
-                          >
-                            <span className="btn-left">
-                              <Award size={15} color="#FFFFFF" />
-                              <span>Certificate</span>
-                            </span>
-                            <ChevronRight size={15} color="#FFFFFF" />
-                          </button>
-
-                          <Link
-                            to={`/pets/${pet.id || pet._id}`}
-                            className="ap-card-btn-outline"
-                          >
-                            <span className="btn-left">
-                              <FileText size={15} color="#162620" />
-                              <span>View Details</span>
-                            </span>
-                            <ChevronRight size={15} color="#64748B" />
-                          </Link>
-                        </>
-                      ) : (
-                        <Link
-                          to={`/pets/${pet.id || pet._id}`}
-                          className="ap-card-btn-outline"
+                      {isApproved && (
+                        <button
+                          type="button"
+                          onClick={() => setSelectedCertAppId(app.id || app._id)}
+                          className="ap-card-btn-dark"
+                          title="View Official Adoption Certificate"
                         >
                           <span className="btn-left">
-                            <FileText size={15} color="#162620" />
-                            <span>View Details</span>
+                            <Award size={15} color="#FFFFFF" />
+                            <span>Certificate</span>
                           </span>
-                          <ChevronRight size={15} color="#64748B" />
-                        </Link>
+                          <ChevronRight size={15} color="#FFFFFF" />
+                        </button>
                       )}
+
+                      <Link
+                        to={`/pets/${pet.id || pet._id}`}
+                        className="ap-card-btn-outline"
+                      >
+                        <span className="btn-left">
+                          <FileText size={15} color="#162620" />
+                          <span>View Details</span>
+                        </span>
+                        <ChevronRight size={15} color="#64748B" />
+                      </Link>
                     </div>
                   </div>
 
@@ -361,15 +333,6 @@ const MyApplicationsPage = () => {
           onClose={() => setSelectedCertAppId(null)}
         />
 
-        {/* Digital Adoption Agreement & E-Signature Contract Modal */}
-        <AdoptionContractModal
-          isOpen={!!selectedContractAppId}
-          applicationId={selectedContractAppId}
-          onClose={() => setSelectedContractAppId(null)}
-          onSigned={() => {
-            loadApplications();
-          }}
-        />
 
         {/* Schedule Meet & Greet Modal */}
         {selectedVisitApp && (

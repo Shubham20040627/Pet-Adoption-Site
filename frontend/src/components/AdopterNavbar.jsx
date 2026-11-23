@@ -570,9 +570,9 @@ const AdopterNavbar = () => {
                 <div className="adopter-guide-step-card">
                   <div className="adopter-step-number">4</div>
                   <div className="adopter-step-content">
-                    <h4>Digital Contract &amp; Lifetime Care</h4>
+                    <h4>Official Adoption Certificate &amp; Lifetime Care</h4>
                     <p>
-                      Finalize the digital adoption agreement, receive an official verifiable adoption certificate, and access your pet's complete digital care profile.
+                      Receive an official verifiable adoption certificate and access your pet's complete digital care profile.
                     </p>
                   </div>
                 </div>

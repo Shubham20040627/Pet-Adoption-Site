@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useSearchParams, useNavigate, useLocation } from 'react-router-dom';
-import { 
-  Plus, Edit, Trash2, CheckCircle2, Clock, XCircle, 
+import {
+  Plus, Edit, Trash2, CheckCircle2, Clock, XCircle,
   FileText, HeartHandshake, Eye, AlertCircle, X, Check, Building, Calendar,
   Search, Filter, ArrowUpDown, ChevronRight, ChevronLeft, Bell, User,
   MoreVertical, RefreshCw, PawPrint, Phone, Mail, MapPin, Heart, ShieldCheck,
@@ -18,7 +18,6 @@ import ShelterHeader from '../components/ShelterHeader';
 import StatusBadge from '../components/StatusBadge';
 import ConfirmModal from '../components/ConfirmModal';
 import AdoptionCertificateModal from '../components/AdoptionCertificateModal';
-import AdoptionContractModal from '../components/AdoptionContractModal';
 import ScheduleMeetAndGreetModal from '../components/ScheduleMeetAndGreetModal';
 import ShelterPendingApprovalView from '../components/ShelterPendingApprovalView';
 import DigitalCareProfileCard from '../components/DigitalCareProfileCard';
@@ -79,14 +78,15 @@ const ShelterDashboardPage = () => {
   const [appSortBy, setAppSortBy] = useState('newest');
   const [viewingApp, setViewingApp] = useState(null);
   const [selectedCertAppId, setSelectedCertAppId] = useState(null);
-  const [selectedContractAppId, setSelectedContractAppId] = useState(null);
   const [appDetailTab, setAppDetailTab] = useState('form'); // 'form' | 'message'
 
-  // Screen 1: Hero Showcase Carousel slides matching mockup (media_1795021709328_5c7c1d6d.jpg)
+  // Screen 1: Hero Showcase Carousel slides matching theme
   const [heroSlideIdx, setHeroSlideIdx] = useState(0);
+  const [isHeroHovered, setIsHeroHovered] = useState(false);
+
   const heroSlides = useMemo(() => [
     {
-      overline: 'HOPE & PAWS',
+      overline: 'HOPE & PAWS SANCTUARY',
       title: 'Animal Sanctuary',
       values: 'Rescue  •  Rehabilitate  •  Rehome',
       desc: 'Together we give them a second chance at a safe, loving home.',
@@ -96,17 +96,41 @@ const ShelterDashboardPage = () => {
       overline: 'COMPASSIONATE RESCUE',
       title: 'Every Pet Deserves Love',
       values: 'Care  •  Nurture  •  Adopt',
-      desc: 'Connecting wonderful rescue animals with loving families forever.',
-      image: '/adopter-hero-pets.jpg',
+      desc: 'Connecting wonderful rescue dogs, cats & puppies with caring families forever.',
+      image: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=1200&q=80',
+    },
+    {
+      overline: 'FELINE HAVEN',
+      title: 'Gentle Paws & Warm Hearts',
+      values: 'Healing  •  Comfort  •  Companionship',
+      desc: 'Providing medical care, foster spaces, and quiet recovery for rescued cats.',
+      image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=1200&q=80',
+    },
+    {
+      overline: 'SECOND CHANCES',
+      title: 'Bright Futures Await',
+      values: 'Vaccinate  •  Socialize  •  Protect',
+      desc: 'Every rescue pet receives full vet checks, vaccinations, and loving preparation.',
+      image: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=1200&q=80',
     },
     {
       overline: 'COMMUNITY IMPACT',
       title: 'Together We Save Lives',
       values: 'Advocate  •  Support  •  Transform',
-      desc: 'Over 250+ happy adoptions finalized through verified digital passports.',
-      image: '/adopter-hero-pets.jpg',
+      desc: 'Over 250+ happy adoptions finalized with verified digital health records.',
+      image: 'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&w=1200&q=80',
     },
   ], []);
+
+  // Auto-slide carousel smoothly every 3 seconds unless hovered by user
+  useEffect(() => {
+    if (isHeroHovered) return;
+    const timer = setInterval(() => {
+      setHeroSlideIdx((prev) => (prev + 1) % heroSlides.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [isHeroHovered, heroSlides.length]);
+
   const currentHeroSlide = heroSlides[heroSlideIdx % heroSlides.length];
 
   // Screen 1: Featured Pet Spotlight Carousel state
@@ -189,7 +213,7 @@ const ShelterDashboardPage = () => {
     cancelText: 'Cancel',
     type: 'primary',
     loading: false,
-    onConfirm: () => {},
+    onConfirm: () => { },
   });
 
   const showToast = (message, type = 'success') => {
@@ -262,25 +286,25 @@ const ShelterDashboardPage = () => {
 
   // Unified shelter status evaluation
   const shelterStatus = (
-    profile?.status || 
-    stats?.shelter_status || 
-    user?.shelter?.status || 
-    user?.status || 
+    profile?.status ||
+    stats?.shelter_status ||
+    user?.shelter?.status ||
+    user?.status ||
     'pending'
   );
-  const isApproved = 
+  const isApproved =
     user?.role === 'admin' ||
     user?.email === 'shelter@demo.com' ||
     profileForm?.shelter_name === 'Hope & Paws Animal Sanctuary' ||
-    shelterStatus === 'approved' || 
+    shelterStatus === 'approved' ||
     Boolean(profile?.verified || user?.shelter?.verified || user?.verified);
   const isRejected = shelterStatus === 'rejected';
   const isPending = !isApproved && !isRejected;
 
   // Shelter display title matching mockup
-  const shelterDisplayName = 
-    profileForm.shelter_name || 
-    (user?.role === 'shelter' ? (user?.name || user?.shelter_name) : null) || 
+  const shelterDisplayName =
+    profileForm.shelter_name ||
+    (user?.role === 'shelter' ? (user?.name || user?.shelter_name) : null) ||
     'Hope & Paws Animal Sanctuary';
 
   // -------------------------------------------------------------
@@ -386,25 +410,28 @@ const ShelterDashboardPage = () => {
     return displayVisits.filter((v) => v.status === 'cancelled');
   }, [displayVisits, visitTab]);
 
-  const upcomingVisitsCount = useMemo(() => 
+  const upcomingVisitsCount = useMemo(() =>
     displayVisits.filter((v) => v.status === 'confirmed' || v.status === 'requested' || v.status === 'pending').length
-  , [displayVisits]);
+    , [displayVisits]);
 
-  const pastVisitsCount = useMemo(() => 
+  const pastVisitsCount = useMemo(() =>
     displayVisits.filter((v) => v.status === 'completed').length
-  , [displayVisits]);
+    , [displayVisits]);
 
-  const cancelledVisitsCount = useMemo(() => 
+  const cancelledVisitsCount = useMemo(() =>
     displayVisits.filter((v) => v.status === 'cancelled').length
-  , [displayVisits]);
+    , [displayVisits]);
 
   // -------------------------------------------------------------
   // Notifications List (Screen 8)
   // -------------------------------------------------------------
   // Dynamic notifications reflecting actual real activities for this shelter
   const displayNotifications = useMemo(() => {
-    if (notificationsList && notificationsList.length > 0) {
-      return notificationsList;
+    const rawList = (notificationsList || []).filter(
+      (n) => !n.title?.includes('Agreement') && !n.title?.includes('Contract') && !n.message?.includes('Agreement') && !n.message?.includes('Contract')
+    );
+    if (rawList.length > 0) {
+      return rawList;
     }
     const dynamicNotifs = [];
     (applications || []).slice(0, 5).forEach((app) => {
@@ -593,7 +620,7 @@ const ShelterDashboardPage = () => {
     <div className="shelter-dashboard-wrapper">
       {/* Floating Toast Notification */}
       {feedbackMessage && (
-        <div 
+        <div
           style={{
             position: 'fixed',
             top: '24px',
@@ -618,8 +645,8 @@ const ShelterDashboardPage = () => {
             <CheckCircle2 size={22} color="#6EE7B7" />
           )}
           <span>{feedbackMessage.text}</span>
-          <button 
-            type="button" 
+          <button
+            type="button"
             onClick={() => setFeedbackMessage(null)}
             style={{
               background: 'none',
@@ -713,12 +740,12 @@ const ShelterDashboardPage = () => {
            ========================================================= */}
         {activeTab === 'overview' && (
           <div className="shelter-overview-content-layout">
-            
+
             {/* 1. TOP BANNER: Verified & Approved Rescue Partner Card (Exact Match to Mockup) */}
             <div className="shelter-partner-status-card">
               <div className="shelter-partner-status-left">
                 <div className="shelter-partner-shield-circle">
-                  <ShieldCheck size={24} />
+                  <Check size={22} strokeWidth={3.2} />
                 </div>
                 <div className="shelter-partner-info-wrap">
                   <div className="shelter-partner-headline-row">
@@ -726,7 +753,7 @@ const ShelterDashboardPage = () => {
                     <span className="shelter-partner-active-chip">Active Partner</span>
                   </div>
                   <p className="shelter-partner-subtext">
-                    Your shelter registration is approved and in good standing. Public pet listings, legal digital adoption contracts, and Meet &amp; Greet appointments are fully active.
+                    Your shelter registration is approved and in good standing. Public pet listings, official adoption certificates, and Meet &amp; Greet appointments are fully active.
                   </p>
                 </div>
               </div>
@@ -743,19 +770,35 @@ const ShelterDashboardPage = () => {
 
             {/* 2. COMPOSITE HERO SECTION (Left Showcase Banner + Right 3 Story Cards Stack) */}
             <section className="shelter-hero-composite-row">
-              
+
               {/* Part A: Left Showcase Banner Card */}
-              <div className="shelter-hero-banner-showcase">
-                {/* Background Pet Image */}
-                <img
-                  src={currentHeroSlide.image}
-                  alt="Rescue Pets"
-                  className="shelter-hero-bg-pets"
-                />
+              <div 
+                className="shelter-hero-banner-showcase"
+                onMouseEnter={() => setIsHeroHovered(true)}
+                onMouseLeave={() => setIsHeroHovered(false)}
+              >
+                {/* Background Pet Images Slider Track with Faster Horizontal Slide */}
+                <div className="shelter-hero-slider-mask">
+                  <div 
+                    className="shelter-hero-slider-track"
+                    style={{ transform: `translateX(-${heroSlideIdx * 100}%)` }}
+                  >
+                    {heroSlides.map((slide, idx) => (
+                      <div className="shelter-hero-slide-item" key={idx}>
+                        <img
+                          src={slide.image}
+                          alt={slide.title}
+                          className="shelter-hero-bg-pets"
+                          onError={(e) => { e.target.src = '/adopter-hero-pets.jpg'; }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
                 <div className="shelter-hero-gradient-mask" />
 
-                {/* Content on Left */}
-                <div className="shelter-hero-content">
+                {/* Content on Left with Animated Transition */}
+                <div className="shelter-hero-content" key={heroSlideIdx}>
                   <div className="shelter-hero-overline">{currentHeroSlide.overline}</div>
                   <h1 className="shelter-hero-main-title">{currentHeroSlide.title}</h1>
                   <div className="shelter-hero-values-line">{currentHeroSlide.values}</div>
@@ -852,9 +895,9 @@ const ShelterDashboardPage = () => {
 
             {/* 3. 4 STAT KPI CARDS (Exact Match to Mockup: Horizontal Cards with Circular Icons & Big Numbers) */}
             <section className="shelter-stats-grid-4">
-              
+
               {/* Card 1: Total Pets */}
-              <div 
+              <div
                 className="shelter-kpi-card"
                 onClick={() => handleTabChange('pets')}
                 title="View Pet Listings"
@@ -863,14 +906,17 @@ const ShelterDashboardPage = () => {
                   <PawPrint size={22} />
                 </div>
                 <div className="kpi-card-content">
-                  <div className="kpi-card-number">{stats?.total_listings ?? (pets.length > 0 ? pets.length : 25)}</div>
+                  <div className="kpi-card-number">{stats?.total_listings ?? (pets.length > 0 ? pets.length : 13)}</div>
                   <div className="kpi-card-label">Total Pets</div>
                 </div>
+                <svg className="kpi-sparkline" width="56" height="22" viewBox="0 0 56 22" fill="none">
+                  <path d="M1 17C10 17 14 6 24 10C32 13 38 4 46 8C50 10 53 6 55 3" stroke="#22C55E" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
                 <ChevronRight size={18} className="kpi-card-arrow" />
               </div>
 
               {/* Card 2: Adoption Applications */}
-              <div 
+              <div
                 className="shelter-kpi-card"
                 onClick={() => handleTabChange('applications')}
                 title="View Adoption Applications"
@@ -880,15 +926,18 @@ const ShelterDashboardPage = () => {
                 </div>
                 <div className="kpi-card-content">
                   <div className="kpi-card-number">
-                    {stats?.pending_applications ?? (displayApplications.length > 0 ? displayApplications.length : 12)}
+                    {stats?.pending_applications ?? (displayApplications.length > 0 ? displayApplications.length : 1)}
                   </div>
                   <div className="kpi-card-label">Adoption Applications</div>
                 </div>
+                <svg className="kpi-sparkline" width="56" height="22" viewBox="0 0 56 22" fill="none">
+                  <path d="M1 16C10 16 16 8 24 12C32 15 38 6 46 9C50 11 53 6 55 4" stroke="#3B82F6" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
                 <ChevronRight size={18} className="kpi-card-arrow" />
               </div>
 
               {/* Card 3: Meet & Greets */}
-              <div 
+              <div
                 className="shelter-kpi-card"
                 onClick={() => handleTabChange('visits')}
                 title="View Scheduled Visits"
@@ -898,15 +947,18 @@ const ShelterDashboardPage = () => {
                 </div>
                 <div className="kpi-card-content">
                   <div className="kpi-card-number">
-                    {stats?.upcoming_visits ?? (displayVisits.length > 0 ? displayVisits.length : 3)}
+                    {stats?.upcoming_visits ?? (displayVisits.length > 0 ? displayVisits.length : 6)}
                   </div>
                   <div className="kpi-card-label">Upcoming Meet &amp; Greets</div>
                 </div>
+                <svg className="kpi-sparkline" width="56" height="22" viewBox="0 0 56 22" fill="none">
+                  <path d="M1 17C10 17 15 7 24 11C32 14 38 5 46 8C50 10 53 6 55 3" stroke="#F59E0B" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
                 <ChevronRight size={18} className="kpi-card-arrow" />
               </div>
 
               {/* Card 4: Messages */}
-              <div 
+              <div
                 className="shelter-kpi-card"
                 onClick={() => navigate('/messages')}
                 title="View Messages"
@@ -915,9 +967,12 @@ const ShelterDashboardPage = () => {
                   <MessageSquare size={22} />
                 </div>
                 <div className="kpi-card-content">
-                  <div className="kpi-card-number">{unreadCount || (stats?.unread_messages ?? 5)}</div>
+                  <div className="kpi-card-number">{unreadCount || (stats?.unread_messages ?? 8)}</div>
                   <div className="kpi-card-label">Unread Messages</div>
                 </div>
+                <svg className="kpi-sparkline" width="56" height="22" viewBox="0 0 56 22" fill="none">
+                  <path d="M1 16C10 16 14 6 22 10C30 14 36 5 44 9C49 11 52 7 55 4" stroke="#A855F7" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
                 <ChevronRight size={18} className="kpi-card-arrow" />
               </div>
 
@@ -925,7 +980,7 @@ const ShelterDashboardPage = () => {
 
             {/* 4. THREE-COLUMN BOTTOM ACTIVITY & QUICK ACTIONS ROW */}
             <section className="shelter-bottom-tri-grid">
-              
+
               {/* Column 1: Recent Adoption Applications */}
               <div className="shelter-bottom-col">
                 <div className="shelter-section-header">
@@ -933,8 +988,8 @@ const ShelterDashboardPage = () => {
                     <PawPrint size={18} className="shelter-feed-header-icon" />
                     Recent Adoption Applications
                   </h2>
-                  <Link 
-                    to="/shelter-dashboard?tab=applications" 
+                  <Link
+                    to="/shelter-dashboard?tab=applications"
                     className="shelter-link-view-all"
                   >
                     View All →
@@ -950,18 +1005,18 @@ const ShelterDashboardPage = () => {
                     </div>
                   ) : (
                     displayApplications.slice(0, 3).map((app) => (
-                      <div 
-                        key={app.id} 
+                      <div
+                        key={app.id}
                         className="shelter-app-item-row"
                         onClick={() => {
                           setViewingApp(app);
                           handleTabChange('applications');
                         }}
                       >
-                        <img 
-                          src={app.pet?.image_url || app.pet?.photo_url || 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=120&q=80'} 
-                          alt={app.pet?.name || 'Pet'} 
-                          className="shelter-app-thumb" 
+                        <img
+                          src={app.pet?.image_url || app.pet?.photo_url || 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=120&q=80'}
+                          alt={app.pet?.name || 'Pet'}
+                          className="shelter-app-thumb"
                         />
                         <div className="shelter-app-info">
                           <div className="shelter-app-pet-name">{app.pet?.name || 'Bruno'}</div>
@@ -970,9 +1025,8 @@ const ShelterDashboardPage = () => {
                           </div>
                         </div>
                         <div className="shelter-app-end-meta">
-                          <span className={`shelter-status-pill-clean ${
-                            app.status === 'approved' ? 'approved' : app.status === 'under_review' ? 'review' : 'new'
-                          }`}>
+                          <span className={`shelter-status-pill-clean ${app.status === 'approved' ? 'approved' : app.status === 'under_review' ? 'review' : 'new'
+                            }`}>
                             {app.status === 'approved' ? 'Approved' : app.status === 'under_review' ? 'Under Review' : 'New'}
                           </span>
                           <span className="shelter-app-date-text">
@@ -993,8 +1047,8 @@ const ShelterDashboardPage = () => {
                     <Calendar size={18} className="shelter-feed-header-icon blue" />
                     Upcoming Meet &amp; Greets
                   </h2>
-                  <Link 
-                    to="/shelter-dashboard?tab=visits" 
+                  <Link
+                    to="/shelter-dashboard?tab=visits"
                     className="shelter-link-view-all"
                   >
                     View All →
@@ -1010,15 +1064,15 @@ const ShelterDashboardPage = () => {
                     </div>
                   ) : (
                     displayVisits.slice(0, 3).map((visit) => (
-                      <div 
-                        key={visit.id} 
+                      <div
+                        key={visit.id}
                         className="shelter-app-item-row"
                         onClick={() => handleTabChange('visits')}
                       >
-                        <img 
-                          src={visit.pet_image || visit.pet?.photo_url || 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=120&q=80'} 
-                          alt={visit.pet_name || 'Pet'} 
-                          className="shelter-app-thumb" 
+                        <img
+                          src={visit.pet_image || visit.pet?.photo_url || 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=120&q=80'}
+                          alt={visit.pet_name || 'Pet'}
+                          className="shelter-app-thumb"
                         />
                         <div className="shelter-app-info">
                           <div className="shelter-app-pet-name">Meet with {visit.adopter_name || 'Priya S.'}</div>
@@ -1041,7 +1095,7 @@ const ShelterDashboardPage = () => {
                 </div>
               </div>
 
-              {/* Column 3: Quick Actions (Exact 2x3 Grid matching mockup) */}
+              {/* Column 3: Quick Actions (Exact 2-Card Layout matching mockup) */}
               <div className="shelter-bottom-col">
                 <div className="shelter-section-header">
                   <h2 className="shelter-section-title">
@@ -1050,88 +1104,25 @@ const ShelterDashboardPage = () => {
                   </h2>
                 </div>
 
-                <div className="shelter-quick-actions-grid-2x3">
+                <div className="shelter-quick-actions-grid-2">
                   {/* Action 1: Add New Pet */}
-                  <Link to="/pets/new" className="quick-action-card-tile tile-green">
-                    <div className="tile-icon-circle green">
-                      <Plus size={18} />
+                  <Link to="/pets/new" className="quick-action-big-tile tile-green">
+                    <div className="big-tile-icon-box green">
+                      <Plus size={24} strokeWidth={2.5} />
                     </div>
-                    <div className="tile-text-wrap">
-                      <span className="tile-main-label">Add New Pet</span>
-                      <span className="tile-sub-label">Register a new pet</span>
-                    </div>
+                    <span className="big-tile-label">Add New Pet</span>
                   </Link>
 
                   {/* Action 2: View Pets */}
                   <button
                     type="button"
-                    className="quick-action-card-tile tile-blue"
+                    className="quick-action-big-tile tile-blue"
                     onClick={() => handleTabChange('pets')}
                   >
-                    <div className="tile-icon-circle blue">
-                      <FileText size={18} />
+                    <div className="big-tile-icon-box blue">
+                      <ListFilter size={22} strokeWidth={2.2} />
                     </div>
-                    <div className="tile-text-wrap">
-                      <span className="tile-main-label">View Pets</span>
-                      <span className="tile-sub-label">See all pets</span>
-                    </div>
-                  </button>
-
-                  {/* Action 3: Manage Appointments */}
-                  <button
-                    type="button"
-                    className="quick-action-card-tile tile-amber"
-                    onClick={() => handleTabChange('visits')}
-                  >
-                    <div className="tile-icon-circle amber">
-                      <Calendar size={18} />
-                    </div>
-                    <div className="tile-text-wrap">
-                      <span className="tile-main-label">Manage Appointments</span>
-                      <span className="tile-sub-label">Meet &amp; Greets</span>
-                    </div>
-                  </button>
-
-                  {/* Action 4: Reply to Messages */}
-                  <Link to="/messages" className="quick-action-card-tile tile-purple">
-                    <div className="tile-icon-circle purple with-badge">
-                      <MessageSquare size={18} />
-                      <span className="tile-badge-red">{unreadCount || 5}</span>
-                    </div>
-                    <div className="tile-text-wrap">
-                      <span className="tile-main-label">Reply to Messages</span>
-                      <span className="tile-sub-label">Respond to adopters</span>
-                    </div>
-                  </Link>
-
-                  {/* Action 5: Generate Report */}
-                  <button
-                    type="button"
-                    className="quick-action-card-tile tile-slate"
-                    onClick={() => showToast('Generating shelter analytics report...', 'success')}
-                  >
-                    <div className="tile-icon-circle slate">
-                      <BarChart3 size={18} />
-                    </div>
-                    <div className="tile-text-wrap">
-                      <span className="tile-main-label">Generate Report</span>
-                      <span className="tile-sub-label">Shelter analytics</span>
-                    </div>
-                  </button>
-
-                  {/* Action 6: Shelter Profile */}
-                  <button
-                    type="button"
-                    className="quick-action-card-tile tile-slate"
-                    onClick={() => handleTabChange('profile')}
-                  >
-                    <div className="tile-icon-circle slate">
-                      <Building size={18} />
-                    </div>
-                    <div className="tile-text-wrap">
-                      <span className="tile-main-label">Shelter Profile</span>
-                      <span className="tile-sub-label">Update details</span>
-                    </div>
+                    <span className="big-tile-label">View Pets</span>
                   </button>
                 </div>
               </div>
@@ -1149,8 +1140,8 @@ const ShelterDashboardPage = () => {
             {/* If a pet is selected, show Screen 4: Pet Details */}
             {viewingPet ? (
               <div className="shelter-pet-detail-card">
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="shelter-back-link"
                   onClick={() => setViewingPet(null)}
                 >
@@ -1160,26 +1151,26 @@ const ShelterDashboardPage = () => {
                 <div className="shelter-pet-detail-layout">
                   {/* Left Column: Big Image + Gallery thumbnails */}
                   <div className="shelter-pet-detail-media">
-                    <img 
-                      src={viewingPet.image_url} 
-                      alt={viewingPet.name} 
-                      className="shelter-pet-detail-hero-img" 
+                    <img
+                      src={viewingPet.image_url}
+                      alt={viewingPet.name}
+                      className="shelter-pet-detail-hero-img"
                     />
                     <div className="shelter-pet-detail-gallery">
-                      <img 
-                        src={viewingPet.image_url} 
-                        alt="Thumbnail" 
-                        className="shelter-pet-detail-thumb active" 
+                      <img
+                        src={viewingPet.image_url}
+                        alt="Thumbnail"
+                        className="shelter-pet-detail-thumb active"
                       />
-                      <img 
-                        src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=150&q=80" 
-                        alt="Gallery 2" 
-                        className="shelter-pet-detail-thumb" 
+                      <img
+                        src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=150&q=80"
+                        alt="Gallery 2"
+                        className="shelter-pet-detail-thumb"
                       />
-                      <img 
-                        src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=150&q=80" 
-                        alt="Gallery 3" 
-                        className="shelter-pet-detail-thumb" 
+                      <img
+                        src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=150&q=80"
+                        alt="Gallery 3"
+                        className="shelter-pet-detail-thumb"
                       />
                       <div className="shelter-pet-detail-thumb-more">+3</div>
                     </div>
@@ -1190,16 +1181,15 @@ const ShelterDashboardPage = () => {
                     <div className="shelter-pet-detail-header-row">
                       <div className="shelter-pet-detail-title-group">
                         <h2 className="shelter-pet-detail-title">{viewingPet.name}</h2>
-                        <span className={`shelter-badge-soft ${
-                          viewingPet.status === 'available' ? 'shelter-badge-soft-green' : 'shelter-badge-soft-red'
-                        }`}>
+                        <span className={`shelter-badge-soft ${viewingPet.status === 'available' ? 'shelter-badge-soft-green' : 'shelter-badge-soft-red'
+                          }`}>
                           {viewingPet.status === 'available' ? 'Available' : 'Unavailable'}
                         </span>
                       </div>
 
                       <div className="shelter-pet-detail-actions">
-                        <Link 
-                          to={`/pets/${viewingPet.id}/edit`} 
+                        <Link
+                          to={`/pets/${viewingPet.id}/edit`}
                           className="shelter-btn-secondary"
                         >
                           <Edit size={15} /> Edit
@@ -1223,22 +1213,22 @@ const ShelterDashboardPage = () => {
 
                     {/* Tabs: Overview, Health & Medical, Adoption History */}
                     <div className="shelter-pill-tabs">
-                      <button 
-                        type="button" 
+                      <button
+                        type="button"
                         className={`shelter-pill-tab-btn ${petDetailTab === 'overview' ? 'active' : ''}`}
                         onClick={() => setPetDetailTab('overview')}
                       >
                         Overview
                       </button>
-                      <button 
-                        type="button" 
+                      <button
+                        type="button"
                         className={`shelter-pill-tab-btn ${petDetailTab === 'health' ? 'active' : ''}`}
                         onClick={() => setPetDetailTab('health')}
                       >
                         Health &amp; Medical
                       </button>
-                      <button 
-                        type="button" 
+                      <button
+                        type="button"
                         className={`shelter-pill-tab-btn ${petDetailTab === 'history' ? 'active' : ''}`}
                         onClick={() => setPetDetailTab('history')}
                       >
@@ -1326,8 +1316,8 @@ const ShelterDashboardPage = () => {
                           <span style={{ fontSize: '0.85rem', color: '#64748B' }}>
                             Veterinary and care passport records displayed to potential adopters
                           </span>
-                          <Link 
-                            to={`/pets/${viewingPet.id || viewingPet._id}/edit`} 
+                          <Link
+                            to={`/pets/${viewingPet.id || viewingPet._id}/edit`}
                             className="shelter-btn-secondary"
                             style={{ padding: '0.4rem 0.85rem', fontSize: '0.82rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
                           >
@@ -1367,9 +1357,9 @@ const ShelterDashboardPage = () => {
                 <div className="shelter-filter-bar-card">
                   <div className="shelter-filter-search-input">
                     <Search size={16} color="#7A9187" />
-                    <input 
-                      type="text" 
-                      placeholder="Search by name, breed or location..." 
+                    <input
+                      type="text"
+                      placeholder="Search by name, breed or location..."
                       value={petSearch}
                       onChange={(e) => {
                         setPetSearch(e.target.value);
@@ -1381,7 +1371,7 @@ const ShelterDashboardPage = () => {
                   <div className="shelter-filter-dropdowns">
                     <div className="shelter-filter-select-wrap">
                       <span className="shelter-filter-select-label">Species:</span>
-                      <select 
+                      <select
                         className="shelter-filter-select"
                         value={petSpeciesFilter}
                         onChange={(e) => {
@@ -1398,7 +1388,7 @@ const ShelterDashboardPage = () => {
 
                     <div className="shelter-filter-select-wrap">
                       <span className="shelter-filter-select-label">Status:</span>
-                      <select 
+                      <select
                         className="shelter-filter-select"
                         value={petStatusFilter}
                         onChange={(e) => {
@@ -1414,7 +1404,7 @@ const ShelterDashboardPage = () => {
 
                     <div className="shelter-filter-select-wrap">
                       <span className="shelter-filter-select-label">Sort by:</span>
-                      <select 
+                      <select
                         className="shelter-filter-select"
                         value={petSortBy}
                         onChange={(e) => setPetSortBy(e.target.value)}
@@ -1448,21 +1438,20 @@ const ShelterDashboardPage = () => {
                     {/* 3-Column Pet Cards Grid */}
                     <div className="shelter-pet-grid-3">
                       {currentPets.map((pet) => (
-                        <div 
-                          key={pet.id} 
+                        <div
+                          key={pet.id}
                           className="shelter-pet-card-modern"
                           onClick={() => setViewingPet(pet)}
                           style={{ cursor: 'pointer' }}
                         >
                           <div className="shelter-pet-card-img-wrap">
-                            <img 
-                              src={pet.image_url} 
-                              alt={pet.name} 
-                              className="shelter-pet-card-img" 
+                            <img
+                              src={pet.image_url}
+                              alt={pet.name}
+                              className="shelter-pet-card-img"
                             />
-                            <span className={`shelter-pet-card-status-pill ${
-                              pet.status === 'available' ? 'shelter-pet-card-status-available' : 'shelter-pet-card-status-unavailable'
-                            }`}>
+                            <span className={`shelter-pet-card-status-pill ${pet.status === 'available' ? 'shelter-pet-card-status-available' : 'shelter-pet-card-status-unavailable'
+                              }`}>
                               {pet.status === 'available' ? 'Available' : 'Unavailable'}
                             </span>
                           </div>
@@ -1470,8 +1459,8 @@ const ShelterDashboardPage = () => {
                           <div className="shelter-pet-card-body">
                             <div className="shelter-pet-card-name-row">
                               <span className="shelter-pet-card-name">{pet.name}</span>
-                              <button 
-                                type="button" 
+                              <button
+                                type="button"
                                 className="shelter-pet-card-menu-btn"
                                 onClick={(e) => {
                                   e.stopPropagation();
@@ -1498,8 +1487,8 @@ const ShelterDashboardPage = () => {
                     {/* Pagination */}
                     <div className="shelter-pagination-bar">
                       <div className="shelter-pagination-controls">
-                        <button 
-                          type="button" 
+                        <button
+                          type="button"
                           className="shelter-page-btn"
                           disabled={petPage <= 1}
                           onClick={() => setPetPage(p => Math.max(1, p - 1))}
@@ -1507,17 +1496,17 @@ const ShelterDashboardPage = () => {
                           <ChevronLeft size={16} />
                         </button>
                         {Array.from({ length: totalPetPages }, (_, i) => i + 1).map(num => (
-                          <button 
+                          <button
                             key={num}
-                            type="button" 
+                            type="button"
                             className={`shelter-page-btn ${petPage === num ? 'active' : ''}`}
                             onClick={() => setPetPage(num)}
                           >
                             {num}
                           </button>
                         ))}
-                        <button 
-                          type="button" 
+                        <button
+                          type="button"
                           className="shelter-page-btn"
                           disabled={petPage >= totalPetPages}
                           onClick={() => setPetPage(p => Math.min(totalPetPages, p + 1))}
@@ -1545,8 +1534,8 @@ const ShelterDashboardPage = () => {
             {/* If an application is selected, show Screen 6: Application Review Details */}
             {viewingApp ? (
               <div className="shelter-app-detail-card">
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="shelter-back-link"
                   onClick={() => setViewingApp(null)}
                 >
@@ -1573,25 +1562,14 @@ const ShelterDashboardPage = () => {
 
                   <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
                     {(viewingApp.status === 'approved' || viewingApp.status === 'completed') && (
-                      <>
-                        <button
-                          type="button"
-                          className="ap-btn-cert"
-                          style={{ background: 'linear-gradient(135deg, #103324 0%, #174C38 100%)', color: '#6EE7B7' }}
-                          onClick={() => setSelectedContractAppId(viewingApp.id)}
-                          title="View Digital Adoption Agreement & Signature"
-                        >
-                          <FileCheck2 size={15} /> Agreement
-                        </button>
-                        <button
-                          type="button"
-                          className="ap-btn-cert"
-                          onClick={() => setSelectedCertAppId(viewingApp.id)}
-                          title="View Official Adoption Certificate"
-                        >
-                          <Award size={15} /> Official Certificate
-                        </button>
-                      </>
+                      <button
+                        type="button"
+                        className="ap-btn-cert"
+                        onClick={() => setSelectedCertAppId(viewingApp.id)}
+                        title="View Official Adoption Certificate"
+                      >
+                        <Award size={15} /> Official Certificate
+                      </button>
                     )}
                     {viewingApp.status === 'approved' ? (
                       <button
@@ -1604,15 +1582,15 @@ const ShelterDashboardPage = () => {
                       </button>
                     ) : (
                       <>
-                        <button 
-                          type="button" 
+                        <button
+                          type="button"
                           className="shelter-btn-primary"
                           onClick={() => handleApproveApp(viewingApp)}
                         >
                           Approve
                         </button>
-                        <button 
-                          type="button" 
+                        <button
+                          type="button"
                           className="shelter-btn-danger-outline"
                           onClick={() => handleRejectApp(viewingApp)}
                         >
@@ -1633,9 +1611,9 @@ const ShelterDashboardPage = () => {
                   <div className="shelter-app-summary-box">
                     <div className="shelter-app-summary-box-title">Pet Information</div>
                     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                      <img 
-                        src={viewingApp.pet?.image_url || 'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=200&q=80'} 
-                        alt={viewingApp.pet?.name || 'Pet'} 
+                      <img
+                        src={viewingApp.pet?.image_url || 'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=200&q=80'}
+                        alt={viewingApp.pet?.name || 'Pet'}
                         style={{ width: 68, height: 68, borderRadius: 12, objectFit: 'cover' }}
                       />
                       <div>
@@ -1643,7 +1621,7 @@ const ShelterDashboardPage = () => {
                         <div style={{ fontSize: '0.84rem', color: 'var(--shelter-text-muted)' }}>
                           {viewingApp.pet?.breed || 'Golden Retriever'} • 2 years • Male • Chandigarh
                         </div>
-                        <button 
+                        <button
                           type="button"
                           style={{ border: 'none', background: 'transparent', color: '#15803D', fontWeight: 600, fontSize: '0.82rem', padding: 0, marginTop: 4, cursor: 'pointer' }}
                           onClick={() => {
@@ -1686,15 +1664,15 @@ const ShelterDashboardPage = () => {
 
                 {/* Tabs: Application Form & Additional Message */}
                 <div className="shelter-pill-tabs" style={{ marginBottom: '1.25rem' }}>
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     className={`shelter-pill-tab-btn ${appDetailTab === 'form' ? 'active' : ''}`}
                     onClick={() => setAppDetailTab('form')}
                   >
                     Application Form
                   </button>
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     className={`shelter-pill-tab-btn ${appDetailTab === 'message' ? 'active' : ''}`}
                     onClick={() => setAppDetailTab('message')}
                   >
@@ -1765,9 +1743,9 @@ const ShelterDashboardPage = () => {
                 <div className="shelter-filter-bar-card" style={{ marginBottom: '1.25rem' }}>
                   <div className="shelter-filter-search-input">
                     <Search size={16} color="#7A9187" />
-                    <input 
-                      type="text" 
-                      placeholder="Search by applicant name or pet name..." 
+                    <input
+                      type="text"
+                      placeholder="Search by applicant name or pet name..."
                       value={appSearch}
                       onChange={(e) => setAppSearch(e.target.value)}
                     />
@@ -1775,7 +1753,7 @@ const ShelterDashboardPage = () => {
 
                   <div className="shelter-filter-select-wrap">
                     <span className="shelter-filter-select-label">Sort by:</span>
-                    <select 
+                    <select
                       className="shelter-filter-select"
                       value={appSortBy}
                       onChange={(e) => setAppSortBy(e.target.value)}
@@ -1822,10 +1800,10 @@ const ShelterDashboardPage = () => {
                         <div className="shelter-app-card-body-3col">
                           {/* Pet info */}
                           <div className="shelter-app-pet-col">
-                            <img 
-                              src={app.pet?.image_url || app.pet?.photo_url || 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=150&q=80'} 
-                              alt={app.pet?.name || 'Pet'} 
-                              className="shelter-app-pet-thumb" 
+                            <img
+                              src={app.pet?.image_url || app.pet?.photo_url || 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=150&q=80'}
+                              alt={app.pet?.name || 'Pet'}
+                              className="shelter-app-pet-thumb"
                             />
                             <div>
                               <div className="shelter-app-pet-name">{app.pet?.name || 'Rescue Pet'}</div>
@@ -1853,19 +1831,9 @@ const ShelterDashboardPage = () => {
                             )}
                           </div>
 
-                        {/* Action buttons */}
-                        <div className="shelter-app-actions-col">
-                          {(app.status === 'approved' || app.status === 'completed') && (
-                            <>
-                              <button
-                                type="button"
-                                className="ap-btn-cert"
-                                onClick={() => setSelectedContractAppId(app.id)}
-                                style={{ width: '100%', justifyContent: 'center', background: 'linear-gradient(135deg, #103324 0%, #174C38 100%)', color: '#6EE7B7' }}
-                                title="View Executed Digital Adoption Agreement"
-                              >
-                                <FileCheck2 size={14} /> Agreement
-                              </button>
+                          {/* Action buttons */}
+                          <div className="shelter-app-actions-col">
+                            {(app.status === 'approved' || app.status === 'completed') && (
                               <button
                                 type="button"
                                 className="ap-btn-cert"
@@ -1875,64 +1843,63 @@ const ShelterDashboardPage = () => {
                               >
                                 <Award size={14} /> Certificate
                               </button>
-                            </>
-                          )}
-                          <button 
-                            type="button" 
-                            className="shelter-btn-secondary"
-                            onClick={() => setViewingApp(app)}
-                          >
-                            View Details
-                          </button>
-                          {app.status !== 'approved' && app.status !== 'rejected' && (
+                            )}
                             <button
                               type="button"
                               className="shelter-btn-secondary"
-                              style={{ color: '#047857', borderColor: '#6EE7B7', display: 'flex', alignItems: 'center', gap: '0.35rem', justifyContent: 'center' }}
-                              onClick={() => setSchedulingVisitData({
-                                pet: app.pet || { id: app.pet_id, name: app.pet?.name || 'Pet' },
-                                applicationId: app.id,
-                                adopterId: app.adopter_id,
-                                adopterName: app.adopter_name
-                              })}
+                              onClick={() => setViewingApp(app)}
                             >
-                              <Calendar size={13} color="#047857" />
-                              <span>Schedule Meet &amp; Greet</span>
+                              View Details
                             </button>
-                          )}
-                          {app.status === 'approved' ? (
-                            <button
-                              type="button"
-                              className="shelter-btn-primary"
-                              disabled
-                              style={{ opacity: 0.9, backgroundColor: '#15803D', borderColor: '#15803D', cursor: 'default' }}
-                            >
-                              <CheckCircle2 size={15} style={{ marginRight: '4px' }} /> Approved
-                            </button>
-                          ) : (
-                            <>
-                              <button 
-                                type="button" 
+                            {app.status !== 'approved' && app.status !== 'rejected' && (
+                              <button
+                                type="button"
+                                className="shelter-btn-secondary"
+                                style={{ color: '#047857', borderColor: '#6EE7B7', display: 'flex', alignItems: 'center', gap: '0.35rem', justifyContent: 'center' }}
+                                onClick={() => setSchedulingVisitData({
+                                  pet: app.pet || { id: app.pet_id, name: app.pet?.name || 'Pet' },
+                                  applicationId: app.id,
+                                  adopterId: app.adopter_id,
+                                  adopterName: app.adopter_name
+                                })}
+                              >
+                                <Calendar size={13} color="#047857" />
+                                <span>Schedule Meet &amp; Greet</span>
+                              </button>
+                            )}
+                            {app.status === 'approved' ? (
+                              <button
+                                type="button"
                                 className="shelter-btn-primary"
-                                onClick={() => handleApproveApp(app)}
+                                disabled
+                                style={{ opacity: 0.9, backgroundColor: '#15803D', borderColor: '#15803D', cursor: 'default' }}
                               >
-                                Approve
+                                <CheckCircle2 size={15} style={{ marginRight: '4px' }} /> Approved
                               </button>
-                              <button 
-                                type="button" 
-                                className="shelter-btn-danger-outline"
-                                onClick={() => handleRejectApp(app)}
-                              >
-                                Reject
-                              </button>
-                            </>
-                          )}
+                            ) : (
+                              <>
+                                <button
+                                  type="button"
+                                  className="shelter-btn-primary"
+                                  onClick={() => handleApproveApp(app)}
+                                >
+                                  Approve
+                                </button>
+                                <button
+                                  type="button"
+                                  className="shelter-btn-danger-outline"
+                                  onClick={() => handleRejectApp(app)}
+                                >
+                                  Reject
+                                </button>
+                              </>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))
-                )}
-              </div>
+                    ))
+                  )}
+                </div>
               </div>
             )}
           </div>
@@ -1948,8 +1915,8 @@ const ShelterDashboardPage = () => {
                 <h1 className="shelter-page-heading">Meet &amp; Greet Visits</h1>
                 <p className="shelter-page-subtext">Schedule and manage in-person meetings</p>
               </div>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 className="shelter-btn-primary"
                 onClick={() => {
                   if (pets && pets.length > 0) {
@@ -2000,10 +1967,10 @@ const ShelterDashboardPage = () => {
                 filteredVisits.map((v) => (
                   <div key={v.id} className="shelter-visit-card-modern">
                     <div className="shelter-visit-pet-info">
-                      <img 
-                        src={v.pet_image || v.pet?.photo_url || 'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=150&q=80'} 
-                        alt={v.pet_name} 
-                        className="shelter-visit-pet-thumb" 
+                      <img
+                        src={v.pet_image || v.pet?.photo_url || 'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=150&q=80'}
+                        alt={v.pet_name}
+                        className="shelter-visit-pet-thumb"
                       />
                       <div>
                         <div style={{ fontWeight: 800, fontSize: '1.05rem', color: '#162620' }}>{v.pet_name}</div>
@@ -2029,21 +1996,20 @@ const ShelterDashboardPage = () => {
                     </div>
 
                     <div className="shelter-visit-actions-col">
-                      <span className={`shelter-badge-soft ${
-                        v.status === 'confirmed' ? 'shelter-badge-soft-green' : v.status === 'completed' ? 'shelter-badge-soft-green' : v.status === 'cancelled' ? 'shelter-badge-soft-red' : 'shelter-badge-soft-amber'
-                      }`}>
+                      <span className={`shelter-badge-soft ${v.status === 'confirmed' ? 'shelter-badge-soft-green' : v.status === 'completed' ? 'shelter-badge-soft-green' : v.status === 'cancelled' ? 'shelter-badge-soft-red' : 'shelter-badge-soft-amber'
+                        }`}>
                         {v.status === 'confirmed' ? 'Confirmed' : v.status === 'completed' ? 'Completed' : v.status === 'cancelled' ? 'Cancelled' : 'Requested'}
                       </span>
-                      <button 
-                        type="button" 
+                      <button
+                        type="button"
                         className="shelter-btn-secondary"
                         onClick={() => showToast(`Appointment with ${v.adopter_name || 'adopter'}: ${v.visit_date} (${v.visit_time || v.time_slot}). Format: ${v.visit_type === 'virtual' ? 'Virtual Video Call' : 'In-Person Shelter Visit'}. ${v.notes ? 'Notes: ' + v.notes : ''}`)}
                       >
                         View Details
                       </button>
                       {(v.status === 'requested' || v.status === 'pending') && (
-                        <button 
-                          type="button" 
+                        <button
+                          type="button"
                           className="shelter-btn-primary"
                           onClick={() => handleConfirmVisit(v)}
                         >
@@ -2051,8 +2017,8 @@ const ShelterDashboardPage = () => {
                         </button>
                       )}
                       {v.status === 'confirmed' && (
-                        <button 
-                          type="button" 
+                        <button
+                          type="button"
                           className="shelter-btn-primary"
                           style={{ backgroundColor: '#15803D', borderColor: '#15803D' }}
                           onClick={() => handleCompleteVisit(v)}
@@ -2061,8 +2027,8 @@ const ShelterDashboardPage = () => {
                         </button>
                       )}
                       {v.status !== 'cancelled' && v.status !== 'completed' && (
-                        <button 
-                          type="button" 
+                        <button
+                          type="button"
                           className="shelter-btn-danger-outline"
                           onClick={() => handleCancelVisit(v)}
                         >
@@ -2132,7 +2098,7 @@ const ShelterDashboardPage = () => {
               ) : (
                 filteredNotifications.map((notif) => (
                   <div key={notif.id} className="shelter-notification-item">
-                    <div 
+                    <div
                       className="shelter-notif-icon-box"
                       style={{
                         backgroundColor: notif.type === 'application' ? '#FEF3C7' : notif.type === 'visit' ? '#E0F2FE' : '#E8F5E9',
@@ -2183,10 +2149,10 @@ const ShelterDashboardPage = () => {
                     </div>
                     <div className="shelter-profile-logo-box" style={{ overflow: 'hidden' }}>
                       {profileForm.logo_url ? (
-                        <img 
-                          src={profileForm.logo_url} 
-                          alt="Shelter Logo" 
-                          style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                        <img
+                          src={profileForm.logo_url}
+                          alt="Shelter Logo"
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
                       ) : (
                         <PawPrint size={64} strokeWidth={1.8} />
@@ -2196,7 +2162,7 @@ const ShelterDashboardPage = () => {
                       <label style={{ fontSize: '0.76rem', color: '#6B7280', fontWeight: 600, display: 'block', marginBottom: '0.25rem' }}>
                         Logo Image URL (Optional)
                       </label>
-                      <input 
+                      <input
                         type="text"
                         className="shelter-form-input"
                         placeholder="https://... (or choose below)"
@@ -2242,9 +2208,9 @@ const ShelterDashboardPage = () => {
                         <label className="shelter-form-label">
                           Shelter Name <span className="required">*</span>
                         </label>
-                        <input 
-                          type="text" 
-                          className="shelter-form-input" 
+                        <input
+                          type="text"
+                          className="shelter-form-input"
                           value={profileForm.shelter_name}
                           onChange={(e) => setProfileForm({ ...profileForm, shelter_name: e.target.value })}
                           required
@@ -2255,9 +2221,9 @@ const ShelterDashboardPage = () => {
                         <label className="shelter-form-label">
                           Govt / NGO Registration License <span className="required">*</span>
                         </label>
-                        <input 
-                          type="text" 
-                          className="shelter-form-input" 
+                        <input
+                          type="text"
+                          className="shelter-form-input"
                           value={profileForm.registration_number}
                           onChange={(e) => setProfileForm({ ...profileForm, registration_number: e.target.value })}
                           placeholder="e.g. AWBI-2026-8941"
@@ -2269,8 +2235,8 @@ const ShelterDashboardPage = () => {
                     <div className="shelter-profile-form-grid-2">
                       <div className="shelter-form-group">
                         <label className="shelter-form-label">Facility / Org Type</label>
-                        <select 
-                          className="shelter-form-input" 
+                        <select
+                          className="shelter-form-input"
                           value={profileForm.facility_type}
                           onChange={(e) => setProfileForm({ ...profileForm, facility_type: e.target.value })}
                           style={{ cursor: 'pointer' }}
@@ -2286,9 +2252,9 @@ const ShelterDashboardPage = () => {
                         <label className="shelter-form-label">
                           Official Contact Email <span className="required">*</span>
                         </label>
-                        <input 
-                          type="email" 
-                          className="shelter-form-input" 
+                        <input
+                          type="email"
+                          className="shelter-form-input"
                           value={profileForm.contact_email}
                           onChange={(e) => setProfileForm({ ...profileForm, contact_email: e.target.value })}
                           required
@@ -2299,9 +2265,9 @@ const ShelterDashboardPage = () => {
                     <div className="shelter-profile-form-grid-2">
                       <div className="shelter-form-group">
                         <label className="shelter-form-label">Official Phone</label>
-                        <input 
-                          type="text" 
-                          className="shelter-form-input" 
+                        <input
+                          type="text"
+                          className="shelter-form-input"
                           value={profileForm.phone}
                           onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
                         />
@@ -2309,9 +2275,9 @@ const ShelterDashboardPage = () => {
 
                       <div className="shelter-form-group">
                         <label className="shelter-form-label">Shelter Facility Location</label>
-                        <input 
-                          type="text" 
-                          className="shelter-form-input" 
+                        <input
+                          type="text"
+                          className="shelter-form-input"
                           value={profileForm.address}
                           onChange={(e) => setProfileForm({ ...profileForm, address: e.target.value })}
                         />
@@ -2320,8 +2286,8 @@ const ShelterDashboardPage = () => {
 
                     <div className="shelter-form-group">
                       <label className="shelter-form-label">Rescue Mission / Bio</label>
-                      <textarea 
-                        className="shelter-form-textarea" 
+                      <textarea
+                        className="shelter-form-textarea"
                         rows={4}
                         value={profileForm.bio}
                         onChange={(e) => setProfileForm({ ...profileForm, bio: e.target.value })}
@@ -2331,8 +2297,8 @@ const ShelterDashboardPage = () => {
                 </div>
 
                 <div className="shelter-form-actions-row">
-                  <button 
-                    type="submit" 
+                  <button
+                    type="submit"
                     className="shelter-btn-primary"
                     disabled={savingProfile}
                   >
@@ -2365,12 +2331,6 @@ const ShelterDashboardPage = () => {
         onClose={() => setSelectedCertAppId(null)}
       />
 
-      {/* Digital Adoption Agreement & E-Signature Modal */}
-      <AdoptionContractModal
-        isOpen={!!selectedContractAppId}
-        applicationId={selectedContractAppId}
-        onClose={() => setSelectedContractAppId(null)}
-      />
 
       {/* Schedule Meet & Greet Modal for Shelter */}
       {schedulingVisitData && (
@@ -2385,8 +2345,8 @@ const ShelterDashboardPage = () => {
             setSchedulingVisitData(null);
             showToast('Meet & Greet scheduled successfully!', 'success');
             // Refresh visits and applications
-            adoptionsApi.getShelterVisits().then(r => setVisits(r?.visits || [])).catch(() => {});
-            adoptionsApi.getShelterApplications().then(r => setApplications(r?.applications || [])).catch(() => {});
+            adoptionsApi.getShelterVisits().then(r => setVisits(r?.visits || [])).catch(() => { });
+            adoptionsApi.getShelterApplications().then(r => setApplications(r?.applications || [])).catch(() => { });
           }}
         />
       )}

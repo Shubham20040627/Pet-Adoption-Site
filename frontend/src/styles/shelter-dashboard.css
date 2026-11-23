@@ -308,9 +308,9 @@
    Accreditation / Verified Partner Status Card (Mockup: Placed At Top)
    ========================================================================== */
 .shelter-partner-status-card {
-  background: #F0FDF4;
-  border: 1px solid #BBF7D0;
-  border-radius: 18px;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 16px;
   padding: 1.15rem 1.65rem;
   margin-top: 1.25rem;
   margin-bottom: 1.35rem;
@@ -318,7 +318,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
-  box-shadow: 0 1px 4px rgba(16, 185, 129, 0.04);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 .shelter-partner-status-left {
@@ -360,13 +360,14 @@
 }
 
 .shelter-partner-active-chip {
-  background-color: #16A34A;
-  color: #FFFFFF;
+  background-color: #DCFCE7;
+  color: #15803D;
+  border: 1px solid #BBF7D0;
   border-radius: 9999px;
-  padding: 0.22rem 0.75rem;
+  padding: 0.18rem 0.65rem;
   font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
 }
 
 .shelter-partner-subtext {
@@ -436,24 +437,47 @@
 /* Left Showcase Banner Card */
 .shelter-hero-banner-showcase {
   position: relative;
-  border-radius: 22px;
+  border-radius: 20px;
   overflow: hidden;
-  min-height: 320px;
+  height: 255px;
+  min-height: 255px;
   display: flex;
   align-items: center;
   background: #1B432C;
-  box-shadow: 0 4px 20px rgba(27, 67, 44, 0.08);
+  box-shadow: 0 4px 18px rgba(27, 67, 44, 0.08);
 }
 
-.shelter-hero-bg-pets {
+.shelter-hero-slider-mask {
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
-  width: 56%;
+  width: 58%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.shelter-hero-slider-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.38s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+}
+
+.shelter-hero-slide-item {
+  width: 100%;
+  height: 100%;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.shelter-hero-bg-pets {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center 25%;
-  z-index: 1;
+  display: block;
 }
 
 .shelter-hero-gradient-mask {
@@ -461,48 +485,61 @@
   inset: 0;
   background: linear-gradient(90deg, #1B432C 0%, #1B432C 38%, rgba(27, 67, 44, 0.92) 48%, rgba(27, 67, 44, 0.25) 72%, rgba(27, 67, 44, 0) 100%);
   z-index: 2;
+  pointer-events: none;
+}
+
+@keyframes shelterHeroTextFade {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .shelter-hero-content {
   position: relative;
   z-index: 3;
-  padding: 2.5rem 2.75rem;
-  max-width: 440px;
+  padding: 1.55rem 2.2rem;
+  max-width: 420px;
   display: flex;
   flex-direction: column;
+  animation: shelterHeroTextFade 0.28s ease-out;
 }
 
 .shelter-hero-overline {
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.2rem;
 }
 
 .shelter-hero-main-title {
   font-family: 'Playfair Display', Georgia, 'Nunito Sans', serif;
-  font-size: 2.35rem;
+  font-size: 1.85rem;
   font-weight: 700;
   color: #FFFFFF;
   line-height: 1.15;
-  margin: 0 0 0.65rem 0;
+  margin: 0 0 0.35rem 0;
 }
 
 .shelter-hero-values-line {
-  font-size: 0.92rem;
+  font-size: 0.84rem;
   font-weight: 600;
   color: #86EFAC;
-  margin-bottom: 0.85rem;
+  margin-bottom: 0.45rem;
   letter-spacing: 0.02em;
 }
 
 .shelter-hero-desc {
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   color: rgba(255, 255, 255, 0.88);
-  line-height: 1.45;
-  margin-bottom: 1.5rem;
+  line-height: 1.35;
+  margin-bottom: 1.1rem;
   max-width: 320px;
 }
 
@@ -517,8 +554,8 @@
   background-color: #16A34A;
   color: #FFFFFF;
   border-radius: 9999px;
-  padding: 0.65rem 1.35rem;
-  font-size: 0.88rem;
+  padding: 0.52rem 1.15rem;
+  font-size: 0.82rem;
   font-weight: 600;
   display: inline-flex;
   align-items: center;
@@ -543,8 +580,8 @@
   color: #FFFFFF;
   border: 1.5px solid rgba(255, 255, 255, 0.55);
   border-radius: 9999px;
-  padding: 0.65rem 1.35rem;
-  font-size: 0.88rem;
+  padding: 0.52rem 1.15rem;
+  font-size: 0.82rem;
   font-weight: 600;
   display: inline-flex;
   align-items: center;
@@ -606,26 +643,28 @@
 }
 
 .shelter-hero-page-pill {
-  width: 22px;
+  width: 24px;
   height: 6px;
   border-radius: 9999px;
   background-color: #22C55E;
   border: none;
   cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .shelter-hero-page-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.65);
   border: none;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .shelter-hero-page-dot:hover {
   background-color: #FFFFFF;
+  transform: scale(1.2);
 }
 
 /* Part B: Right 3-Tier Pastel Story Cards */
@@ -639,12 +678,12 @@
 .shelter-story-pastel-card {
   display: flex;
   align-items: center;
-  gap: 0.95rem;
-  border-radius: 18px;
-  padding: 0.95rem 1.15rem;
+  gap: 0.85rem;
+  border-radius: 16px;
+  padding: 0.72rem 1.05rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  height: calc((100% - 1.7rem) / 3);
+  height: calc((100% - 1.4rem) / 3);
   box-sizing: border-box;
 }
 
@@ -817,6 +856,18 @@
 .shelter-kpi-card:hover .kpi-card-arrow {
   transform: translateX(2px);
   color: #0F172A;
+}
+
+.kpi-sparkline {
+  flex-shrink: 0;
+  margin: 0 0.35rem;
+  opacity: 0.85;
+  transition: transform 0.2s ease;
+}
+
+.shelter-kpi-card:hover .kpi-sparkline {
+  transform: scaleY(1.1);
+  opacity: 1;
 }
 
 /* ==========================================================================
@@ -1024,6 +1075,81 @@
   font-size: 0.8rem;
   color: #64748B;
   margin: 0.2rem 0 0;
+}
+
+/* Quick Actions 2-Card Layout (Exact Match to Mockup media_1795355665875_4e0acc5e.jpg) */
+.shelter-quick-actions-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  flex: 1;
+  align-items: stretch;
+}
+
+.quick-action-big-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 1.25rem 0.75rem;
+  border-radius: 14px;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  min-height: 110px;
+}
+
+.quick-action-big-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+.quick-action-big-tile.tile-green {
+  background-color: #F0FDF4;
+  border-color: #DCFCE7;
+}
+
+.quick-action-big-tile.tile-blue {
+  background-color: #EFF6FF;
+  border-color: #DBEAFE;
+}
+
+.big-tile-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.big-tile-icon-box.green {
+  background-color: #DCFCE7;
+  color: #16A34A;
+}
+
+.big-tile-icon-box.blue {
+  background-color: #DBEAFE;
+  color: #2563EB;
+}
+
+.quick-action-big-tile:hover .big-tile-icon-box {
+  transform: scale(1.08);
+}
+
+.big-tile-label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0F172A;
 }
 
 /* Quick Actions 2x3 Grid matching mockup */

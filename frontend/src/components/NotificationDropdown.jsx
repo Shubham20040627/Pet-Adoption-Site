@@ -25,7 +25,10 @@ const NotificationDropdown = ({ placement = 'bottom' }) => {
     setLoading(true);
     try {
       const res = await commonApi.getNotifications();
-      setNotifications(res.notifications || []);
+      const cleanNotifs = (res.notifications || []).filter(
+        (n) => !n.title?.includes('Agreement') && !n.title?.includes('Contract') && !n.message?.includes('Agreement') && !n.message?.includes('Contract')
+      );
+      setNotifications(cleanNotifs);
     } catch (err) {
       console.error('Failed to load notifications:', err);
     } finally {

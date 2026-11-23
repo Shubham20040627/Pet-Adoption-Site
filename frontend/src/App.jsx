@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
@@ -34,6 +35,11 @@ import './styles/global.css';
 const AppContent = () => {
   const location = useLocation();
   const { isAdopter, isShelter, user } = useAuth();
+
+  // Scroll window to top on route change so no previous page scroll jerks the view
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [location.pathname]);
 
   const isShelterApproved = isShelter && Boolean(
     user?.status === 'approved' ||

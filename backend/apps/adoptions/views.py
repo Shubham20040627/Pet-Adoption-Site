@@ -49,11 +49,17 @@ def submit_application(request):
             status=status.HTTP_400_BAD_REQUEST
         )
 
+    shelter_id = pet.get('shelter_id')
+    if not shelter_id and pet.get('shelter_name'):
+        s_lookup = db.shelters.find_one({'shelter_name': {'$regex': f"^{pet.get('shelter_name')}$", '$options': 'i'}})
+        if s_lookup:
+            shelter_id = s_lookup.get('user_id') or str(s_lookup.get('_id'))
+
     now = datetime.now(timezone.utc)
     app_doc = {
         'pet_id': str(pet_id),
         'adopter_id': request.user.id,
-        'shelter_id': pet.get('shelter_id'),
+        'shelter_id': str(shelter_id) if shelter_id else '',
         'adopter_name': (data.get('adopter_name') or data.get('applicant_name') or getattr(request.user, 'name', '') or '').strip(),
         'adopter_email': (data.get('adopter_email') or data.get('applicant_email') or getattr(request.user, 'email', '') or '').strip(),
         'adopter_phone': (data.get('adopter_phone') or data.get('applicant_phone') or getattr(request.user, 'phone', '') or '').strip(),
@@ -153,6 +159,50 @@ def my_applications(request):
     }, status=status.HTTP_200_OK)
 
 
+def _get_shelter_match_criteria(db, user):
+    """
+    Robust resolver that matches shelter pets, applications, and visits across
+    user ID, shelter document ID, and shelter name to ensure complete visibility.
+    """
+    user_id_str = str(user.id)
+    ids_to_match = [user_id_str]
+    if ObjectId.is_valid(user_id_str):
+        ids_to_match.append(ObjectId(user_id_str))
+        
+    shelter_doc = db.shelters.find_one({'user_id': user_id_str})
+    if shelter_doc:
+        s_id_str = str(shelter_doc['_id'])
+        ids_to_match.append(s_id_str)
+        if ObjectId.is_valid(s_id_str):
+            ids_to_match.append(ObjectId(s_id_str))
+
+    shelter_name = getattr(user, 'name', '') or (shelter_doc.get('shelter_name') if shelter_doc else '')
+    
+    # Pet query criteria
+    pet_query_or = [{'shelter_id': {'$in': ids_to_match}}]
+    if shelter_name:
+        pet_query_or.append({'shelter_name': {'$regex': f"^{shelter_name}$", '$options': 'i'}})
+        
+    # Find all pets that belong to this shelter
+    shelter_pets = list(db.pets.find({'$or': pet_query_or}, {'_id': 1}))
+    pet_ids = []
+    for sp in shelter_pets:
+        pet_ids.append(str(sp['_id']))
+        if ObjectId.is_valid(str(sp['_id'])):
+            pet_ids.append(ObjectId(str(sp['_id'])))
+            
+    # Application / visit query criteria
+    app_query_or = [
+        {'shelter_id': {'$in': ids_to_match}}
+    ]
+    if pet_ids:
+        app_query_or.append({'pet_id': {'$in': pet_ids}})
+    if shelter_name:
+        app_query_or.append({'shelter_name': {'$regex': f"^{shelter_name}$", '$options': 'i'}})
+
+    return ids_to_match, pet_query_or, app_query_or, shelter_doc
+
+
 @api_view(['GET'])
 @permission_classes([IsShelter])
 def shelter_applications(request):
@@ -161,11 +211,9 @@ def shelter_applications(request):
     Strictly isolated to the logged-in shelter only.
     """
     db = get_db()
-    shelter_id_str = str(request.user.id)
-    shelter_filter = {
-        '$in': [shelter_id_str, ObjectId(shelter_id_str)] if ObjectId.is_valid(shelter_id_str) else [shelter_id_str]
-    }
-    query = {'shelter_id': shelter_filter}
+    ids_to_match, pet_query_or, app_query_or, shelter_doc = _get_shelter_match_criteria(db, request.user)
+
+    query = {'$or': app_query_or}
 
     status_filter = request.GET.get('status', '').strip()
     if status_filter and status_filter != 'all':
@@ -576,11 +624,8 @@ def shelter_visits(request):
     Shelter views all Meet & Greet visits requested by adopters for their pets.
     """
     db = get_db()
-    shelter_id_str = str(request.user.id)
-    shelter_filter = {
-        '$in': [shelter_id_str, ObjectId(shelter_id_str)] if ObjectId.is_valid(shelter_id_str) else [shelter_id_str]
-    }
-    visits_cursor = db.visits.find({'shelter_id': shelter_filter}).sort('created_at', -1)
+    ids_to_match, pet_query_or, app_query_or, shelter_doc = _get_shelter_match_criteria(db, request.user)
+    visits_cursor = db.visits.find({'$or': app_query_or}).sort('created_at', -1)
     visits_list = serialize_docs(visits_cursor)
     for v in visits_list:
         v['visit_time'] = v.get('time_slot') or v.get('visit_time') or ''

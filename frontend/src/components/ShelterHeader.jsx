@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Search, ArrowLeft, Bell, ShieldCheck, Clock } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import NotificationDropdown from './NotificationDropdown';
 import '../styles/shelter-dashboard.css';
 
 const ShelterHeader = ({ 
@@ -14,7 +13,7 @@ const ShelterHeader = ({
   hideSearch = false,
   onAddPet,
 }) => {
-  const { user } = useAuth();
+  const { user, unreadCount } = useAuth();
   const navigate = useNavigate();
   const [localSearch, setLocalSearch] = useState(searchValue);
 
@@ -79,8 +78,17 @@ const ShelterHeader = ({
           )}
         </div>
 
-        {/* Notifications Dropdown */}
-        <NotificationDropdown placement="bottom" />
+        {/* Notifications Hub Link */}
+        <Link 
+          to="/shelter-dashboard?tab=notifications" 
+          className="icon-btn" 
+          title="Notifications Hub"
+          aria-label="View notifications"
+          style={{ textDecoration: 'none', color: '#174C38', position: 'relative' }}
+        >
+          <Bell size={20} />
+          {unreadCount > 0 && <span className="icon-badge">{unreadCount}</span>}
+        </Link>
 
         {/* Shelter Staff Profile Pill matching reference image */}
         <Link 

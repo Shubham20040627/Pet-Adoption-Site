@@ -17,7 +17,6 @@ import {
   X,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import NotificationDropdown from './NotificationDropdown';
 import '../styles/shelter-navbar.css';
 
 const ShelterNavbar = ({ onSearch }) => {
@@ -29,7 +28,6 @@ const ShelterNavbar = ({ onSearch }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [showNotificationMenu, setShowNotificationMenu] = useState(false);
 
   const navRef = useRef(null);
 
@@ -38,14 +36,12 @@ const ShelterNavbar = ({ onSearch }) => {
     const handleOutsideClick = (e) => {
       if (navRef.current && !navRef.current.contains(e.target)) {
         setOpenDropdown(null);
-        setShowNotificationMenu(false);
       }
     };
 
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         setOpenDropdown(null);
-        setShowNotificationMenu(false);
         setMobileMenuOpen(false);
       }
     };
@@ -61,7 +57,6 @@ const ShelterNavbar = ({ onSearch }) => {
   // Close dropdown on route change
   useEffect(() => {
     setOpenDropdown(null);
-    setShowNotificationMenu(false);
     setMobileMenuOpen(false);
   }, [location.pathname, location.search]);
 
@@ -86,11 +81,11 @@ const ShelterNavbar = ({ onSearch }) => {
   const shelterName = 
     (user?.role === 'shelter' ? (user?.shelter?.shelter_name || user?.name || user?.shelter_name) : null) || 
     user?.shelter?.shelter_name || 
-    'Hope & Paws Sanctuary';
+    'Hope & Paws Shelter';
   const regNo = user?.shelter?.registration_number || user?.registration_number || 'AWBI-2026-8941';
   const logoUrl = user?.shelter?.logo_url || user?.logo_url || '';
   const initial = shelterName ? shelterName.trim().charAt(0).toUpperCase() : 'H';
-  const displayNotifCount = unreadCount || 5;
+  const displayNotifCount = unreadCount || 8;
 
   return (
     <header className="shelter-navbar-wrapper" ref={navRef}>
@@ -108,6 +103,8 @@ const ShelterNavbar = ({ onSearch }) => {
             </div>
           </Link>
         </div>
+
+        <div className="shelter-nav-brand-divider" />
 
         {/* 2. Middle: Navigation Links & Interactive Dropdowns (Exact Match to Mockup) */}
         <nav className="shelter-nav-links-desktop" aria-label="Shelter portal navigation">
@@ -211,27 +208,22 @@ const ShelterNavbar = ({ onSearch }) => {
             <span>Messages</span>
           </Link>
 
-          {/* Notifications Dropdown Trigger */}
-          <div className="shelter-nav-notification-container">
-            <button
-              type="button"
-              className={`shelter-nav-item-btn ${showNotificationMenu ? 'active' : ''}`}
-              onClick={() => setShowNotificationMenu((prev) => !prev)}
-              aria-label="View notifications"
-            >
-              <Bell size={15} className="shelter-nav-icon" />
-              <span>Notifications</span>
-              {displayNotifCount > 0 && (
-                <span className="shelter-notification-badge">{displayNotifCount}</span>
-              )}
-            </button>
-
-            {showNotificationMenu && (
-              <div className="shelter-navbar-notif-popover">
-                <NotificationDropdown placement="bottom-end" defaultOpen={true} />
-              </div>
+          {/* Notifications Tab Link */}
+          <Link
+            to="/shelter-dashboard?tab=notifications"
+            className={`shelter-nav-item-btn ${
+              (location.pathname === '/shelter-dashboard' || location.pathname === '/shelter_dashboard') && currentTab === 'notifications'
+                ? 'active'
+                : ''
+            }`}
+            aria-label="View notifications"
+          >
+            <Bell size={15} className="shelter-nav-icon" />
+            <span>Notifications</span>
+            {displayNotifCount > 0 && (
+              <span className="shelter-notification-badge">{displayNotifCount}</span>
             )}
-          </div>
+          </Link>
 
         </nav>
 
@@ -391,6 +383,16 @@ const ShelterNavbar = ({ onSearch }) => {
               onClick={() => setMobileMenuOpen(false)}
             >
               <MessageSquare size={18} /> Messages
+            </Link>
+            <Link
+              to="/shelter-dashboard?tab=notifications"
+              className={`shelter-mobile-link ${currentTab === 'notifications' ? 'active' : ''}`}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <Bell size={18} /> Notifications
+              {displayNotifCount > 0 && (
+                <span className="shelter-notification-badge" style={{ marginLeft: 'auto' }}>{displayNotifCount}</span>
+              )}
             </Link>
             <Link
               to="/shelter-dashboard?tab=profile"
